@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { SafeAreaView, StyleSheet, ScrollView, Image } from 'react-native';
-import { Layout, Text, Input } from '@ui-kitten/components';
+import { SafeAreaView, StyleSheet, ScrollView } from 'react-native';
+import { Layout, Input } from '@ui-kitten/components';
 import { generalSty } from '../styles';
 import { FirstContent, SecondContent, ThirdContent } from '../components/home_screens';
 
