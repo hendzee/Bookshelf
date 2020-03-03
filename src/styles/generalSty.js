@@ -1,5 +1,8 @@
 import { StyleSheet } from 'react-native';
 
+const GREY = '#b2bec3';
+const SOFT_GREY = '#dfe6e9';
+
 const generalSty = StyleSheet.create({
     full: {
         flex: 1
@@ -29,7 +32,6 @@ const generalSty = StyleSheet.create({
     mmBottom: {
         marginBottom: 7
     },
-
 
     /** Margin large */
     mlAll: {
@@ -84,6 +86,15 @@ const generalSty = StyleSheet.create({
 
     smallText: {
         fontSize: 12.6
+    },
+
+    /** Secondary color */
+    greyText: {
+        color: GREY
+    },
+
+    greyBorder: {
+        borderColor: SOFT_GREY
     }
 
 });
