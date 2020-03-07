@@ -4,7 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { BottomNavigation, BottomNavigationTab, Icon } from '@ui-kitten/components';
-import { HomeScreen } from './screens';
+import { HomeScreen, ChatScreen, ChatDetailScreen } from './screens';
 
 /** Home icon */
 const HomeIcon = (style) => (
@@ -55,7 +55,7 @@ const BottomTabBar = ({ navigation, state }) => {
 const TabBarNavigator = () => (
     <BottomTab.Navigator tabBar={ props => <BottomTabBar {...props} /> }>
         <BottomTab.Screen name='HOME' component={ HomeScreen } />
-        <BottomTab.Screen name='CHAT' component={ HomeScreen } />
+        <BottomTab.Screen name='CHAT' component={ ChatScreen } />
         <BottomTab.Screen name='ADD' component={ HomeScreen } />
         <BottomTab.Screen name='INBOX' component={ HomeScreen } />
         <BottomTab.Screen name='ACCOUNT' component={ HomeScreen } />
@@ -65,6 +65,7 @@ const TabBarNavigator = () => (
 const AppStackNavigator = () => (
     <Stack.Navigator headerMode='none'>
         <Stack.Screen name='MAIN' component={ TabBarNavigator } />
+        <Stack.Screen name='CHAT_DETAIL' component={ ChatDetailScreen } />
     </Stack.Navigator>
 )
 

@@ -1,7 +1,11 @@
 import { StyleSheet } from 'react-native';
+import color from './custom-theme.json';
 
 const GREY = '#b2bec3';
 const SOFT_GREY = '#dfe6e9';
+const PRIMARY = color['color-primary-500'];
+const WHITE = '#FFF';
+const RADIUS = 15;
 
 const generalSty = StyleSheet.create({
     full: {
@@ -13,6 +17,7 @@ const generalSty = StyleSheet.create({
         padding: 15
     },
 
+    /** Margin medium */
     mmAll: {
         margin: 7
     },
@@ -31,6 +36,27 @@ const generalSty = StyleSheet.create({
 
     mmBottom: {
         marginBottom: 7
+    },
+
+    /** Padding normal */
+    pmAll: {
+        padding: 7
+    },
+
+    pmTop: {
+        paddingTop: 7
+    },
+
+    pmRight: {
+        paddingRight: 7
+    },
+
+    pmLeft: {
+        paddingLeft: 7
+    },
+
+    pmBottom: {
+        paddingBottom: 7
     },
 
     /** Margin large */
@@ -79,9 +105,20 @@ const generalSty = StyleSheet.create({
         maxWidth: 150,
     },
 
+    w230: {
+        maxWidth: 230,
+    },
+
     itemImage: {
         height: 210,
-        width: 150
+        width: 150,
+        resizeMode: 'cover',
+        borderRadius: RADIUS
+    },
+
+    navigationIcon: {
+        width: 30,
+        height: 30
     },
 
     smallText: {
@@ -95,6 +132,41 @@ const generalSty = StyleSheet.create({
 
     greyBorder: {
         borderColor: SOFT_GREY
+    },
+
+    titleScreenStyle: {
+        fontWeight: 'bold'
+    },
+
+    /** Background color */
+    primaryBackground: {
+        backgroundColor: PRIMARY
+    },
+
+    greyBackground: {
+        backgroundColor: GREY
+    },
+
+    /** Colors */
+    white: {
+        color: WHITE
+    },
+
+    /** Radius */
+    topLeftRadius: {
+        borderTopLeftRadius: RADIUS
+    },
+
+    topRightRadius: {
+        borderTopRightRadius: RADIUS
+    },
+
+    bottomRightRadius: {
+        borderBottomRightRadius: RADIUS
+    },
+
+    bottomLeftRadius: {
+        borderBottomLeftRadius: RADIUS
     }
 
 });

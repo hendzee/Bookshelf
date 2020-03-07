@@ -14,7 +14,7 @@ class HomeScreen extends Component {
             searchValue: ''
         }
     }
-
+    
     render() {
         return (
             <SafeAreaView style={ styles.rootContainer }>
