@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { SafeAreaView, StyleSheet, StatusBar, ScrollView } from 'react-native';
+import { SafeAreaView, StyleSheet, ScrollView } from 'react-native';
 import { Layout, Text, Avatar, Card, Icon } from '@ui-kitten/components';
 import { CustomStatusBar, CustomTouchableOpacity } from '../components/general';
 import { generalSty } from '../styles'
@@ -262,7 +262,6 @@ const styles = StyleSheet.create({
     itemMenuLast: {
         flexDirection: 'row',
         alignItems: 'center',
-        ...generalSty.plBottom,
     },
 
     itemMenuName: {

@@ -1,8 +1,12 @@
 import React, { Component } from 'react';
 import { SafeAreaView, StyleSheet, ScrollView } from 'react-native';
-import { Layout, Input } from '@ui-kitten/components';
+import { Layout, Input, Icon } from '@ui-kitten/components';
 import { CustomStatusBar } from '../components/general';
 import { generalSty } from '../styles';
+
+const SearchIcon = (style) => (
+    <Icon { ...style } name='search-outline' />
+);
 
 /** Homescreen substance components */
 import { FirstContent, SecondContent, ThirdContent } from '../components/home_screens';
@@ -25,8 +29,10 @@ class HomeScreen extends Component {
                     <Layout style={ styles.searchBoxContainer }>
                         <Input 
                             placeholder='Search your book'
+                            icon={ SearchIcon }
                             value={ this.state.searchValue }
                             onChange={ searchValue => this.setState({ searchValue }) }
+
                         />
                     </Layout>
                     {/** Search box - end */}
