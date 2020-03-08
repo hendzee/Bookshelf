@@ -140,6 +140,10 @@ const generalSty = StyleSheet.create({
         fontSize: 18
     },
 
+    superLargeText: {
+        fontSize: 28
+    },
+
     /** Secondary color */
     greyText: {
         color: GREY
@@ -165,6 +169,10 @@ const generalSty = StyleSheet.create({
     /** Colors */
     white: {
         color: WHITE
+    },
+
+    primaryColor: {
+        color: PRIMARY
     },
 
     /** Radius */

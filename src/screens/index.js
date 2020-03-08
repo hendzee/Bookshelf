@@ -4,3 +4,4 @@ export * from './ChatDetailScreen';
 export * from './ContactScreen';
 export * from './AddScreen';
 export * from './InboxScreen';
+export * from './AccountScreen';
