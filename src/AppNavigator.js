@@ -4,7 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { BottomNavigation, BottomNavigationTab, Icon } from '@ui-kitten/components';
-import { HomeScreen, ChatScreen, ChatDetailScreen } from './screens';
+import { HomeScreen, ChatScreen, ChatDetailScreen, ContactScreen } from './screens';
 
 /** Home icon */
 const HomeIcon = (style) => (
@@ -66,6 +66,7 @@ const AppStackNavigator = () => (
     <Stack.Navigator headerMode='none'>
         <Stack.Screen name='MAIN' component={ TabBarNavigator } />
         <Stack.Screen name='CHAT_DETAIL' component={ ChatDetailScreen } />
+        <Stack.Screen name='CONTACT' component={ ContactScreen } />
     </Stack.Navigator>
 )
 

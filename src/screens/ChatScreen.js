@@ -5,7 +5,7 @@ import { generalSty } from '../styles';
 import { CustomStatusBar } from '../components/general';
 
 /** ChatScreen substance components */
-import { ChatCard } from '../components/chat_screens';
+import { ChatList } from '../components/chat_screens';
 
 const SearchIcon = (style) => (
     <Icon { ...style } name='search-outline' />
@@ -24,8 +24,13 @@ class ChatScreen extends Component {
 
     /** Show add button */
     showAddButton = () => (
-        <TopNavigationAction icon={ PlusIcon } />
+        <TopNavigationAction icon={ PlusIcon } onPress={ this.handleAddChat } />
     );
+
+    /** Navigate to add chat */
+    handleAddChat = () => {
+        this.props.navigation.navigate('CONTACT');
+    };
     
     render() {
         return (
@@ -40,7 +45,7 @@ class ChatScreen extends Component {
                 />
 
                 <Layout style={ styles.mainContainer }>
-                    <ChatCard navigation={ this.props.navigation } />
+                    <ChatList navigation={ this.props.navigation } />
                 </Layout>
             </SafeAreaView>
         );
@@ -63,6 +68,6 @@ const styles = StyleSheet.create({
     titleScreenStyle: {
         ...generalSty.titleScreenStyle
     },
-})
+});
 
 export { ChatScreen };

@@ -2,10 +2,10 @@ import React from 'react';
 import { StyleSheet, ScrollView } from 'react-native';
 import { Layout, Text, Avatar } from '@ui-kitten/components';
 import { generalSty } from '../../styles';
-import { CustomTouchableOpacity } from '../../components/general';
+import { CustomTouchableOpacity } from '../general';
 
 
-const ChatCard = (props) => {
+const ChatList = (props) => {
     /** Navigate to detail chat screen */
     const toDetailScreen = () => {
         props.navigation.navigate('CHAT_DETAIL');
@@ -122,4 +122,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export { ChatCard };
+export { ChatList };
