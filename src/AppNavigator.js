@@ -4,7 +4,14 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { BottomNavigation, BottomNavigationTab, Icon, TabBar } from '@ui-kitten/components';
-import { HomeScreen, ChatScreen, ChatDetailScreen, ContactScreen, AddScreen } from './screens';
+import { 
+    HomeScreen, 
+    ChatScreen, 
+    ChatDetailScreen, 
+    ContactScreen, 
+    AddScreen,
+    InboxScreen
+} from './screens';
 
 /** Home icon */
 const HomeIcon = (style) => (
@@ -63,7 +70,7 @@ const TabBarNavigator = () => (
                 tabBarVisible: false
             }}
         />
-        <BottomTab.Screen name='INBOX' component={ HomeScreen } />
+        <BottomTab.Screen name='INBOX' component={ InboxScreen } />
         <BottomTab.Screen name='ACCOUNT' component={ HomeScreen } />
     </BottomTab.Navigator>
 )
