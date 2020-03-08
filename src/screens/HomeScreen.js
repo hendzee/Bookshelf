@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { SafeAreaView, StyleSheet, ScrollView } from 'react-native';
 import { Layout, Input } from '@ui-kitten/components';
-import { generalSty } from '../styles';
 import { CustomStatusBar } from '../components/general';
+import { generalSty } from '../styles';
 
 /** Homescreen substance components */
 import { FirstContent, SecondContent, ThirdContent } from '../components/home_screens';
@@ -54,6 +54,6 @@ const styles = StyleSheet.create({
     searchBoxContainer: {
         ...generalSty.mlBottom,
     },
-})
+});
 
 export { HomeScreen };

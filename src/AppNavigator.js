@@ -3,8 +3,8 @@ import { SafeAreaView } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { BottomNavigation, BottomNavigationTab, Icon } from '@ui-kitten/components';
-import { HomeScreen, ChatScreen, ChatDetailScreen, ContactScreen } from './screens';
+import { BottomNavigation, BottomNavigationTab, Icon, TabBar } from '@ui-kitten/components';
+import { HomeScreen, ChatScreen, ChatDetailScreen, ContactScreen, AddScreen } from './screens';
 
 /** Home icon */
 const HomeIcon = (style) => (
@@ -56,7 +56,13 @@ const TabBarNavigator = () => (
     <BottomTab.Navigator tabBar={ props => <BottomTabBar {...props} /> }>
         <BottomTab.Screen name='HOME' component={ HomeScreen } />
         <BottomTab.Screen name='CHAT' component={ ChatScreen } />
-        <BottomTab.Screen name='ADD' component={ HomeScreen } />
+        <BottomTab.Screen 
+            name='ADD' 
+            component={ AddScreen }
+            options={{
+                tabBarVisible: false
+            }}
+        />
         <BottomTab.Screen name='INBOX' component={ HomeScreen } />
         <BottomTab.Screen name='ACCOUNT' component={ HomeScreen } />
     </BottomTab.Navigator>

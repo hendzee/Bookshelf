@@ -101,12 +101,22 @@ const generalSty = StyleSheet.create({
         paddingBottom: 15
     },
 
+    /** Width max */
     w150: {
         maxWidth: 150,
     },
 
     w230: {
         maxWidth: 230,
+    },
+
+    /** Width fixed */
+    wf230:{
+        width: 230
+    },
+
+    wf300:{
+        width: 300
     },
 
     itemImage: {
@@ -121,8 +131,13 @@ const generalSty = StyleSheet.create({
         height: 30
     },
 
+    /** Font size */
     smallText: {
         fontSize: 12.6
+    },
+
+    veryLargeText: {
+        fontSize: 18
     },
 
     /** Secondary color */
@@ -167,6 +182,17 @@ const generalSty = StyleSheet.create({
 
     bottomLeftRadius: {
         borderBottomLeftRadius: RADIUS
+    },
+
+    /** Image size */
+    iconSizeNormal: {
+        width: 50,
+        height: 50,
+    },
+
+    iconSizeLarge: {
+        width: 90,
+        height: 90,
     }
 
 });
