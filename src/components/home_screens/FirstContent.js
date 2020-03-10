@@ -74,9 +74,13 @@ const styles = StyleSheet.create({
         alignItems: 'flex-end'
     },
 
+    titleContent: {
+        fontWeight: 'bold'
+    },
+
     cardContainer: {
         ...generalSty.mlRight,
-        ...generalSty.w150,
+        ...generalSty.w110,
         alignItems: 'baseline',
         flexWrap: 'wrap'
     },

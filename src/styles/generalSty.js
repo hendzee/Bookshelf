@@ -102,8 +102,8 @@ const generalSty = StyleSheet.create({
     },
 
     /** Width max */
-    w150: {
-        maxWidth: 150,
+    w110: {
+        maxWidth: 110,
     },
 
     w230: {
@@ -120,8 +120,8 @@ const generalSty = StyleSheet.create({
     },
 
     itemImage: {
-        height: 210,
-        width: 150,
+        height: 175,
+        width: 110,
         resizeMode: 'cover',
         borderRadius: RADIUS
     },
