@@ -5,6 +5,7 @@ const GREY = '#b2bec3';
 const SOFT_GREY = '#dfe6e9';
 const PRIMARY = color['color-primary-500'];
 const WHITE = '#FFF';
+const BLACK = '#000';
 const RADIUS = 15;
 
 const generalSty = StyleSheet.create({
@@ -119,6 +120,11 @@ const generalSty = StyleSheet.create({
         width: 300
     },
 
+    /** Height fixed */
+    hf150: {
+        height: 150
+    },
+
     itemImage: {
         height: 175,
         width: 110,
@@ -171,6 +177,10 @@ const generalSty = StyleSheet.create({
         color: WHITE
     },
 
+    black: {
+        color: BLACK
+    },
+
     primaryColor: {
         color: PRIMARY
     },
@@ -189,6 +199,13 @@ const generalSty = StyleSheet.create({
     },
 
     bottomLeftRadius: {
+        borderBottomLeftRadius: RADIUS
+    },
+
+    allRadius: {
+        borderTopLeftRadius: RADIUS,
+        borderTopRightRadius: RADIUS,
+        borderBottomRightRadius: RADIUS,
         borderBottomLeftRadius: RADIUS
     },
 

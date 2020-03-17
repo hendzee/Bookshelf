@@ -14,6 +14,34 @@ class AddScreen extends Component {
         this.props.navigation.goBack();
     };
 
+    /** Handle menu */
+    handleMenuNavigation = (menu) => {
+        let screen = 'MAIN';
+
+        switch (menu) {
+            case 0:
+                screen = 'ADD_ITEM'
+                break;
+
+            case 1:
+                screen = 'ADD_ITEM'
+                break;
+
+            case 2:
+                screen = 'ADD_ITEM'
+                break;
+
+            case 3:
+                screen = 'ADD_ITEM'
+                break;
+        
+            default:
+                break;
+        }
+
+        this.props.navigation.navigate(screen);
+    }
+
     render() {
         return (
             <SafeAreaView style={ styles.rootContainer }>
@@ -29,7 +57,7 @@ class AddScreen extends Component {
                     {/* Content menu - start */}
                     <Layout style={ styles.menuContainer }>
                         <Layout style={ styles.menuRowContainer }>
-                            <CustomTouchableOpacity>
+                            <CustomTouchableOpacity onPress={ () => this.handleMenuNavigation(0) }>
                                 <Layout style={ styles.menuChildren }>
                                     <Avatar 
                                         size='giant'

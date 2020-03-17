@@ -15,7 +15,8 @@ import {
     ContactScreen, 
     AddScreen,
     InboxScreen,
-    AccountScreen
+    AccountScreen,
+    AddItemScreen
 } from './screens';
 
 /** Home icon */
@@ -85,6 +86,7 @@ const AppStackNavigator = () => (
         <Stack.Screen name='MAIN' component={ TabBarNavigator } />
         <Stack.Screen name='CHAT_DETAIL' component={ ChatDetailScreen } />
         <Stack.Screen name='CONTACT' component={ ContactScreen } />
+        <Stack.Screen name='ADD_ITEM' component={ AddItemScreen } />
     </Stack.Navigator>
 )
 

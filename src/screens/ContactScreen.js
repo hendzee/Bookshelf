@@ -16,7 +16,7 @@ class ContactScreen extends Component {
     /** Show back button */
     showBackButton = () => (
         <TopNavigationAction icon={ BackIcon } onPress={ this.handleBack } />
-        );
+    );
         
     /** Show more icon */
     showMoreIcon = () => (

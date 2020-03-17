@@ -5,3 +5,4 @@ export * from './ContactScreen';
 export * from './AddScreen';
 export * from './InboxScreen';
 export * from './AccountScreen';
+export * from './AddItemScreen';
