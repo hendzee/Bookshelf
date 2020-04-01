@@ -107,6 +107,10 @@ const generalSty = StyleSheet.create({
         maxWidth: 110,
     },
 
+    w180: {
+        maxWidth: 180
+    },
+
     w230: {
         maxWidth: 230,
     },

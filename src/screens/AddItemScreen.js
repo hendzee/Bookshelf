@@ -1,7 +1,16 @@
 import React, { Component } from 'react';
 import { SafeAreaView, StyleSheet } from 'react-native';
-import { Layout, Input, Text, TopNavigation, TopNavigationAction, Icon, Button } from '@ui-kitten/components';
-import { CustomStatusBar , CustomTouchableOpacity} from '../components/general';
+import { 
+    Layout, 
+    Input, 
+    Text, 
+    TopNavigation, 
+    TopNavigationAction, 
+    Icon, 
+    Button,
+    Select,
+} from '@ui-kitten/components';
+import { CustomStatusBar , CustomTouchableOpacity, SmallModal } from '../components/general';
 import { generalSty } from '../styles'
 
 const BackIcon = (style) => (
@@ -12,7 +21,20 @@ const PlusIcon = () => (
     <Icon width={ 32 } height={ 32 } fill='#b2bec3' name='plus-circle-outline' />
 );
 
+const CloseIcon = () => (
+    <Icon width={ 32 } height={ 32 } name='close-outline' />
+);
+
 class AddItemScreen extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            /** Complete save */
+            isSaved: false,
+            isLoading: false
+        }
+    }
+
     /** Show back button */
     showBackButton = () => (
         <TopNavigationAction icon={ BackIcon } onPress={ this.handleBack } />
@@ -23,10 +45,27 @@ class AddItemScreen extends Component {
         this.props.navigation.goBack();
     };
 
+    /** Handle save data */
+    handleSave = () => {
+        this.setState({ isSaved: true, isLoading: true }, () => {
+            setTimeout(() => {
+                this.setState({ isLoading: false });
+            }, 3000);
+        });
+    };
+
+    /** Handle modal success save function  */
+    handleModalSave = () => {
+        this.setState({ isSaved: false }, () => {
+            this.handleBack();
+        });
+    };
+
     render() {
         return (
             <SafeAreaView style={ styles.rootContainer }>
                 <CustomStatusBar />
+                
                 <TopNavigation 
                     title='Add Book'
                     titleStyle={ styles.titleScreenStyle }
@@ -61,13 +100,16 @@ class AddItemScreen extends Component {
                             style={ styles.input }
                         />
 
-                        <Input
+                        <Select
                             label='Category'
                             labelStyle={ styles.inputTextStyle }
-                            placeholder='e.g. 2010'
-                            textStyle={ styles.inputTextStyle }
+                            data={[
+                                { text: 'Biography' },
+                                { text: 'IT' }
+                            ]}
                             style={ styles.input }
                         />
+
                     </Layout>
                     {/* Form - end */}
 
@@ -79,11 +121,21 @@ class AddItemScreen extends Component {
                     </CustomTouchableOpacity>
 
                     <Layout style={ styles.bottomContent }>
-                        <Button status='primary'>
+                        <Button onPress={ this.handleSave } status='primary'>
                             SAVE
                         </Button>
                     </Layout>
                 </Layout>
+                
+                {/* Modal when save complete */}
+                <SmallModal
+                    title='Congrats! your book have been saved.' 
+                    icon='checkmark-circle-outline'
+                    onPress={ this.handleModalSave } 
+                    loading={ this.state.isLoading }
+                    visible={ this.state.isSaved } 
+                />
+                
             </SafeAreaView>
         );
     }
@@ -125,7 +177,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#dfe6e9',
         justifyContent: 'center',
         alignItems: 'center'
-    }
+    },
 });
 
 export { AddItemScreen };

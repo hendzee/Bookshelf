@@ -4,12 +4,12 @@ import { Layout, Input, Icon } from '@ui-kitten/components';
 import { CustomStatusBar } from '../components/general';
 import { generalSty } from '../styles';
 
+/** Homescreen substance components */
+import { FirstContent, SecondContent, ThirdContent } from '../components/home_screens';
+
 const SearchIcon = (style) => (
     <Icon { ...style } name='search-outline' />
 );
-
-/** Homescreen substance components */
-import { FirstContent, SecondContent, ThirdContent } from '../components/home_screens';
 
 class HomeScreen extends Component {
     constructor(props) {
