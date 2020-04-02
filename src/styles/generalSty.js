@@ -7,6 +7,7 @@ const PRIMARY = color['color-primary-500'];
 const WHITE = '#FFF';
 const BLACK = '#000';
 const RADIUS = 15;
+const YELLOW = '#fdcb6e';
 
 const generalSty = StyleSheet.create({
     full: {
@@ -136,6 +137,13 @@ const generalSty = StyleSheet.create({
         borderRadius: RADIUS
     },
 
+    itemImageLarge: {
+        height: 231,
+        width: 147,
+        resizeMode: 'cover',
+        borderRadius: RADIUS
+    },
+
     navigationIcon: {
         width: 30,
         height: 30
@@ -174,6 +182,10 @@ const generalSty = StyleSheet.create({
 
     greyBackground: {
         backgroundColor: GREY
+    },
+
+    sofyGreyBackground: {
+        backgroundColor: SOFT_GREY
     },
 
     /** Colors */
@@ -226,4 +238,4 @@ const generalSty = StyleSheet.create({
 
 });
 
-export { generalSty };
+export { generalSty, WHITE, GREY, SOFT_GREY, BLACK, PRIMARY, YELLOW };

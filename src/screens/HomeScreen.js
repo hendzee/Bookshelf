@@ -38,7 +38,7 @@ class HomeScreen extends Component {
                     {/** Search box - end */}
 
                     <ScrollView showsVerticalScrollIndicator={ false }>
-                        <FirstContent />
+                        <FirstContent navigation={ this.props.navigation } />
                         <SecondContent />
                         <ThirdContent />
                     </ScrollView>

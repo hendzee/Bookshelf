@@ -1,9 +1,15 @@
 import React from 'react';
 import { StyleSheet, ScrollView, Image } from 'react-native';
 import { Layout, Text } from '@ui-kitten/components';
+import { CustomTouchableOpacity } from '../general';
 import { generalSty } from '../../styles';
 
-const FirstContent = () => {
+const FirstContent = (props) => {
+    /** Navigate to detail item screen */
+    const toDetailScreen = () => {
+        props.navigation.navigate('ITEM_DETAIL');
+    }
+
     return (
        <Layout style={ styles.bodyContent }>
             <Layout style={ styles.titleContainer }>
@@ -18,16 +24,18 @@ const FirstContent = () => {
             </Layout>
 
             <ScrollView horizontal={ true } showsHorizontalScrollIndicator={ false }>
-                <Layout style={ styles.cardContainer }>
-                    <Image 
-                        style={ styles.imageCard }
-                        source={ require('../../images/items/item_photo1.jpeg') }
-                    />
-                    <Layout style={ styles.descCard }>
-                        <Text style={ styles.cardTitle }>The Green Ember</Text>
-                        <Text style={ styles.cardInfo }>2019, Thomas Niels</Text>
+                <CustomTouchableOpacity onPress={ toDetailScreen }>
+                    <Layout style={ styles.cardContainer }>
+                        <Image 
+                            style={ styles.imageCard }
+                            source={ require('../../images/items/item_photo1.jpeg') }
+                        />
+                        <Layout style={ styles.descCard }>
+                            <Text style={ styles.cardTitle }>The Green Ember</Text>
+                            <Text style={ styles.cardInfo }>2019, Thomas Niels</Text>
+                        </Layout>
                     </Layout>
-                </Layout>
+                </CustomTouchableOpacity>
 
                 <Layout style={ styles.cardContainer }>
                     <Image 

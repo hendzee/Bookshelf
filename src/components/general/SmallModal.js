@@ -16,7 +16,7 @@ const SmallModal = (props) => {
                 { modalIcon() }
             </Layout>
             <Text style={ styles.modalTitle }>{ props.title }</Text>
-            <Button onPress={ props.onPress } status='primary'>
+            <Button onPress={ () => props.onPress() } status='primary'>
                 OK
             </Button>
         </Layout>
