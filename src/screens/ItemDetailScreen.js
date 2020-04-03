@@ -48,7 +48,7 @@ class ItemDetailScreen extends Component {
 
                 <ScrollView>
                     <Layout style={ styles.mainContainer }>
-                        <MainInfo />
+                        <MainInfo navigation={ this.props.navigation } />
                         <ItemInfo />
                     </Layout>
                 </ScrollView>

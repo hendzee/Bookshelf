@@ -3,7 +3,12 @@ import { StyleSheet, Image } from 'react-native';
 import { Layout, Icon, Button, Text} from '@ui-kitten/components';
 import { generalSty, YELLOW } from '../../styles';
 
-const MainInfo = () => {
+const MainInfo = (props) => {
+    /** Handle navigation to cart screen */
+    const toCart = () => {
+        props.navigation.navigate('CART');
+    }
+
     /** Set rating number */
     const showRating = (number) => {
         let ratingComponentList = [];
@@ -40,10 +45,10 @@ const MainInfo = () => {
                     { showRating(3) }
                 </Layout>
                 <Button style={ styles.button } status='basic'>
-                    VISIT OWNER
+                    SEE THEIR BOOKS
                 </Button>
-                <Button style={ styles.button } status='primary'>
-                    MAKE REQUEST
+                <Button onPress={ toCart } style={ styles.button } status='primary'>
+                    ADD TO LIST
                 </Button>
             </Layout>
         </Layout>
