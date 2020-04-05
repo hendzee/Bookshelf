@@ -167,6 +167,10 @@ const generalSty = StyleSheet.create({
         color: GREY
     },
 
+    whiteText: {
+        color: WHITE
+    },
+
     greyBorder: {
         borderColor: SOFT_GREY
     },

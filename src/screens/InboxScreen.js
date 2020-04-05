@@ -9,8 +9,8 @@ import {
     Avatar,
     Button 
 } from '@ui-kitten/components';
-import { generalSty } from '../styles'; 
-import { CustomStatusBar } from '../components/general';
+import { generalSty, GREY } from '../styles'; 
+import { CustomStatusBar, CustomTouchableOpacity } from '../components/general';
 
 const SearchIcon = (style) => (
     <Icon { ...style } name='search-outline' />
@@ -21,7 +21,7 @@ const MoreIcon = () => (
 );
 
 const TimeIcon = () => (
-    <Icon width={ 13 } height={ 13 } name='clock-outline' />
+    <Icon width={ 13 } height={ 13 } fill={ GREY } name='clock-outline' />
 );
 
 class InboxScreen extends Component {
@@ -29,6 +29,11 @@ class InboxScreen extends Component {
     showSearchIcon = () => (
         <TopNavigationAction icon={ SearchIcon } />
     );
+
+    /** Handle navigation to cart confirmation screen */
+    toCartConfirmation = () => {
+        this.props.navigation.navigate('CART_CONFIRMATION');
+    }
 
     render() {
         return (
@@ -43,32 +48,33 @@ class InboxScreen extends Component {
 
                 <Layout style={ styles.mainContainer }>
                     <ScrollView showsVerticalScrollIndicator={ false }>
-                        <Layout style={ styles.inboxCardContainer }>
-                            <Layout style={ styles.inboxCardImageContainer }>
-                                <Avatar 
-                                    size='giant'
-                                    source={ require('../images/users/user4.png') } 
-                                />
-                            </Layout>
-                            <Layout style={ styles.inboxCardContentContainer }>
-                                <Text>
-                                    <Text style={ styles.userName }>Bryan Bottom</Text>
-                                    <Text>{ ' ' }</Text>
+                        <CustomTouchableOpacity onPress={ this.toCartConfirmation }>
+                            <Layout style={ styles.inboxCardContainer }>
+                                <Layout style={ styles.inboxCardImageContainer }>
+                                    <Avatar 
+                                        size='giant'
+                                        source={ require('../images/users/user4.png') } 
+                                    />
+                                </Layout>
+                                <Layout style={ styles.inboxCardContentContainer }>
                                     <Text>
-                                        ask you to borrow your books. Check to give response.
+                                        <Text style={ styles.userName }>Bryan Bottom</Text>
+                                        <Text>{ ' ' }</Text>
+                                        <Text>
+                                            ask you to borrow your books. Check to give response.
+                                        </Text>
                                     </Text>
-                                    <Text>{ '\n' }</Text>
-                                </Text>
 
-                                <Layout style={ styles.inboxCardTimeContainer }>
-                                    { TimeIcon() }
-                                    <Text style={ styles.inboxCardTime } >15 days ago</Text>
+                                    <Layout style={ styles.inboxCardTimeContainer }>
+                                        { TimeIcon() }
+                                        <Text style={ styles.inboxCardTime } >15 days ago</Text>
+                                    </Layout>
+                                </Layout>
+                                <Layout style={ styles.inboxCardMoreContainer }>
+                                    <Button size='tiny' appearance='ghost' icon={ MoreIcon } />
                                 </Layout>
                             </Layout>
-                            <Layout style={ styles.inboxCardMoreContainer }>
-                                <Button size='tiny' appearance='ghost' icon={ MoreIcon } />
-                            </Layout>
-                        </Layout>
+                        </CustomTouchableOpacity>
                     </ScrollView>
                 </Layout>
             </SafeAreaView>
@@ -127,11 +133,13 @@ const styles = StyleSheet.create({
     inboxCardTimeContainer: {
         flexDirection: 'row',
         alignItems: 'center',
+        ...generalSty.mmTop
     },
 
     inboxCardTime: {
         ...generalSty.smallText,
-        ...generalSty.mmLeft
+        ...generalSty.mmLeft,
+        ...generalSty.greyText
     }
 });
 

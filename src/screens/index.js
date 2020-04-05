@@ -8,3 +8,4 @@ export * from './AccountScreen';
 export * from './AddItemScreen';
 export * from './ItemDetailScreen';
 export * from './CartScreen';
+export * from './CartConfirmationScreen';
