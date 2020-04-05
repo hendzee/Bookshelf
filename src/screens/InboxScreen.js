@@ -55,11 +55,9 @@ class InboxScreen extends Component {
                                     <Text style={ styles.userName }>Bryan Bottom</Text>
                                     <Text>{ ' ' }</Text>
                                     <Text>
-                                        accept your request to borrow him book
-                                        under the title
+                                        ask you to borrow your books. Check to give response.
                                     </Text>
                                     <Text>{ '\n' }</Text>
-                                    <Text style={ styles.higlight }>Hooked: How to Build Forming...</Text>
                                 </Text>
 
                                 <Layout style={ styles.inboxCardTimeContainer }>
@@ -100,7 +98,9 @@ const styles = StyleSheet.create({
     },
 
     inboxCardImageContainer: {
-        flex: 2
+        flex: 2,
+        ...generalSty.pmTop,
+        ...generalSty.pmBottom
     },
 
     inboxCardContentContainer: {
@@ -120,10 +120,6 @@ const styles = StyleSheet.create({
         fontWeight: 'bold'
     },
 
-    higlight: {
-        fontWeight: 'bold'
-    },
-
     inboxContent: {
         ...generalSty.smallText
     },
@@ -131,7 +127,6 @@ const styles = StyleSheet.create({
     inboxCardTimeContainer: {
         flexDirection: 'row',
         alignItems: 'center',
-        ...generalSty.mmTop
     },
 
     inboxCardTime: {

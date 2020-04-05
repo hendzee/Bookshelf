@@ -10,7 +10,7 @@ import {
     Button 
 } from '@ui-kitten/components';
 import { generalSty, GREY } from '../styles';
-import { CustomStatusBar, CustomTouchableOpacity } from '../components/general';
+import { CustomStatusBar, CustomTouchableOpacity, SmallModal } from '../components/general';
 
 const BackIcon = (style) => (
     <Icon { ...style } name='arrow-back-outline' />
@@ -21,6 +21,14 @@ const RemoveIcon = () => (
 )
 
 class CartScreen extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            isLoading: false,
+            isSend: false
+        }
+    }
+
     /** Show back button */
     showBackButton = () => (
         <TopNavigationAction icon={ BackIcon } onPress={ this.handleBack } />
@@ -29,6 +37,20 @@ class CartScreen extends Component {
     /** Handle back */
     handleBack = () => {
         this.props.navigation.goBack();
+    }
+
+    /** Handle send request */
+    handleSend = () => {
+        this.setState({ isSend: true, isLoading: true }, () => {
+            setTimeout(() => {
+                this.setState({ isLoading: false });
+            }, 3000);
+        });
+    }
+
+    /** Handle sending modal button */
+    handleModalSend = () => {
+        this.setState({ isSend: false, isLoading: false });
     }
     
     render() {
@@ -86,11 +108,20 @@ class CartScreen extends Component {
                         <Button status='basic'>
                             ADD LIST MORE
                         </Button>
-                        <Button style={ styles.mainButton }>
+                        <Button onPress={ this.handleSend } style={ styles.mainButton }>
                             SEND REQUEST
                         </Button>
                     </Layout>
                 </Layout>
+
+                {/* Modal when save complete */}
+                <SmallModal
+                    title='Your requst was sent.' 
+                    icon='checkmark-circle-outline'
+                    onPress={ this.handleModalSend } 
+                    loading={ this.state.isLoading }
+                    visible={ this.state.isSend } 
+                />
             </SafeAreaView>
         );
     }
