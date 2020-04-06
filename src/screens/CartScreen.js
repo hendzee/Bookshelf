@@ -116,7 +116,7 @@ class CartScreen extends Component {
 
                 {/* Modal when save complete */}
                 <SmallModal
-                    title='Your requst was sent.' 
+                    title='Your request was sent.' 
                     icon='checkmark-circle-outline'
                     onPress={ this.handleModalSend } 
                     loading={ this.state.isLoading }

@@ -9,3 +9,4 @@ export * from './AddItemScreen';
 export * from './ItemDetailScreen';
 export * from './CartScreen';
 export * from './CartConfirmationScreen';
+export * from './SelectMapScreen';

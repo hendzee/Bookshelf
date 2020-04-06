@@ -21,10 +21,6 @@ const PlusIcon = () => (
     <Icon width={ 32 } height={ 32 } fill='#b2bec3' name='plus-circle-outline' />
 );
 
-const CloseIcon = () => (
-    <Icon width={ 32 } height={ 32 } name='close-outline' />
-);
-
 class AddItemScreen extends Component {
     constructor(props) {
         super(props);

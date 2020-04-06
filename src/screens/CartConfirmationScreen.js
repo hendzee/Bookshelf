@@ -10,7 +10,7 @@ import {
     Avatar 
 } from '@ui-kitten/components';
 import { generalSty, GREY } from '../styles';
-import { CustomStatusBar, CustomTouchableOpacity } from '../components/general';
+import { CustomStatusBar, CustomTouchableOpacity, SmallModal } from '../components/general';
 
 const BackIcon = (style) => (
     <Icon { ...style } name='arrow-back-outline' />
@@ -22,6 +22,35 @@ const ChatIcon = (style) => (
 )
 
 class CartConfirmationScreen extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            isSend: false,
+            isLoading: false
+        }
+    }
+
+    /** Show back button */
+    showBackButton = () => (
+        <TopNavigationAction icon={ BackIcon } onPress={ this.handleBack } />
+    );
+
+    /** Hanle send */
+    handleSend = () => {
+        this.setState({ isSend: true, isLoading: true }, () => {
+            setTimeout(() => {
+                this.setState({ isLoading: false });
+            }, 3000);
+        });
+    }
+
+    /** Handle modal success save function  */
+    handleModalSend = () => {
+        this.setState({ isSend: false }, () => {
+            this.toSelectMap();
+        });
+    };
+
     /** Show back button */
     showBackButton = () => (
         <TopNavigationAction icon={ BackIcon } onPress={ this.handleBack } />
@@ -30,6 +59,11 @@ class CartConfirmationScreen extends Component {
     /** Handle back */
     handleBack = () => {
         this.props.navigation.goBack();
+    }
+
+    /** Navigate to select map screen */
+    toSelectMap = () => {
+        this.props.navigation.navigate('SELECT_MAP');
     }
     
     render() {
@@ -109,6 +143,15 @@ class CartConfirmationScreen extends Component {
                         </Button>
                     </Layout>
                 </Layout>
+                
+                {/* Modal when send request */}
+                <SmallModal
+                    title='Your request was sent.' 
+                    icon='checkmark-circle-outline'
+                    onPress={ this.handleModalSend } 
+                    loading={ this.state.isLoading }
+                    visible={ this.state.isSend } 
+                />
             </SafeAreaView>
         );
     }
