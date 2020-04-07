@@ -2,17 +2,53 @@ import React, { Component } from 'react';
 import { SafeAreaView, StyleSheet, Image } from 'react-native';
 import { Layout, Icon, Button, Input } from '@ui-kitten/components';
 import { generalSty } from '../styles';
-import { CustomStatusBar, CustomTouchableOpacity } from '../components/general';
+import { CustomStatusBar, CustomTouchableOpacity, SmallModal } from '../components/general';
+
+/** SelectMapScreen substance components */
+import { InfoModal } from '../components/select_map_screen';
 
 const CloseIcon = () => (
     <Icon width={ 25 } height={ 25 } name='close' />
 )
 
+const ChatIcon = () => (
+    <Icon width={ 25 } height={ 25 } name='message-square' />
+)
+
 class SelectMapScreen extends Component {
-    /** Handle back */
-    handleBack = () => {
-        this.props.navigation.goBack();
+    constructor(props) {
+        super(props);
+        this.state = {
+            isSaved: false,
+            isLoading: false,
+        }
     }
+
+    /** Handle back */
+    handleClose = () => {
+        this.props.navigation.navigate('MAIN');
+    }
+
+    /** To chat detail */
+    toChatDetail = () => {
+        this.props.navigation.navigate('CHAT_DETAIL')
+    }
+
+    /** Handle save data */
+    handleSave = () => {
+        this.setState({ isSaved: true, isLoading: true }, () => {
+            setTimeout(() => {
+                this.setState({ isLoading: false });
+            }, 3000);
+        });
+    };
+
+    /** Handle modal success save function  */
+    handleModalSave = () => {
+        this.setState({ isSaved: false }, () => {
+            this.handleClose();
+        });
+    };
     
     render() {
         return (
@@ -24,10 +60,17 @@ class SelectMapScreen extends Component {
                         style={ styles.map }
                         source={ require('../images/others/map.png') }
                     />
-                    <Layout style={ styles.backContainer }>
-                        <CustomTouchableOpacity onPress={ this.handleBack }>
-                            <CloseIcon />
-                        </CustomTouchableOpacity>
+                    <Layout style={ styles.topFloatContainer }>
+                        <Layout style={ styles.topLeftContainer }>
+                            <CustomTouchableOpacity onPress={ this.handleClose }>
+                                <CloseIcon />
+                            </CustomTouchableOpacity>
+                        </Layout>
+                        <Layout style={ styles.topRightContainer }>
+                            <CustomTouchableOpacity onPress={ this.toChatDetail }>
+                                <ChatIcon />
+                            </CustomTouchableOpacity>
+                        </Layout>
                     </Layout>
                     <Layout style={ styles.bottomContainer }>
                         <Layout style={ styles.bottomMainContainer }>
@@ -45,12 +88,24 @@ class SelectMapScreen extends Component {
                                 textStyle={ styles.inputTextStyle }
                                 style={ styles.input }
                             />
-                            <Button>
+                            <Button onPress={ this.handleSave }>
                                 SAVE
                             </Button>
                         </Layout>
                     </Layout>
                 </Layout>
+
+                {/* Modal save */}
+                <SmallModal
+                    title='Your meeting point was saved.' 
+                    icon='checkmark-circle-outline'
+                    onPress={ this.handleModalSave } 
+                    loading={ this.state.isLoading }
+                    visible={ this.state.isSaved } 
+                />
+
+                {/* Modal information */}
+                <InfoModal />
             </SafeAreaView>
         );
     }
@@ -70,17 +125,30 @@ const styles = StyleSheet.create({
         height: '100%'
     },
 
-    backContainer: {
+    topFloatContainer: {
         position: 'absolute',
         top: 20,
-        left: 20,
-        width: 40,
-        height: 40,
-        borderRadius: 40,
+        width: '100%',
+        flexDirection: 'row',
+        backgroundColor: 'rgba(0, 0, 0, 0.0)',
+        justifyContent: 'space-between',
+        ...generalSty.plAll
+    },
+
+    topLeftContainer: {
+        width: 50,
+        height: 50,
+        borderRadius: 50,
         alignItems: 'center',
         justifyContent: 'center',
-        borderWidth: 1,
-        ...generalSty.greyBorder,
+    },
+
+    topRightContainer: {
+        width: 50,
+        height: 50,
+        borderRadius: 50,
+        alignItems: 'center',
+        justifyContent: 'center',
     },
 
     bottomContainer: {
