@@ -25,6 +25,10 @@ const ChatIcon = (style) => (
     <Icon width={ 25 } height={ 25 } fill={ GREY } name='message-square' />
 )
 
+const EditIcon = (style) => (
+    <Icon width={ 15 } height={ 15 } name='edit' />
+)
+
 class CartConfirmedScreen extends Component {
     constructor(props) {
         super(props);
@@ -69,13 +73,18 @@ class CartConfirmedScreen extends Component {
     toSelectMap = () => {
         this.props.navigation.navigate('SELECT_MAP');
     }
+
+    /** To Map */
+    toMap = () => {
+        this.props.navigation.navigate('SELECT_MAP')
+    }
     
     render() {
         return (
             <SafeAreaView style={ styles.rootContainer }>
                 <CustomStatusBar />
                 <TopNavigation
-                    title='Confirmation'
+                    title='Detail Order'
                     titleStyle={ styles.titleScreenStyle }
                     alignment='center'
                     leftControl={ this.showBackButton() }
@@ -148,12 +157,25 @@ class CartConfirmedScreen extends Component {
                                 <Text style={ styles.smallText }>20 March, 2020</Text>
                             </Layout>
                             <Layout style={ styles.secondInfoItemContainer }>
-                                <Layout style={{ flex: 2 }}>
+                                <Layout style={ styles.leftFlexContainer }>
                                     <Text style={ styles.smallText }>Meet Point</Text>
                                 </Layout>
-                                <Layout style={{ flex: 1 }}>
+                                <Layout style={ styles.rightFlexContainer }>
                                     <Text style={ styles.address }>Abraham lincoln street no.20, America</Text>
                                 </Layout>
+                            </Layout>
+                            <Layout style={ styles.secondInfoItemContainer }>
+                                <Layout style={ styles.leftFlexContainer }>
+                                    <Text style={ styles.smallText }>Note</Text>
+                                </Layout>
+                                <Layout style={ styles.rightFlexContainer }>
+                                    <Text style={ styles.address }>In the right of Al-Iman mosque</Text>
+                                </Layout>
+                            </Layout>
+                            <Layout style={ styles.floatRight }>
+                                <Button onPress={ this.toMap } status='basic' size='tiny' icon={ EditIcon }>
+                                    Edit Map
+                                </Button>
                             </Layout>
                         </Layout>
                         {/* Second info content - end */}
@@ -202,10 +224,10 @@ class CartConfirmedScreen extends Component {
 
                     <Layout style={ styles.bottomContent }>
                         <Button status='danger'>
-                            REJECT REQUEST
+                            CANCEL MEETING
                         </Button>
                         <Button onPress={ this.handleSend } style={ styles.mainButton }>
-                            ACCEPT REQUEST
+                            CONFIRM BOOK
                         </Button>
                     </Layout>
                 </Layout>
@@ -308,6 +330,18 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         ...generalSty.mmBottom
+    },
+
+    leftFlexContainer: {
+        flex: 2
+    },
+
+    rightFlexContainer: {
+        flex: 1
+    },
+
+    floatRight: {
+        alignItems: 'flex-end'
     },
 
     titleScreenStyle: {

@@ -26,7 +26,7 @@ class SelectMapScreen extends Component {
 
     /** Handle back */
     handleClose = () => {
-        this.props.navigation.navigate('MAIN');
+        this.props.navigation.navigate('CART_CONFIRMED');
     }
 
     /** To chat detail */
