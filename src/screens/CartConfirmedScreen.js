@@ -9,19 +9,23 @@ import {
     Button, 
     Avatar 
 } from '@ui-kitten/components';
-import { generalSty, GREY } from '../styles';
+import { generalSty, GREY, YELLOW } from '../styles';
 import { CustomStatusBar, CustomTouchableOpacity, SmallModal } from '../components/general';
 
 const BackIcon = (style) => (
     <Icon { ...style } name='arrow-back-outline' />
 )
 
+const StarIcon = () => (
+    <Icon width={ 15 } height={ 15 } fill={ YELLOW } name='star' />
+)
+
 /** Chat icon */
-const ChatIcon = () => (
+const ChatIcon = (style) => (
     <Icon width={ 25 } height={ 25 } fill={ GREY } name='message-square' />
 )
 
-class CartConfirmationScreen extends Component {
+class CartConfirmedScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -78,19 +82,19 @@ class CartConfirmationScreen extends Component {
                 />
 
                 <Layout style={ styles.mainContainer }>
-                    <ScrollView showsVerticalScrollIndicator={ false }>
-                        {/* User info content - start */}
-                        <Layout style={ styles.topInfoContainer }>
+                    {/* User info content - start */}
+                    <Layout style={ styles.topInfoContainer }>
+                        <Layout style={ styles.topInfoItem }>
                             <Layout style={ styles.userContainer }>
                                 <Layout style={ styles.userImageContainer }>
-                                    <Avatar
-                                        size='giant'
-                                        source={ require('../images/users/user4.png') }
-                                    />
+                                    <Avatar source={ require('../images/users/user4.png') }/>
                                 </Layout>
                                 <Layout>
                                     <Text style={ styles.textBold }>Bryan Bottom</Text>
-                                    <Text style={ styles.smallTextGrey }>ID: 311210045</Text>
+                                    <Layout style={ styles.topSecondInfo }>
+                                        <StarIcon />
+                                        <Text style={ styles.smallTextGrey }>4.3</Text>
+                                    </Layout>
                                 </Layout>
                             </Layout>
                             <Layout style={ styles.infoRightContainer }>
@@ -99,87 +103,74 @@ class CartConfirmationScreen extends Component {
                                 </CustomTouchableOpacity>
                             </Layout>
                         </Layout>
-                        {/* User info content - end */}
-                        
-                        {/* Second info content - start */}
-                        <Layout style={ styles.secondInfoContainer }>
-                            <Layout style={ styles.secondInfoItem }>
-                                <Layout>
-                                    <Text style={ styles.secondInfoText }>
-                                        ID
-                                    </Text>
+                        <Layout style={ styles.topInfoItem }>
+                            <Layout style={ styles.userContainer }>
+                                <Layout style={ styles.userImageContainer }>
+                                    <Avatar source={ require('../images/users/user1.png') } />
                                 </Layout>
                                 <Layout>
-                                    <Text style={ styles.textBold }>
-                                        # 35A107
-                                    </Text>
+                                    <Text style={ styles.textBold }>Rachel Linda</Text>
+                                    <Layout style={ styles.topSecondInfo }>
+                                        <StarIcon />
+                                        <Text style={ styles.smallTextGrey }>4.7</Text>
+                                        <Layout style={ styles.badgePrimary }>
+                                            <Text style={ styles.smallTextWhite }>Owner</Text>
+                                        </Layout>
+                                    </Layout>
                                 </Layout>
                             </Layout>
-                            <Layout style={ styles.secondInfoItem }>
-                                <Layout>
-                                    <Text style={ styles.secondInfoText }>
-                                        Status
-                                    </Text>
-                                </Layout>
-                                <Layout style={ styles.badgeContainer }>
-                                    <Text style={ styles.smallTextWhite }>
-                                        Waiting Response
-                                    </Text>
-                                </Layout>
-                            </Layout>
-                            <Layout style={ styles.secondInfoItem }>
-                                <Layout>
-                                    <Text style={ styles.secondInfoText }>
-                                        Duration
-                                    </Text>
-                                </Layout>
-                                <Text>7 days</Text>
+                            <Layout style={ styles.infoRightContainer }>
+                                <CustomTouchableOpacity>
+                                    <ChatIcon />
+                                </CustomTouchableOpacity>
                             </Layout>
                         </Layout>
-                        {/* Second info content - end */}
-
-                        {/* List item - start */}
-                        <Layout style={ styles.listCardContainer }>
-                            <Layout style={ styles.cardContainer }>
-                                <Layout style={ styles.imageContainer }>
-                                    <Image 
-                                        style={ styles.imageCard }
-                                        source={ require('../images/items/item_photo1.jpeg') }
-                                    />
-                                </Layout>
-                                <Layout style={ styles.infoContainer }>
-                                    <Text style={ styles.textBold }>Green Ember</Text>
-                                    <Text style={ styles.smallTextGrey }>Thomas Niels</Text>
-                                </Layout>
+                    </Layout>
+                    {/* User info content - end */}
+                    
+                    {/* Second info content - start */}
+                    <Layout style={ styles.secondInfoContainer }>
+                        <Layout style={ styles.subTitleContainer }>
+                            <Text style={ styles.textBold }>Detail Info</Text>
+                        </Layout>
+                        <Layout style={ styles.secondInfoItemContainer }>
+                            <Text style={ styles.smallText }>Duration</Text>
+                            <Text style={ styles.smallText }>7 Days</Text>
+                        </Layout>
+                        <Layout style={ styles.secondInfoItemContainer }>
+                            <Text style={ styles.smallText }>Return Date</Text>
+                            <Text style={ styles.smallText }>20 March, 2020</Text>
+                        </Layout>
+                        <Layout style={ styles.secondInfoItemContainer }>
+                            <Layout style={{ flex: 2 }}>
+                                <Text style={ styles.smallText }>Meet Point</Text>
                             </Layout>
-                            <Layout style={ styles.cardContainer }>
-                                <Layout style={ styles.imageContainer }>
-                                    <Image 
-                                        style={ styles.imageCard }
-                                        source={ require('../images/items/item_photo1.jpeg') }
-                                    />
-                                </Layout>
-                                <Layout style={ styles.infoContainer }>
-                                    <Text style={ styles.textBold }>Green Ember</Text>
-                                    <Text style={ styles.smallTextGrey }>Thomas Niels</Text>
-                                </Layout>
-                            </Layout>
-                            <Layout style={ styles.cardContainer }>
-                                <Layout style={ styles.imageContainer }>
-                                    <Image 
-                                        style={ styles.imageCard }
-                                        source={ require('../images/items/item_photo1.jpeg') }
-                                    />
-                                </Layout>
-                                <Layout style={ styles.infoContainer }>
-                                    <Text style={ styles.textBold }>Green Ember</Text>
-                                    <Text style={ styles.smallTextGrey }>Thomas Niels</Text>
-                                </Layout>
+                            <Layout style={{ flex: 1 }}>
+                                <Text style={ styles.address }>Abraham lincoln street no.20, America</Text>
                             </Layout>
                         </Layout>
-                        {/* List item - end */}
+                    </Layout>
+                    {/* Second info content - end */}
 
-                    </ScrollView>
+                    {/* List item - start */}
+                    <Layout style={ styles.listCardContainer }>
+                        <ScrollView showsVerticalScrollIndicator={ false }>
+                            <Layout style={ styles.cardContainer }>
+                                <Layout style={ styles.imageContainer }>
+                                    <Image 
+                                        style={ styles.imageCard }
+                                        source={ require('../images/items/item_photo1.jpeg') }
+                                    />
+                                </Layout>
+                                <Layout style={ styles.infoContainer }>
+                                    <Text style={ styles.titleItem }>Green Ember</Text>
+                                    <Text style={ styles.smallTextGrey }>Thomas Niels</Text>
+                                </Layout>
+                            </Layout>
+                        </ScrollView>
+                    </Layout>
+                    {/* List item - end */}
+
                     <Layout style={ styles.bottomContent }>
                         <Button status='danger'>
                             REJECT REQUEST
@@ -213,11 +204,15 @@ const styles = StyleSheet.create({
     },
 
     topInfoContainer: {
-        ...generalSty.plBottom,
         ...generalSty.mlBottom,
+        ...generalSty.plBottom,
         ...generalSty.greyBorder,
         borderBottomWidth: 1,
-        flexDirection: 'row'
+    },
+
+    topInfoItem: {
+        flexDirection: 'row',
+        ...generalSty.mmBottom
     },
 
     userContainer: {
@@ -230,7 +225,27 @@ const styles = StyleSheet.create({
     },
 
     textBold: {
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+    },
+
+    badgePrimary: {
+        ...generalSty.primaryBackground,
+        ...generalSty.pmLeft,
+        ...generalSty.pmRight,
+        ...generalSty.mmLeft,
+        borderRadius: 3,
+        paddingVertical: 0.5,
+    },
+
+    smallTextWhite: {
+        fontSize: 10,
+        letterSpacing: 0.8,
+        ...generalSty.white
+    },
+
+    topSecondInfo: {
+        flexDirection: 'row',
+        alignItems: 'center'
     },
 
     infoRightContainer: {
@@ -242,25 +257,7 @@ const styles = StyleSheet.create({
         ...generalSty.mlBottom,
         ...generalSty.plBottom,
         ...generalSty.greyBorder,
-        borderBottomWidth: 1,
-    },
-
-    secondInfoItem: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        ...generalSty.mmBottom
-    },
-
-    secondInfoText: {
-        ...generalSty.mmRight
-    },
-
-    badgeContainer: {
-        ...generalSty.primaryBackground,
-        ...generalSty.pmLeft,
-        ...generalSty.pmRight,
-        borderRadius: 5,
-        alignSelf: 'baseline'
+        borderBottomWidth: 1
     },
 
     smallTextGrey: {
@@ -268,9 +265,23 @@ const styles = StyleSheet.create({
         ...generalSty.smallText
     },
 
-    smallTextWhite: {
-        ...generalSty.whiteText,
+    smallText: {
         ...generalSty.smallText
+    },
+
+    subTitleContainer: {
+        ...generalSty.mmBottom
+    },
+
+    address: {
+        ...generalSty.smallText,
+        textAlign: 'right'
+    },
+
+    secondInfoItemContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        ...generalSty.mmBottom
     },
 
     titleScreenStyle: {
@@ -305,6 +316,10 @@ const styles = StyleSheet.create({
         ...generalSty.mlRight
     },
 
+    titleItem: {
+        fontWeight: 'bold'
+    },
+
     bottomContent: {
         position: 'absolute',
         bottom: 0,
@@ -318,4 +333,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export { CartConfirmationScreen };
+export { CartConfirmedScreen };
