@@ -82,79 +82,84 @@ class CartConfirmedScreen extends Component {
                 />
 
                 <Layout style={ styles.mainContainer }>
-                    {/* User info content - start */}
-                    <Layout style={ styles.topInfoContainer }>
-                        <Layout style={ styles.topInfoItem }>
-                            <Layout style={ styles.userContainer }>
-                                <Layout style={ styles.userImageContainer }>
-                                    <Avatar source={ require('../images/users/user4.png') }/>
-                                </Layout>
-                                <Layout>
-                                    <Text style={ styles.textBold }>Bryan Bottom</Text>
-                                    <Layout style={ styles.topSecondInfo }>
-                                        <StarIcon />
-                                        <Text style={ styles.smallTextGrey }>4.3</Text>
+                    <ScrollView showsVerticalScrollIndicator={ false }>
+                        {/* User info content - start */}
+                        <Layout style={ styles.topInfoContainer }>
+                            <Layout style={ styles.topInfoItem }>
+                                <Layout style={ styles.userContainer }>
+                                    <Layout style={ styles.userImageContainer }>
+                                        <Avatar source={ require('../images/users/user4.png') }/>
                                     </Layout>
-                                </Layout>
-                            </Layout>
-                            <Layout style={ styles.infoRightContainer }>
-                                <CustomTouchableOpacity>
-                                    <ChatIcon />
-                                </CustomTouchableOpacity>
-                            </Layout>
-                        </Layout>
-                        <Layout style={ styles.topInfoItem }>
-                            <Layout style={ styles.userContainer }>
-                                <Layout style={ styles.userImageContainer }>
-                                    <Avatar source={ require('../images/users/user1.png') } />
-                                </Layout>
-                                <Layout>
-                                    <Text style={ styles.textBold }>Rachel Linda</Text>
-                                    <Layout style={ styles.topSecondInfo }>
-                                        <StarIcon />
-                                        <Text style={ styles.smallTextGrey }>4.7</Text>
-                                        <Layout style={ styles.badgePrimary }>
-                                            <Text style={ styles.smallTextWhite }>Owner</Text>
+                                    <Layout>
+                                        <Text style={ styles.textBold }>Bryan Bottom</Text>
+                                        <Layout style={ styles.topSecondInfo }>
+                                            <StarIcon />
+                                            <Text style={ styles.smallTextGrey }>4.3</Text>
                                         </Layout>
                                     </Layout>
                                 </Layout>
+                                <Layout style={ styles.infoRightContainer }>
+                                    <CustomTouchableOpacity>
+                                        <ChatIcon />
+                                    </CustomTouchableOpacity>
+                                </Layout>
                             </Layout>
-                            <Layout style={ styles.infoRightContainer }>
-                                <CustomTouchableOpacity>
-                                    <ChatIcon />
-                                </CustomTouchableOpacity>
-                            </Layout>
-                        </Layout>
-                    </Layout>
-                    {/* User info content - end */}
-                    
-                    {/* Second info content - start */}
-                    <Layout style={ styles.secondInfoContainer }>
-                        <Layout style={ styles.subTitleContainer }>
-                            <Text style={ styles.textBold }>Detail Info</Text>
-                        </Layout>
-                        <Layout style={ styles.secondInfoItemContainer }>
-                            <Text style={ styles.smallText }>Duration</Text>
-                            <Text style={ styles.smallText }>7 Days</Text>
-                        </Layout>
-                        <Layout style={ styles.secondInfoItemContainer }>
-                            <Text style={ styles.smallText }>Return Date</Text>
-                            <Text style={ styles.smallText }>20 March, 2020</Text>
-                        </Layout>
-                        <Layout style={ styles.secondInfoItemContainer }>
-                            <Layout style={{ flex: 2 }}>
-                                <Text style={ styles.smallText }>Meet Point</Text>
-                            </Layout>
-                            <Layout style={{ flex: 1 }}>
-                                <Text style={ styles.address }>Abraham lincoln street no.20, America</Text>
+                            <Layout style={ styles.topInfoItem }>
+                                <Layout style={ styles.userContainer }>
+                                    <Layout style={ styles.userImageContainer }>
+                                        <Avatar source={ require('../images/users/user1.png') } />
+                                    </Layout>
+                                    <Layout>
+                                        <Text style={ styles.textBold }>Rachel Linda</Text>
+                                        <Layout style={ styles.topSecondInfo }>
+                                            <StarIcon />
+                                            <Text style={ styles.smallTextGrey }>4.7</Text>
+                                            <Layout style={ styles.badgePrimary }>
+                                                <Text style={ styles.smallTextWhite }>Owner</Text>
+                                            </Layout>
+                                        </Layout>
+                                    </Layout>
+                                </Layout>
+                                <Layout style={ styles.infoRightContainer }>
+                                    <CustomTouchableOpacity>
+                                        <ChatIcon />
+                                    </CustomTouchableOpacity>
+                                </Layout>
                             </Layout>
                         </Layout>
-                    </Layout>
-                    {/* Second info content - end */}
+                        {/* User info content - end */}
+                        
+                        {/* Second info content - start */}
+                        <Layout style={ styles.secondInfoContainer }>
+                            <Layout style={ styles.secondInfoItemContainer }>
+                                <Text style={ styles.smallText }>ID</Text>
+                                <Text style={ styles.textBold }>350A12Z</Text>
+                            </Layout>
+                            <Layout style={ styles.secondInfoItemContainer }>
+                                <Text style={ styles.smallText }>Status</Text>
+                                <Text style={ styles.smallText }>Waiting Response</Text>
+                            </Layout>
+                            <Layout style={ styles.secondInfoItemContainer }>
+                                <Text style={ styles.smallText }>Duration</Text>
+                                <Text style={ styles.smallText }>7 Days</Text>
+                            </Layout>
+                            <Layout style={ styles.secondInfoItemContainer }>
+                                <Text style={ styles.smallText }>Return Date</Text>
+                                <Text style={ styles.smallText }>20 March, 2020</Text>
+                            </Layout>
+                            <Layout style={ styles.secondInfoItemContainer }>
+                                <Layout style={{ flex: 2 }}>
+                                    <Text style={ styles.smallText }>Meet Point</Text>
+                                </Layout>
+                                <Layout style={{ flex: 1 }}>
+                                    <Text style={ styles.address }>Abraham lincoln street no.20, America</Text>
+                                </Layout>
+                            </Layout>
+                        </Layout>
+                        {/* Second info content - end */}
 
-                    {/* List item - start */}
-                    <Layout style={ styles.listCardContainer }>
-                        <ScrollView showsVerticalScrollIndicator={ false }>
+                        {/* List item - start */}
+                        <Layout style={ styles.listCardContainer }>
                             <Layout style={ styles.cardContainer }>
                                 <Layout style={ styles.imageContainer }>
                                     <Image 
@@ -167,9 +172,33 @@ class CartConfirmedScreen extends Component {
                                     <Text style={ styles.smallTextGrey }>Thomas Niels</Text>
                                 </Layout>
                             </Layout>
-                        </ScrollView>
-                    </Layout>
-                    {/* List item - end */}
+                            <Layout style={ styles.cardContainer }>
+                                <Layout style={ styles.imageContainer }>
+                                    <Image 
+                                        style={ styles.imageCard }
+                                        source={ require('../images/items/item_photo1.jpeg') }
+                                    />
+                                </Layout>
+                                <Layout style={ styles.infoContainer }>
+                                    <Text style={ styles.titleItem }>Green Ember</Text>
+                                    <Text style={ styles.smallTextGrey }>Thomas Niels</Text>
+                                </Layout>
+                            </Layout>
+                            <Layout style={ styles.cardContainer }>
+                                <Layout style={ styles.imageContainer }>
+                                    <Image 
+                                        style={ styles.imageCard }
+                                        source={ require('../images/items/item_photo1.jpeg') }
+                                    />
+                                </Layout>
+                                <Layout style={ styles.infoContainer }>
+                                    <Text style={ styles.titleItem }>Green Ember</Text>
+                                    <Text style={ styles.smallTextGrey }>Thomas Niels</Text>
+                                </Layout>
+                            </Layout>
+                        </Layout>
+                        {/* List item - end */}
+                    </ScrollView>
 
                     <Layout style={ styles.bottomContent }>
                         <Button status='danger'>
@@ -233,13 +262,14 @@ const styles = StyleSheet.create({
         ...generalSty.pmLeft,
         ...generalSty.pmRight,
         ...generalSty.mmLeft,
+        alignSelf: 'baseline',
         borderRadius: 3,
         paddingVertical: 0.5,
     },
 
     smallTextWhite: {
         fontSize: 10,
-        letterSpacing: 0.8,
+        letterSpacing: 0.5,
         ...generalSty.white
     },
 
@@ -267,10 +297,6 @@ const styles = StyleSheet.create({
 
     smallText: {
         ...generalSty.smallText
-    },
-
-    subTitleContainer: {
-        ...generalSty.mmBottom
     },
 
     address: {
