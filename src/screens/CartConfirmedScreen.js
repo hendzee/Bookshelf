@@ -43,13 +43,9 @@ class CartConfirmedScreen extends Component {
         <TopNavigationAction icon={ BackIcon } onPress={ this.handleBack } />
     );
 
-    /** Hanle send */
-    handleSend = () => {
-        this.setState({ isSend: true, isLoading: true }, () => {
-            setTimeout(() => {
-                this.setState({ isLoading: false });
-            }, 3000);
-        });
+    /** Handle confirmation item page */
+    toConfirmationItem = () => {
+        this.props.navigation.navigate('CONFIRMATION_ITEM');
     }
 
     /** Handle modal success save function  */
@@ -226,7 +222,7 @@ class CartConfirmedScreen extends Component {
                         <Button status='danger'>
                             CANCEL MEETING
                         </Button>
-                        <Button onPress={ this.handleSend } style={ styles.mainButton }>
+                        <Button onPress={ this.toConfirmationItem } style={ styles.mainButton }>
                             CONFIRM BOOK
                         </Button>
                     </Layout>
