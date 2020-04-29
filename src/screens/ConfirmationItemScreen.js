@@ -40,7 +40,7 @@ class ConfirmationItemScreen extends Component {
         this.setState({ isConfirm: true, isLoading: true }, () => {
             setTimeout(() => {
                 this.setState({ isLoading: false });
-            }, 3000);
+            }, 2000);
         });
     }
 

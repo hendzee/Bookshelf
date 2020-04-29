@@ -3,7 +3,6 @@ import { SafeAreaView, StyleSheet } from 'react-native';
 import { 
     Layout, 
     Input, 
-    Text, 
     TopNavigation, 
     TopNavigationAction, 
     Icon, 
@@ -17,8 +16,8 @@ const BackIcon = (style) => (
     <Icon { ...style } name='arrow-back-outline' />
 );
 
-const CameraIcon = (props) => (
-    <Icon width={ 30 } height={ 30 } name='camera-outline'/>
+const CameraIcon = () => (
+    <Icon width={ 15 } height={ 15 } name='camera-outline'/>
 );
 
 class EditProfileScreen extends Component {
@@ -46,15 +45,13 @@ class EditProfileScreen extends Component {
         this.setState({ isSaved: true, isLoading: true }, () => {
             setTimeout(() => {
                 this.setState({ isLoading: false });
-            }, 3000);
+            }, 2000);
         });
     };
 
     /** Handle modal success save function  */
     handleModalSave = () => {
-        this.setState({ isSaved: false }, () => {
-            this.handleBack();
-        });
+        this.setState({ isSaved: false });
     };
 
     render() {
@@ -79,11 +76,11 @@ class EditProfileScreen extends Component {
                                 source={ require('../images/users/user1.png') } 
                             />
                             <Layout style={ styles.cameraButtonContainer }>
-                                <Button 
-                                    appearance='ghost' 
-                                    icon={ CameraIcon }
-                                    size='tiny' 
-                                />
+                                <CustomTouchableOpacity>
+                                    <Layout style={ styles.cameraIcon }>
+                                        <CameraIcon />
+                                    </Layout>
+                                </CustomTouchableOpacity>
                             </Layout>
                         </Layout>
                     </Layout>
@@ -117,14 +114,14 @@ class EditProfileScreen extends Component {
 
                     <Layout style={ styles.bottomContent }>
                         <Button onPress={ this.handleSave } status='primary'>
-                            UPDATE
+                            SAVE
                         </Button>
                     </Layout>
                 </Layout>
                 
                 {/* Modal when save complete */}
                 <SmallModal
-                    title='Congrats! your book have been saved.' 
+                    title='Data saved.' 
                     icon='checkmark-circle-outline'
                     onPress={ this.handleModalSave } 
                     loading={ this.state.isLoading }
@@ -158,12 +155,15 @@ const styles = StyleSheet.create({
     cameraButtonContainer: {
         position: 'absolute',
         right: 0,
-        bottom: 10
+        bottom: 15,
+        backgroundColor: 'rgba(0, 0, 0, 0.0)'
     },
 
     cameraIcon: {
         width: 30,
         height: 30,
+        alignItems: 'center',
+        justifyContent: 'center',
         ...generalSty.sofyGreyBackground,
         ...generalSty.allRadius
     },
@@ -187,14 +187,6 @@ const styles = StyleSheet.create({
         left: 0,
         right: 0,
         ...generalSty.plAll,
-    },
-
-    imageUploadContainer: {
-        ...generalSty.hf150,
-        width: '100%',
-        backgroundColor: '#dfe6e9',
-        justifyContent: 'center',
-        alignItems: 'center'
     },
 });
 

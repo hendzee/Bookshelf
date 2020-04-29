@@ -46,7 +46,7 @@ class AddItemScreen extends Component {
         this.setState({ isSaved: true, isLoading: true }, () => {
             setTimeout(() => {
                 this.setState({ isLoading: false });
-            }, 3000);
+            }, 2000);
         });
     };
 

@@ -44,7 +44,7 @@ class CartScreen extends Component {
         this.setState({ isSend: true, isLoading: true }, () => {
             setTimeout(() => {
                 this.setState({ isLoading: false });
-            }, 3000);
+            }, 2000);
         });
     }
 

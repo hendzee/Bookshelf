@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
     },
 
     smallModal: {
-        ...generalSty.w180,
+        ...generalSty.wm180,
         ...generalSty.allRadius,
         ...generalSty.plAll,
         alignItems: 'center'
