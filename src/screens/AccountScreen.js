@@ -18,13 +18,12 @@ class AccountScreen extends Component {
         const pageList = [
             'EDIT_PROFILE', // 0
             'CHANGE_PASSWORD', // 1
-            'HISTORY', // 2
-            'NOTIFICATION', // 3
-            'SETTING_LANGUAGE', // 4
-            'ABOUT_US', // 5
-            'TERMS_SERVICE', // 6
-            'POLICY', // 7
-            'SUPPORT' // 8
+            'NOTIFICATION', // 2
+            'SETTING_LANGUAGE', // 3
+            'ABOUT_US', // 4
+            'TERMS_SERVICE', // 5
+            'POLICY', // 6
+            'SUPPORT' // 7
         ];
 
         this.props.navigation.navigate(pageList[selectedIndex]);
@@ -71,7 +70,7 @@ class AccountScreen extends Component {
                                 disabled
                                 style={ styles.card }>
 
-                                <Text style={ styles.cardTitle }>Account Settings</Text>
+                                <Text style={ styles.cardTitle }>General Settings</Text>
                                 <CustomTouchableOpacity 
                                     onPress={ () => this.handleNavigation(0) }
                                 >
@@ -91,17 +90,6 @@ class AccountScreen extends Component {
                                     <Layout style={ styles.itemMenu }>
                                         <Layout style={ styles.itemMenuName }>
                                             <Text>Change Password</Text>
-                                        </Layout>
-                                        <Layout style={ styles.arrowIcon }>
-                                            { ChevronRight() }
-                                        </Layout>
-                                    </Layout>
-                                </CustomTouchableOpacity>
-
-                                <CustomTouchableOpacity>
-                                    <Layout style={ styles.itemMenu }>
-                                        <Layout style={ styles.itemMenuName }>
-                                            <Text>History</Text>
                                         </Layout>
                                         <Layout style={ styles.arrowIcon }>
                                             { ChevronRight() }
