@@ -108,17 +108,6 @@ class AccountScreen extends Component {
                                         </Layout>
                                     </Layout>
                                 </CustomTouchableOpacity>
-
-                                <CustomTouchableOpacity>
-                                    <Layout style={ styles.itemMenu }>
-                                        <Layout style={ styles.itemMenuName }>
-                                            <Text>Notification</Text>
-                                        </Layout>
-                                        <Layout style={ styles.arrowIcon }>
-                                            { ChevronRight() }
-                                        </Layout>
-                                    </Layout>
-                                </CustomTouchableOpacity>
                                 
                                 <CustomTouchableOpacity>
                                     <Layout style={ styles.itemMenuLast }>
