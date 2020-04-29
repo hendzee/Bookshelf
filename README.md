@@ -1,9 +1,9 @@
 # Bookshelf
-Its mobile application that provide so people can borrow some books each other. This application build in react-native and the template based on ui-kitten. This project idea is come from my friend, _Salis fachrudin_ and then created and developed by me. You can freely to develop / fork this project to your own with permission, just email me __hendzcode@gmail.com__ .
+Its mobile application that provide so people can borrow some books each other. This application build in react-native and the template based on ui-kitten. This project idea is come from my friend, _Salis Fachrudin_ and then created and developed by me. You can freely to develop / fork this project to your own with permission, just email me __hendzcode@gmail.com__ .
 
 ### __What content of app ?__
 * Provide people who want to borrow the books
-* Provide people who want to lend their bookd
+* Provide people who want to lend their books
 * Provide people who want to know new books
 * And search books in this app
 
