@@ -116,7 +116,7 @@ class ChangePasswordScreen extends Component {
                 
                 {/* Modal when save complete */}
                 <SmallModal
-                    title='Data saved.' 
+                    title='Password saved.' 
                     icon='checkmark-circle-outline'
                     onPress={ this.handleModalSave } 
                     loading={ this.state.isLoading }
