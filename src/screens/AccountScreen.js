@@ -85,7 +85,9 @@ class AccountScreen extends Component {
                                     </Layout>
                                 </CustomTouchableOpacity>
 
-                                <CustomTouchableOpacity>
+                                <CustomTouchableOpacity 
+                                    onPress={ () => this.handleNavigation(1) }
+                                >
                                     <Layout style={ styles.itemMenu }>
                                         <Layout style={ styles.itemMenuName }>
                                             <Text>Change Password</Text>
