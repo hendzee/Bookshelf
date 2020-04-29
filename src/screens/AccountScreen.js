@@ -19,7 +19,7 @@ class AccountScreen extends Component {
             'EDIT_PROFILE', // 0
             'CHANGE_PASSWORD', // 1
             'SETTING_LANGUAGE', // 2
-            'ABOUT_US', // 3
+            'ABOUT', // 3
             'TERMS_SERVICE', // 4
             'POLICY', // 5
             'SUPPORT' // 6
@@ -115,7 +115,9 @@ class AccountScreen extends Component {
                                 style={ styles.card }>
                                     
                                 <Text style={ styles.cardTitle }>More</Text>
-                                <CustomTouchableOpacity>
+                                <CustomTouchableOpacity
+                                    onPress={ () => this.handleNavigation(3) }
+                                >
                                     <Layout style={ styles.itemMenu }>
                                         <Layout style={ styles.itemMenuName }>
                                             <Text>About Us</Text>

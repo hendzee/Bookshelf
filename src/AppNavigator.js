@@ -25,7 +25,8 @@ import {
     ConfirmationItemScreen,
     EditProfileScreen,
     ChangePasswordScreen,
-    SettingLanguageScreen
+    SettingLanguageScreen,
+    AboutScreen
 } from './screens';
 
 /** Home icon */
@@ -105,6 +106,7 @@ const AppStackNavigator = () => (
         <Stack.Screen name='EDIT_PROFILE' component={ EditProfileScreen } />
         <Stack.Screen name='CHANGE_PASSWORD' component={ ChangePasswordScreen } />
         <Stack.Screen name='SETTING_LANGUAGE' component={ SettingLanguageScreen } />
+        <Stack.Screen name='ABOUT' component={ AboutScreen } />
     </Stack.Navigator>
 )
 
