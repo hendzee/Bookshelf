@@ -22,7 +22,8 @@ import {
     CartConfirmationScreen,
     SelectMapScreen,
     CartConfirmedScreen,
-    ConfirmationItemScreen
+    ConfirmationItemScreen,
+    EditProfileScreen
 } from './screens';
 
 /** Home icon */
@@ -99,6 +100,7 @@ const AppStackNavigator = () => (
         <Stack.Screen name='SELECT_MAP' component={ SelectMapScreen } />
         <Stack.Screen name='CART_CONFIRMED' component={ CartConfirmedScreen } />
         <Stack.Screen name='CONFIRMATION_ITEM' component={ ConfirmationItemScreen } />
+        <Stack.Screen name='EDIT_PROFILE' component={ EditProfileScreen } />
     </Stack.Navigator>
 )
 

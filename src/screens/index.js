@@ -12,3 +12,4 @@ export * from './CartConfirmationScreen';
 export * from './SelectMapScreen';
 export * from './CartConfirmedScreen';
 export * from './ConfirmationItemScreen';
+export * from './EditProfileScreen';

@@ -8,6 +8,7 @@ const WHITE = '#FFF';
 const BLACK = '#000';
 const RADIUS = 15;
 const YELLOW = '#fdcb6e';
+const RED = color['color-danger-500'];
 
 const generalSty = StyleSheet.create({
     full: {
@@ -242,4 +243,4 @@ const generalSty = StyleSheet.create({
 
 });
 
-export { generalSty, WHITE, GREY, SOFT_GREY, BLACK, PRIMARY, YELLOW };
+export { generalSty, WHITE, GREY, SOFT_GREY, BLACK, PRIMARY, YELLOW, RED };

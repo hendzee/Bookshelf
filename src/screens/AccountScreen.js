@@ -8,7 +8,28 @@ const ChevronRight = () => (
     <Icon width={ 32 } height={ 32 } name='chevron-right-outline' />
 );
 
+const LogoutIcon = () => (
+    <Icon width={ 32 } height={ 32 } name='log-out-outline' />
+);
+
 class AccountScreen extends Component {
+    /** Handle navigation menu */
+    handleNavigation = (selectedIndex) => {
+        const pageList = [
+            'EDIT_PROFILE', // 0
+            'CHANGE_PASSWORD', // 1
+            'HISTORY', // 2
+            'NOTIFICATION', // 3
+            'SETTING_LANGUAGE', // 4
+            'ABOUT_US', // 5
+            'TERMS_SERVICE', // 6
+            'POLICY', // 7
+            'SUPPORT' // 8
+        ];
+
+        this.props.navigation.navigate(pageList[selectedIndex]);
+    }
+
     render() {
         return (
             <SafeAreaView style={ styles.rootContainer }>
@@ -51,7 +72,9 @@ class AccountScreen extends Component {
                                 style={ styles.card }>
 
                                 <Text style={ styles.cardTitle }>Account Settings</Text>
-                                <CustomTouchableOpacity>
+                                <CustomTouchableOpacity 
+                                    onPress={ () => this.handleNavigation(0) }
+                                >
                                     <Layout style={ styles.itemMenu }>
                                         <Layout style={ styles.itemMenuName }>
                                             <Text>Profile</Text>
@@ -65,7 +88,7 @@ class AccountScreen extends Component {
                                 <CustomTouchableOpacity>
                                     <Layout style={ styles.itemMenu }>
                                         <Layout style={ styles.itemMenuName }>
-                                            <Text>Membership</Text>
+                                            <Text>Change Password</Text>
                                         </Layout>
                                         <Layout style={ styles.arrowIcon }>
                                             { ChevronRight() }
@@ -159,10 +182,10 @@ class AccountScreen extends Component {
                                 <CustomTouchableOpacity>
                                     <Layout style={ styles.itemMenuLast }>
                                         <Layout style={ styles.itemMenuName }>
-                                            <Text>Sign Out</Text>
+                                            <Text style={ styles.bold }>Sign Out</Text>
                                         </Layout>
                                         <Layout style={ styles.arrowIcon }>
-                                            { ChevronRight() }
+                                            { LogoutIcon() }
                                         </Layout>
                                     </Layout>
                                 </CustomTouchableOpacity>
@@ -271,6 +294,10 @@ const styles = StyleSheet.create({
     arrowIcon: {
         flex: 1,
         alignItems: 'flex-end'
+    },
+
+    bold: {
+        fontWeight: 'bold'
     }
 });
 
