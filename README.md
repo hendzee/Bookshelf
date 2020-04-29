@@ -8,9 +8,9 @@ Its mobile application that provide so people can borrow some books each other. 
 * And search books in this app
 
 ### __Pre-Install__
-* Operating system is up to you 
+* Operating system is up to you
+* Install Java JDK
 * [Install android studio](https://developer.android.com/studio/install)
-* [Install bare React-Native (no expo)](https://reactnative.dev/docs/getting-started)
 * [Install npm](https://nodejs.org/en/download/)
 
 ### __Install__
