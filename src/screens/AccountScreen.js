@@ -18,12 +18,11 @@ class AccountScreen extends Component {
         const pageList = [
             'EDIT_PROFILE', // 0
             'CHANGE_PASSWORD', // 1
-            'NOTIFICATION', // 2
-            'SETTING_LANGUAGE', // 3
-            'ABOUT_US', // 4
-            'TERMS_SERVICE', // 5
-            'POLICY', // 6
-            'SUPPORT' // 7
+            'SETTING_LANGUAGE', // 2
+            'ABOUT_US', // 3
+            'TERMS_SERVICE', // 4
+            'POLICY', // 5
+            'SUPPORT' // 6
         ];
 
         this.props.navigation.navigate(pageList[selectedIndex]);
@@ -97,7 +96,9 @@ class AccountScreen extends Component {
                                     </Layout>
                                 </CustomTouchableOpacity>
                                 
-                                <CustomTouchableOpacity>
+                                <CustomTouchableOpacity
+                                    onPress={ () => this.handleNavigation(2) }
+                                >
                                     <Layout style={ styles.itemMenuLast }>
                                         <Layout style={ styles.itemMenuName }>
                                             <Text>Language</Text>

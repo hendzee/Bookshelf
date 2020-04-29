@@ -14,3 +14,4 @@ export * from './CartConfirmedScreen';
 export * from './ConfirmationItemScreen';
 export * from './EditProfileScreen';
 export * from './ChangePasswordScreen';
+export * from './SettingLanguageScreen';
