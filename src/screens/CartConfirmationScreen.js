@@ -12,6 +12,9 @@ import {
 import { generalSty, GREY, YELLOW } from '../styles';
 import { CustomStatusBar, CustomTouchableOpacity, SmallModal } from '../components/general';
 
+/** import CRUD function */
+import { dummyFunctionData, addPeriod } from '../modules';
+
 const BackIcon = (style) => (
     <Icon { ...style } name='arrow-back-outline' />
 )
@@ -29,8 +32,10 @@ class CartConfirmationScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            isSend: false,
-            isLoading: false
+            responseTitle: '', // Response title / message
+            isResponseError: false, // Response error
+            isSend: false, // Send state
+            isLoading: false // Loading state
         }
     }
 
@@ -41,10 +46,24 @@ class CartConfirmationScreen extends Component {
 
     /** Hanle send */
     handleSend = () => {
-        this.setState({ isSend: true, isLoading: true }, () => {
-            setTimeout(() => {
-                this.setState({ isLoading: false });
-            }, 2000);
+        this.setState({ isLoading: true, isSend: true }, () => {
+            addPeriod(
+                () => {
+                    dummyFunctionData().then(response => {
+                        this.setState({ 
+                            isLoading: false, 
+                            responseTitle: response.message,
+                            isResponseError: false
+                        });
+                    }).catch(err => {
+                        this.setState({ 
+                            isLoading: false,
+                            responseTitle: err.message,
+                            isResponseError: true
+                        });
+                    })
+                }
+            )
         });
     }
 
@@ -200,8 +219,8 @@ class CartConfirmationScreen extends Component {
                 
                 {/* Modal when send request */}
                 <SmallModal
-                    title='Your request was sent.' 
-                    icon='checkmark-circle-outline'
+                    title={ this.state.responseTitle } 
+                    isError={ this.state.isResponseError }
                     onPress={ this.handleModalSend } 
                     loading={ this.state.isLoading }
                     visible={ this.state.isSend } 
