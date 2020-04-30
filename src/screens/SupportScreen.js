@@ -7,26 +7,25 @@ import {
     TopNavigationAction, 
     Icon, 
     Button,
-    Avatar
 } from '@ui-kitten/components';
-import { CustomStatusBar , CustomTouchableOpacity, SmallModal } from '../components/general';
+import { CustomStatusBar, SmallModal } from '../components/general';
 import { generalSty } from '../styles'
+
+/** import CRUD function */
+import { dummyFunctionData, addPeriod } from '../modules';
 
 const BackIcon = (style) => (
     <Icon { ...style } name='arrow-back-outline' />
-);
-
-const CameraIcon = () => (
-    <Icon width={ 15 } height={ 15 } name='camera-outline'/>
 );
 
 class SupportScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            /** Complete save */
-            isSaved: false,
-            isLoading: false
+            responseTitle: '', // Response title / message
+            isResponseError: false, // Response error
+            isSend: false, // Send state
+            isLoading: false // Loading state
         }
     }
 
@@ -41,17 +40,31 @@ class SupportScreen extends Component {
     };
 
     /** Handle save data */
-    handleSave = () => {
-        this.setState({ isSaved: true, isLoading: true }, () => {
-            setTimeout(() => {
-                this.setState({ isLoading: false });
-            }, 2000);
+    handleSend = () => {
+        this.setState({ isLoading: true, isSend: true }, () => {
+            addPeriod(
+                () => {
+                    dummyFunctionData().then(response => {
+                        this.setState({ 
+                            isLoading: false, 
+                            responseTitle: response.message,
+                            isResponseError: false
+                        });
+                    }).catch(err => {
+                        this.setState({ 
+                            isLoading: false,
+                            responseTitle: err.message,
+                            isResponseError: true
+                        });
+                    })
+                }
+            )
         });
     };
 
     /** Handle modal success save function  */
-    handleModalSave = () => {
-        this.setState({ isSaved: false });
+    handleModalSend = () => {
+        this.setState({ isSend: false });
     };
 
     render() {
@@ -60,52 +73,20 @@ class SupportScreen extends Component {
                 <CustomStatusBar />
                 
                 <TopNavigation 
-                    title='Edit Profile'
+                    title='Support'
                     titleStyle={ styles.titleScreenStyle }
                     alignment='center'
                     leftControl={ this.showBackButton() }
                 />
 
                 <Layout style={ styles.mainContainer }>
-                    {/* Photo profile content - start */}
-                    <Layout style={ styles.photoContainer }>
-                        <Layout>
-                            <Avatar 
-                                size='giant'
-                                style={ styles.userImage }
-                                source={ require('../images/users/user1.png') } 
-                            />
-                            <Layout style={ styles.cameraButtonContainer }>
-                                <CustomTouchableOpacity>
-                                    <Layout style={ styles.cameraIcon }>
-                                        <CameraIcon />
-                                    </Layout>
-                                </CustomTouchableOpacity>
-                            </Layout>
-                        </Layout>
-                    </Layout>
-                    {/* Photo profile content - end */}
-
                     {/* Form - start */}
                     <Layout>
                         <Input
-                            label='Name'
-                            labelStyle={ styles.inputTextStyle }
-                            placeholder='e.g. The Design of Everyday Think'
-                            textStyle={ styles.inputTextStyle }
-                            style={ styles.input }
-                        />
-                        <Input
-                            label='Email'
-                            labelStyle={ styles.inputTextStyle }
-                            placeholder='e.g. john_doe@gmail.com'
-                            textStyle={ styles.inputTextStyle }
-                            style={ styles.input }
-                        />
-                        <Input
-                            label='Phone'
-                            labelStyle={ styles.inputTextStyle }
-                            placeholder='e.g. 08123380897'
+                            multiline={ true }
+                            label='Critic and Sugestion'
+                            labelStyle={ styles.labelStyle }
+                            placeholder='e.g. Give us positive critic or sugestion.'
                             textStyle={ styles.inputTextStyle }
                             style={ styles.input }
                         />
@@ -113,7 +94,7 @@ class SupportScreen extends Component {
                     {/* Form - end */}
 
                     <Layout style={ styles.bottomContent }>
-                        <Button onPress={ this.handleSave } status='primary'>
+                        <Button onPress={ this.handleSend } status='primary'>
                             SAVE
                         </Button>
                     </Layout>
@@ -121,11 +102,11 @@ class SupportScreen extends Component {
                 
                 {/* Modal when save complete */}
                 <SmallModal
-                    title='Data saved.' 
-                    icon='checkmark-circle-outline'
-                    onPress={ this.handleModalSave } 
+                    title={ this.state.responseTitle }
+                    isError={ this.state.isResponseError }
+                    onPress={ this.handleModalSend } 
                     loading={ this.state.isLoading }
-                    visible={ this.state.isSaved } 
+                    visible={ this.state.isSend } 
                 />
                 
             </SafeAreaView>
@@ -142,43 +123,24 @@ const styles = StyleSheet.create({
         ...generalSty.mainContainer
     },
 
-    photoContainer: {
-        alignItems: 'center',
-        ...generalSty.mlBottom
-    },
-
-    userImage: {
-        ...generalSty.iconSizeLarge,
-        ...generalSty.mlBottom
-    },
-
-    cameraButtonContainer: {
-        position: 'absolute',
-        right: 0,
-        bottom: 15,
-        backgroundColor: 'rgba(0, 0, 0, 0.0)'
-    },
-
-    cameraIcon: {
-        width: 30,
-        height: 30,
-        alignItems: 'center',
-        justifyContent: 'center',
-        ...generalSty.sofyGreyBackground,
-        ...generalSty.allRadius
-    },
-
     input: {
-        ...generalSty.mlBottom
+        ...generalSty.mlBottom,
     },
 
     titleScreenStyle: {
         ...generalSty.titleScreenStyle
     },
 
+    labelStyle: {
+        ...generalSty.smallText,
+        ...generalSty.black,
+    },
+
     inputTextStyle: {
         ...generalSty.smallText,
-        ...generalSty.black
+        ...generalSty.black,
+        textAlignVertical: 'top',
+        minHeight: 150
     },
 
     bottomContent: {
