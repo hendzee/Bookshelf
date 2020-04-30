@@ -21,7 +21,7 @@ const StarIcon = () => (
 )
 
 /** Chat icon */
-const ChatIcon = (style) => (
+const ChatIcon = () => (
     <Icon width={ 25 } height={ 25 } fill={ GREY } name='message-square' />
 )
 
