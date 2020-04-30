@@ -20,7 +20,7 @@ class AccountScreen extends Component {
             'CHANGE_PASSWORD', // 1
             'SETTING_LANGUAGE', // 2
             'ABOUT', // 3
-            'TERMS_SERVICE', // 4
+            'SERVICE', // 4
             'POLICY', // 5
             'SUPPORT' // 6
         ];
@@ -128,7 +128,9 @@ class AccountScreen extends Component {
                                     </Layout>
                                 </CustomTouchableOpacity>
 
-                                <CustomTouchableOpacity>
+                                <CustomTouchableOpacity
+                                    onPress={ () => this.handleNavigation(4) }
+                                >
                                     <Layout style={ styles.itemMenu }>
                                         <Layout style={ styles.itemMenuName }>
                                             <Text>Terms of Service</Text>
