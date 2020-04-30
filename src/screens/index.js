@@ -17,3 +17,4 @@ export * from './ChangePasswordScreen';
 export * from './SettingLanguageScreen';
 export * from './AboutScreen';
 export * from './ServiceScreen';
+export * from './PolicyScreen';

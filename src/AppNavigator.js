@@ -27,7 +27,8 @@ import {
     ChangePasswordScreen,
     SettingLanguageScreen,
     AboutScreen,
-    ServiceScreen
+    ServiceScreen,
+    PolicyScreen
 } from './screens';
 
 /** Home icon */
@@ -109,6 +110,7 @@ const AppStackNavigator = () => (
         <Stack.Screen name='SETTING_LANGUAGE' component={ SettingLanguageScreen } />
         <Stack.Screen name='ABOUT' component={ AboutScreen } />
         <Stack.Screen name='SERVICE' component={ ServiceScreen } />
+        <Stack.Screen name='POLICY' component={ PolicyScreen } />
     </Stack.Navigator>
 )
 

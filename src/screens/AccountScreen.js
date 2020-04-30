@@ -141,7 +141,9 @@ class AccountScreen extends Component {
                                     </Layout>
                                 </CustomTouchableOpacity>
 
-                                <CustomTouchableOpacity>
+                                <CustomTouchableOpacity
+                                    onPress={ () => this.handleNavigation(5) }
+                                >
                                     <Layout style={ styles.itemMenu }>
                                         <Layout style={ styles.itemMenuName }>
                                             <Text>Privacy Policy</Text>
