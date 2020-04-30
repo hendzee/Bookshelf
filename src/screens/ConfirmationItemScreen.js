@@ -12,6 +12,9 @@ import {
 import { generalSty } from '../styles';
 import { CustomStatusBar, SmallModal } from '../components/general';
 
+/** import CRUD function */
+import { dummyFunctionData, addPeriod } from '../modules';
+
 const BackIcon = (style) => (
     <Icon { ...style } name='arrow-back-outline' />
 )
@@ -20,8 +23,10 @@ class ConfirmationItemScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            isLoading: false,
-            isConfirm: false
+            responseTitle: '', // Response title / message
+            isResponseError: false, // Response error
+            isLoading: false, // Loading state
+            isConfirm: false // Confirmation state
         }
     }
 
@@ -37,10 +42,24 @@ class ConfirmationItemScreen extends Component {
 
     /** Handle confirmation */
     handleConfirmation = () => {
-        this.setState({ isConfirm: true, isLoading: true }, () => {
-            setTimeout(() => {
-                this.setState({ isLoading: false });
-            }, 2000);
+        this.setState({ isLoading: true, isConfirm: true }, () => {
+            addPeriod(
+                () => {
+                    dummyFunctionData().then(response => {
+                        this.setState({ 
+                            isLoading: false, 
+                            responseTitle: response.message,
+                            isResponseError: false
+                        });
+                    }).catch(err => {
+                        this.setState({ 
+                            isLoading: false,
+                            responseTitle: err.message,
+                            isResponseError: true
+                        });
+                    })
+                }
+            )
         });
     }
 
@@ -123,8 +142,8 @@ class ConfirmationItemScreen extends Component {
 
                 {/* Modal when save confirm item */}
                 <SmallModal
-                    title='Items confirmed.' 
-                    icon='checkmark-circle-outline'
+                    title={ this.state.responseTitle }
+                    isResponseError={ this.state.isResponseError }
                     onPress={ this.handleModalConfirm } 
                     loading={ this.state.isLoading }
                     visible={ this.state.isConfirm } 
