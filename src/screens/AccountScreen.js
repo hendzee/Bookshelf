@@ -131,7 +131,7 @@ class AccountScreen extends Component {
                                 <CustomTouchableOpacity>
                                     <Layout style={ styles.itemMenu }>
                                         <Layout style={ styles.itemMenuName }>
-                                            <Text>Term of Service</Text>
+                                            <Text>Terms of Service</Text>
                                         </Layout>
                                         <Layout style={ styles.arrowIcon }>
                                             { ChevronRight() }
