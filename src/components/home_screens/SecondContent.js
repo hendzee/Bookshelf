@@ -9,7 +9,7 @@ const SecondContent = () => {
             <Layout style={ styles.titleContainer }>
                 <Layout style={ styles.titleRow }>
                     <Layout style={ styles.titleContentLeft }>
-                        <Text style={ styles.titleContent }>Your Borrow</Text>
+                        <Text style={ styles.titleContent }>Recomendation</Text>
                     </Layout>
                     <Layout style={ styles.titleContentRight }>
                         <Text status='primary'>See All</Text>

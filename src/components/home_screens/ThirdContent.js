@@ -9,7 +9,7 @@ const ThirdContent = () => {
             <Layout style={ styles.titleContainer }>
                 <Layout style={ styles.titleRow }>
                     <Layout style={ styles.titleContentLeft }>
-                        <Text style={ styles.titleContent }>Borrowed</Text>
+                        <Text style={ styles.titleContent }>Random</Text>
                     </Layout>
                     <Layout style={ styles.titleContentRight }>
                         <Text status='primary'>See All</Text>

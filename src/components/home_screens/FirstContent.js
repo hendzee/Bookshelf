@@ -15,7 +15,7 @@ const FirstContent = (props) => {
             <Layout style={ styles.titleContainer }>
                 <Layout style={ styles.titleRow }>
                     <Layout style={ styles.titleContentLeft }>
-                        <Text style={ styles.titleContent }>On Your Hand</Text>
+                        <Text style={ styles.titleContent }>New Book</Text>
                     </Layout>
                     <Layout style={ styles.titleContentRight }>
                         <Text status='primary'>See All</Text>
