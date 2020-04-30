@@ -7,6 +7,9 @@ import { CustomStatusBar, CustomTouchableOpacity, SmallModal } from '../componen
 /** SelectMapScreen substance components */
 import { InfoModal } from '../components/select_map_screen';
 
+/** import CRUD function */
+import { dummyFunctionData, addPeriod } from '../modules';
+
 const CloseIcon = () => (
     <Icon width={ 25 } height={ 25 } name='close' />
 )
@@ -19,8 +22,10 @@ class SelectMapScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            isSaved: false,
-            isLoading: false,
+            responseTitle: '', // Response title / message
+            isResponseError: false, // Response error
+            isSaved: false, // Saved state
+            isLoading: false, // Loading state
         }
     }
 
@@ -36,10 +41,24 @@ class SelectMapScreen extends Component {
 
     /** Handle save data */
     handleSave = () => {
-        this.setState({ isSaved: true, isLoading: true }, () => {
-            setTimeout(() => {
-                this.setState({ isLoading: false });
-            }, 2000);
+        this.setState({ isLoading: true, isSaved: true }, () => {
+            addPeriod(
+                () => {
+                    dummyFunctionData().then(response => {
+                        this.setState({ 
+                            isLoading: false, 
+                            responseTitle: response.message,
+                            isResponseError: false
+                        });
+                    }).catch(err => {
+                        this.setState({ 
+                            isLoading: false,
+                            responseTitle: err.message,
+                            isResponseError: true
+                        });
+                    })
+                }
+            )
         });
     };
 
@@ -97,8 +116,8 @@ class SelectMapScreen extends Component {
 
                 {/* Modal save */}
                 <SmallModal
-                    title='Your meeting point was saved.' 
-                    icon='checkmark-circle-outline'
+                    title={ this.state.responseTitle } 
+                    isError={ this.state.isResponseError }
                     onPress={ this.handleModalSave } 
                     loading={ this.state.isLoading }
                     visible={ this.state.isSaved } 
