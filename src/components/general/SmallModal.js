@@ -1,12 +1,16 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import { Layout, Modal, Text, Icon, Spinner, Button } from '@ui-kitten/components';
-import { generalSty } from '../../styles';
+import { generalSty, RED, PRIMARY } from '../../styles';
 
 const SmallModal = (props) => {
     /** Modal icon */
     const modalIcon = () => (
-        <Icon width={ 32 } height={ 32 } name={ props.icon } />
+        <Icon 
+            width={ 32 } 
+            height={ 32 }
+            fill={ props.isError ? RED : PRIMARY }
+            name='checkmark-circle-outline' />
     );
 
     /** Modal content */

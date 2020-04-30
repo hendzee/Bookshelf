@@ -12,9 +12,6 @@ import {
 import { CustomStatusBar , CustomTouchableOpacity, SmallModal } from '../components/general';
 import { generalSty } from '../styles'
 
-/** import CRUD function */
-import { dummyFunctionData, addPeriod } from '../modules';
-
 const BackIcon = (style) => (
     <Icon { ...style } name='arrow-back-outline' />
 );
@@ -23,14 +20,13 @@ const CameraIcon = () => (
     <Icon width={ 15 } height={ 15 } name='camera-outline'/>
 );
 
-class EditProfileScreen extends Component {
+class SupportScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            responseTitle: '', // Response title / message
-            isResponseError: false, // Response error
-            isSaved: false, // Saved state
-            isLoading: false // Loading state
+            /** Complete save */
+            isSaved: false,
+            isLoading: false
         }
     }
 
@@ -46,24 +42,10 @@ class EditProfileScreen extends Component {
 
     /** Handle save data */
     handleSave = () => {
-        this.setState({ isLoading: true, isSaved: true }, () => {
-            addPeriod(
-                () => {
-                    dummyFunctionData().then(response => {
-                        this.setState({ 
-                            isLoading: false, 
-                            responseTitle: response.message,
-                            isResponseError: false
-                        });
-                    }).catch(err => {
-                        this.setState({ 
-                            isLoading: false,
-                            responseTitle: err.message,
-                            isResponseError: true
-                        });
-                    })
-                }
-            )
+        this.setState({ isSaved: true, isLoading: true }, () => {
+            setTimeout(() => {
+                this.setState({ isLoading: false });
+            }, 2000);
         });
     };
 
@@ -83,6 +65,7 @@ class EditProfileScreen extends Component {
                     alignment='center'
                     leftControl={ this.showBackButton() }
                 />
+
                 <Layout style={ styles.mainContainer }>
                     {/* Photo profile content - start */}
                     <Layout style={ styles.photoContainer }>
@@ -108,7 +91,7 @@ class EditProfileScreen extends Component {
                         <Input
                             label='Name'
                             labelStyle={ styles.inputTextStyle }
-                            placeholder='e.g. John Doe'
+                            placeholder='e.g. The Design of Everyday Think'
                             textStyle={ styles.inputTextStyle }
                             style={ styles.input }
                         />
@@ -138,8 +121,8 @@ class EditProfileScreen extends Component {
                 
                 {/* Modal when save complete */}
                 <SmallModal
-                    title={ this.state.responseTitle } 
-                    isError={ this.state.isResponseError }
+                    title='Data saved.' 
+                    icon='checkmark-circle-outline'
                     onPress={ this.handleModalSave } 
                     loading={ this.state.isLoading }
                     visible={ this.state.isSaved } 
@@ -207,4 +190,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export { EditProfileScreen };
+export { SupportScreen };
