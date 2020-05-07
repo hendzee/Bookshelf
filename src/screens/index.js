@@ -19,3 +19,4 @@ export * from './AboutScreen';
 export * from './ServiceScreen';
 export * from './PolicyScreen';
 export * from './SupportScreen';
+export * from './SearchItemScreen';

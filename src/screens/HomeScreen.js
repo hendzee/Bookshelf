@@ -14,9 +14,11 @@ const SearchIcon = (style) => (
 class HomeScreen extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            searchValue: ''
-        }
+    }
+
+    /** To search item screen */
+    toSearchItem = () => {
+        this.props.navigation.navigate('SEARCH_ITEM');
     }
     
     render() {
@@ -30,9 +32,7 @@ class HomeScreen extends Component {
                         <Input 
                             placeholder='Search your book'
                             icon={ SearchIcon }
-                            value={ this.state.searchValue }
-                            onChange={ searchValue => this.setState({ searchValue }) }
-
+                            onFocus={ this.toSearchItem }
                         />
                     </Layout>
                     {/** Search box - end */}

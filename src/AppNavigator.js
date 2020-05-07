@@ -29,7 +29,8 @@ import {
     AboutScreen,
     ServiceScreen,
     PolicyScreen,
-    SupportScreen
+    SupportScreen,
+    SearchItemScreen,
 } from './screens';
 
 /** Home icon */
@@ -113,6 +114,7 @@ const AppStackNavigator = () => (
         <Stack.Screen name='SERVICE' component={ ServiceScreen } />
         <Stack.Screen name='POLICY' component={ PolicyScreen } />
         <Stack.Screen name='SUPPORT' component={ SupportScreen } />
+        <Stack.Screen name='SEARCH_ITEM' component={ SearchItemScreen } />
     </Stack.Navigator>
 )
 
