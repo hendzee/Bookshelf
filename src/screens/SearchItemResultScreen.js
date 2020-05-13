@@ -1,34 +1,20 @@
 import React, { Component } from 'react';
 import { SafeAreaView, StyleSheet } from 'react-native';
-import { Layout, Icon, TopNavigation, TopNavigationAction, Autocomplete } from '@ui-kitten/components';
+import { Layout, Icon, TopNavigationAction, Input } from '@ui-kitten/components';
 import { generalSty } from '../styles';
-import { CustomStatusBar, CustomTouchableOpacity } from '../components/general';
+import { CustomStatusBar, CustomTouchableOpacity, ListItem } from '../components/general';
 
 const BackIcon = () => (
     <Icon width={ 25 } height={ 25 } name='arrow-back-outline' />
 );
 
-const RemoveIcon = (style) => (
-    <Icon { ...style } name='close-circle-outline' />
+const SettingIcon = () => (
+    <Icon width={ 25 } height={ 25 } name='options-2-outline' />
 );
 
 class SearchItemResultScreen extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            /** Data search dummy */
-            dataSearch: [
-                {
-                    id: 1,
-                    title: 'Winnie the Pooh'
-                },
-                {
-                    id: 2, 
-                    title: 'Harry Potter'
-                }
-            ],
-            selectedData: null // Selected data
-        }
     }
 
     /** Show back button */
@@ -39,16 +25,6 @@ class SearchItemResultScreen extends Component {
     /** Handle back */
     handleBack = () => {
         this.props.navigation.goBack();
-    }
-
-    /** Handle on select */
-    handleOnSelect = ({ title }) => {
-        this.setState({ selectedData: title });
-    }
-
-    /** Remove selected data */
-    removeSelectedData = () => {
-        this.setState({ selectedData: '' })
     }
 
     /** Handle on change data */
@@ -62,6 +38,7 @@ class SearchItemResultScreen extends Component {
                 <CustomStatusBar />
 
                 <Layout style={ styles.mainContainer }>
+                    {/* Top content - start */}
                     <Layout style={ styles.topContainer }>
                         <Layout style={ styles.backContainer }>
                             <CustomTouchableOpacity onPress={ this.handleBack }>
@@ -69,17 +46,22 @@ class SearchItemResultScreen extends Component {
                             </CustomTouchableOpacity>
                         </Layout>
                         <Layout style={ styles.searchContainer }>
-                            <Autocomplete 
-                                icon={ RemoveIcon }
-                                onIconPress={ this.removeSelectedData }
+                            <Input 
                                 placeholder='Search your book here'
-                                data={ this.state.dataSearch }
-                                value={ this.state.selectedData }
-                                onChangeText={ this.handleOnChangeData }
-                                onSelect={ this.handleOnSelect }
                             />
                         </Layout>
+                        <Layout>
+                            <SettingIcon />
+                        </Layout>
                     </Layout>
+                    {/* Top content - end */}
+
+                    {/* Main content - start */}
+                    <Layout>
+                        <ListItem />
+                    </Layout>
+                    {/* Main content - end */}
+
                 </Layout>
             </SafeAreaView>
         );
@@ -102,6 +84,7 @@ const styles = StyleSheet.create({
     topContainer: {
         flexDirection: 'row',
         alignItems: 'center',
+        ...generalSty.mlBottom
     },
 
     backContainer: {
@@ -110,6 +93,7 @@ const styles = StyleSheet.create({
 
     searchContainer: {
         flexGrow: 1,
+        ...generalSty.mlRight
     }
 });
 

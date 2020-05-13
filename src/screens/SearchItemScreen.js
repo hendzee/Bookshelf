@@ -55,6 +55,16 @@ class SearchItemScreen extends Component {
     handleOnChangeData = ({ text }) => {
         this.setState({ selectedData: text })
     }
+
+    /** To search item result screem */
+    toResult = () => {
+        this.props.navigation.navigate('SEARCH_ITEM_RESULT');
+    }
+
+    /** Handle search */
+    handleSearch = () => {
+        this.toResult();
+    }
     
     render() {
         return (
@@ -77,6 +87,9 @@ class SearchItemScreen extends Component {
                                 value={ this.state.selectedData }
                                 onChangeText={ this.handleOnChangeData }
                                 onSelect={ this.handleOnSelect }
+                                returnKeyType='search'
+                                autoFocus={ true }
+                                onSubmitEditing={ this.handleSearch }
                             />
                         </Layout>
                     </Layout>

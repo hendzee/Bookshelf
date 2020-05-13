@@ -1,3 +1,4 @@
+import { Dimensions } from "react-native";
 import { StyleSheet } from 'react-native';
 import color from './custom-theme.json';
 
@@ -9,6 +10,7 @@ const BLACK = '#000';
 const RADIUS = 15;
 const YELLOW = '#fdcb6e';
 const RED = color['color-danger-500'];
+const SCREEN_HEIGHT = Math.round(Dimensions.get('window').height); // Get height of device
 
 const generalSty = StyleSheet.create({
     full: {
@@ -248,4 +250,4 @@ const generalSty = StyleSheet.create({
 
 });
 
-export { generalSty, WHITE, GREY, SOFT_GREY, BLACK, PRIMARY, YELLOW, RED };
+export { generalSty, WHITE, GREY, SOFT_GREY, BLACK, PRIMARY, YELLOW, RED, SCREEN_HEIGHT};
