@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { SafeAreaView, StyleSheet, Image } from 'react-native';
+import { StyleSheet, Image } from 'react-native';
 import { Layout, Icon, TopNavigationAction, Text } from '@ui-kitten/components';
 import { generalSty } from '../../styles';
 import { CustomStatusBar } from './CustomStatusBar';
