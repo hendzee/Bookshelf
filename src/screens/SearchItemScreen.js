@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { SafeAreaView, StyleSheet } from 'react-native';
-import { Layout, Icon, TopNavigation, TopNavigationAction, Autocomplete } from '@ui-kitten/components';
+import { Layout, Icon, TopNavigationAction, Autocomplete } from '@ui-kitten/components';
 import { generalSty } from '../styles';
 import { CustomStatusBar, CustomTouchableOpacity } from '../components/general';
 

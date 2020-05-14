@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { StyleSheet, Image } from 'react-native';
 import { Layout, Icon, TopNavigationAction, Text } from '@ui-kitten/components';
 import { generalSty } from '../../styles';
-import { CustomStatusBar } from './CustomStatusBar';
 import { FlatList } from 'react-native-gesture-handler';
+import { CustomTouchableOpacity } from './CustomTouchableOpacity';
 
 const BackIcon = (style) => (
     <Icon { ...style } name='arrow-back-outline' />
@@ -22,6 +22,11 @@ class ListItem extends Component {
                 { title: 'Brandi Carcile Bear Greek', image: require('../../images/items/item_photo2.jpeg') },
             ]
         }
+    }
+
+    /** Navigate to detail item screen */
+    toDetailScreen = () => {
+        this.props.navigation.navigate('ITEM_DETAIL');
     }
 
     /** Show back button */
@@ -44,11 +49,12 @@ class ListItem extends Component {
                     showsVerticalScrollIndicator={ false }
                     keyExtractor={(_, index) => index.toString()}
                     renderItem={({ item, index }) => (
-                        <Layout style={
+                        <CustomTouchableOpacity style={
                             index === this.state.data.length - 1 || index === this.state.data.length - 2 ?
                             styles.cardContainerLast
-                            : (index % 2 === 0 ? styles.cardContainerOdd : styles.cardContainer) 
-                        }>
+                            : (index % 2 === 0 ? styles.cardContainerOdd : styles.cardContainer)}
+                            onPress={ this.toDetailScreen } 
+                        >
                             <Image 
                                 style={ styles.imageCard }
                                 source={ item.image }
@@ -56,7 +62,7 @@ class ListItem extends Component {
                             <Text style={ styles.bold }>
                                 { item.title }
                             </Text>
-                        </Layout>
+                        </CustomTouchableOpacity>
                     )}
                 />
             </Layout>

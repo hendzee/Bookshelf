@@ -48,6 +48,7 @@ class SearchItemResultScreen extends Component {
                         <Layout style={ styles.searchContainer }>
                             <Input 
                                 placeholder='Search your book here'
+                                onFocus={ this.handleBack }
                             />
                         </Layout>
                         <Layout>
@@ -58,7 +59,7 @@ class SearchItemResultScreen extends Component {
 
                     {/* Main content - start */}
                     <Layout>
-                        <ListItem />
+                        <ListItem navigation={ this.props.navigation } />
                     </Layout>
                     {/* Main content - end */}
 
