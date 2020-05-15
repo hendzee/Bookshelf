@@ -9,7 +9,7 @@ import {
     Text 
 } from '@ui-kitten/components';
 import { generalSty } from '../styles';
-import { CustomStatusBar, SmallModal, CustomTouchableOpacity } from '../components/general';
+import { CustomStatusBar, SmallModal } from '../components/general';
 
 /** import CRUD function */
 import { dummyFunctionData, addPeriod } from '../modules';
