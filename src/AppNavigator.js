@@ -32,6 +32,7 @@ import {
     SupportScreen,
     SearchItemScreen,
     SearchItemResultScreen,
+    SearchItemFilter
 } from './screens';
 
 /** Home icon */
@@ -117,6 +118,7 @@ const AppStackNavigator = () => (
         <Stack.Screen name='SUPPORT' component={ SupportScreen } />
         <Stack.Screen name='SEARCH_ITEM' component={ SearchItemScreen } />
         <Stack.Screen name='SEARCH_ITEM_RESULT' component={ SearchItemResultScreen } />
+        <Stack.Screen name='SEARCH_ITEM_FILTER' component={ SearchItemFilter } />
     </Stack.Navigator>
 )
 

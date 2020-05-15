@@ -27,6 +27,11 @@ class SearchItemResultScreen extends Component {
         this.props.navigation.goBack();
     }
 
+    /** To search filter */
+    toSearchFilter = () => {
+        this.props.navigation.navigate('SEARCH_ITEM_FILTER');
+    }
+
     /** Handle on change data */
     handleOnChangeData = ({ text }) => {
         this.setState({ selectedData: text })
@@ -52,7 +57,9 @@ class SearchItemResultScreen extends Component {
                             />
                         </Layout>
                         <Layout>
-                            <SettingIcon />
+                            <CustomTouchableOpacity onPress={ this.toSearchFilter }>
+                                <SettingIcon />
+                            </CustomTouchableOpacity>
                         </Layout>
                     </Layout>
                     {/* Top content - end */}
