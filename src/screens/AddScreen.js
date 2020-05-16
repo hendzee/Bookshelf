@@ -26,7 +26,7 @@ class AddScreen extends Component {
         let screen = 'MAIN';
 
         switch (menu) {
-            case screens.MAIN:
+            case screens.ADD_ITEM:
                 screen = 'ADD_ITEM'
                 break;
 
@@ -35,7 +35,7 @@ class AddScreen extends Component {
                 break;
 
             case screens.TRANSACTION:
-                screen = 'ADD_ITEM'
+                screen = 'TRANSACTION'
                 break;
         
             default:
@@ -60,7 +60,7 @@ class AddScreen extends Component {
                     {/* Content menu - start */}
                     <Layout style={ styles.menuContainer }>
                         <Layout style={ styles.menuRowContainer }>
-                            <CustomTouchableOpacity onPress={ () => this.handleMenuNavigation(0) }>
+                            <CustomTouchableOpacity onPress={ () => this.handleMenuNavigation(screens.ADD_ITEM) }>
                                 <Layout style={ styles.menuChildren }>
                                     <Avatar 
                                         size='giant'
@@ -82,7 +82,7 @@ class AddScreen extends Component {
                                 </Layout>
                             </CustomTouchableOpacity>
 
-                            <CustomTouchableOpacity>
+                            <CustomTouchableOpacity onPress={ () => this.handleMenuNavigation(screens.TRANSACTION) }>
                                 <Layout style={ styles.menuChildren }>
                                     <Avatar 
                                         size='giant'

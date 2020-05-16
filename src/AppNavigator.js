@@ -33,7 +33,8 @@ import {
     SearchItemScreen,
     SearchItemResultScreen,
     SearchItemFilter,
-    ItemsScreen
+    ItemsScreen,
+    TransactionScreen
 } from './screens';
 
 /** Home icon */
@@ -121,6 +122,7 @@ const AppStackNavigator = () => (
         <Stack.Screen name='SEARCH_ITEM_RESULT' component={ SearchItemResultScreen } />
         <Stack.Screen name='SEARCH_ITEM_FILTER' component={ SearchItemFilter } />
         <Stack.Screen name='ITEMS' component={ ItemsScreen } />
+        <Stack.Screen name='TRANSACTION' component={ TransactionScreen } />
     </Stack.Navigator>
 )
 
