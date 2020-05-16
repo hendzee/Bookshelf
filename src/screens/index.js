@@ -22,3 +22,4 @@ export * from './SupportScreen';
 export * from './SearchItemScreen';
 export * from './SearchItemResultScreen';
 export * from './SearchItemFilter';
+export * from './ItemsScreen';
