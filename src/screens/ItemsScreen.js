@@ -8,10 +8,6 @@ const BackIcon = () => (
     <Icon width={ 25 } height={ 25 } name='arrow-back-outline' />
 );
 
-const SettingIcon = () => (
-    <Icon width={ 25 } height={ 25 } name='options-2-outline' />
-);
-
 const SearchIcon = (style) => (
     <Icon { ...style } name='search-outline' />
 );
@@ -29,16 +25,6 @@ class ItemsScreen extends Component {
     /** Handle back */
     handleBack = () => {
         this.props.navigation.goBack();
-    }
-
-    /** To search filter */
-    toSearchFilter = () => {
-        this.props.navigation.navigate('SEARCH_ITEM_FILTER');
-    }
-
-    /** Handle on change data */
-    handleOnChangeData = ({ text }) => {
-        this.setState({ selectedData: text })
     }
 
     /** To search item screen */
@@ -107,11 +93,6 @@ const styles = StyleSheet.create({
     backContainer: {
         ...generalSty.mlRight
     },
-
-    searchContainer: {
-        flexGrow: 1,
-        ...generalSty.mlRight
-    }
 });
 
 export { ItemsScreen };

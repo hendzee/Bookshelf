@@ -10,6 +10,11 @@ const FirstContent = (props) => {
         props.navigation.navigate('ITEM_DETAIL');
     }
 
+    /** To items screen */
+    const toItemsScreen = () => {
+        props.navigation.navigate('ITEMS');
+    }
+
     return (
        <Layout style={ styles.bodyContent }>
             <Layout style={ styles.titleContainer }>
@@ -18,7 +23,9 @@ const FirstContent = (props) => {
                         <Text style={ styles.titleContent }>New Book</Text>
                     </Layout>
                     <Layout style={ styles.titleContentRight }>
-                        <Text status='primary'>See All</Text>
+                        <CustomTouchableOpacity onPress={ toItemsScreen }>
+                            <Text status='primary'>See All</Text>
+                        </CustomTouchableOpacity>
                     </Layout>
                 </Layout>
             </Layout>
