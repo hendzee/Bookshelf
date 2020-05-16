@@ -8,6 +8,13 @@ const CloseIcon = () => (
     <Icon width={ 32 } height={ 32 } name='close-outline' />
 );
 
+/** Screens enum */
+const screens = {
+    ADD_ITEM: 'ADD_ITEM',
+    LIBRARY: 'LIBRARY',
+    TRANSACTION: 'TRANSACTION'
+}
+
 class AddScreen extends Component {
     /** Handle close */
     handleClose = () => {
@@ -19,19 +26,15 @@ class AddScreen extends Component {
         let screen = 'MAIN';
 
         switch (menu) {
-            case 0:
+            case screens.MAIN:
                 screen = 'ADD_ITEM'
                 break;
 
-            case 1:
+            case screens.LIBRARY:
                 screen = 'ADD_ITEM'
                 break;
 
-            case 2:
-                screen = 'ADD_ITEM'
-                break;
-
-            case 3:
+            case screens.TRANSACTION:
                 screen = 'ADD_ITEM'
                 break;
         
@@ -75,20 +78,7 @@ class AddScreen extends Component {
                                         style={ styles.menuIcon }
                                         source={ require('../images/icons/icon_menu2.png') }
                                     />
-                                    <Text>Borrow</Text>
-                                </Layout>
-                            </CustomTouchableOpacity>
-                        </Layout>
-                        
-                        <Layout style={ styles.menuRowContainer }>
-                            <CustomTouchableOpacity>
-                                <Layout style={ styles.menuChildren }>
-                                    <Avatar 
-                                        size='giant'
-                                        style={ styles.menuIcon }
-                                        source={ require('../images/icons/icon_menu3.png') }
-                                    />
-                                    <Text>Return</Text>
+                                    <Text>Library</Text>
                                 </Layout>
                             </CustomTouchableOpacity>
 
@@ -97,12 +87,13 @@ class AddScreen extends Component {
                                     <Avatar 
                                         size='giant'
                                         style={ styles.menuIcon }
-                                        source={ require('../images/icons/icon_menu4.png') }
+                                        source={ require('../images/icons/icon_menu3.png') }
                                     />
-                                    <Text>Export</Text>
+                                    <Text>Transaction</Text>
                                 </Layout>
                             </CustomTouchableOpacity>
                         </Layout>
+                        
                     </Layout>
                     {/* Content menu - end */}
 
@@ -155,7 +146,7 @@ const styles = StyleSheet.create({
         ...generalSty.mlTop,
         ...generalSty.wf300,
         flexDirection: 'row',
-        justifyContent: 'space-around'
+        justifyContent: 'space-between'
     },
 
     menuIcon: {
