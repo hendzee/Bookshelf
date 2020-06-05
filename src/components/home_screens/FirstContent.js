@@ -15,6 +15,39 @@ const FirstContent = (props) => {
         props.navigation.navigate('ITEMS');
     }
 
+    /** Extract data */
+    const extractData = () => {
+        return props.data.map((item, index) => (
+            <CustomTouchableOpacity 
+                key={ index } 
+                onPress={ toDetailScreen }
+            >
+                <Layout style={ styles.cardContainer }>
+                    <Image 
+                        style={ styles.imageCard }
+                        source={ require('../../images/items/item_photo1.jpeg') }
+                    />
+                    <Layout style={ styles.descCard }>
+                    <Text
+                        numberOfLines={ 2 }
+                        ellipsizeMode='tail' 
+                        style={ styles.cardTitle }
+                    >
+                        { item.title }
+                    </Text>
+                    <Text
+                        numberOfLines={ 2 }
+                        ellipsizeMode='tail' 
+                        style={ styles.cardInfo }
+                    >
+                        { item.publish_date + ', ' + item.author }
+                    </Text>
+                    </Layout>
+                </Layout>
+            </CustomTouchableOpacity>
+        ));
+    };
+
     return (
        <Layout style={ styles.bodyContent }>
             <Layout style={ styles.titleContainer }>
@@ -31,39 +64,7 @@ const FirstContent = (props) => {
             </Layout>
 
             <ScrollView horizontal={ true } showsHorizontalScrollIndicator={ false }>
-                <CustomTouchableOpacity onPress={ toDetailScreen }>
-                    <Layout style={ styles.cardContainer }>
-                        <Image 
-                            style={ styles.imageCard }
-                            source={ require('../../images/items/item_photo1.jpeg') }
-                        />
-                        <Layout style={ styles.descCard }>
-                            <Text style={ styles.cardTitle }>The Green Ember</Text>
-                            <Text style={ styles.cardInfo }>2019, Thomas Niels</Text>
-                        </Layout>
-                    </Layout>
-                </CustomTouchableOpacity>
-
-                <Layout style={ styles.cardContainer }>
-                    <Image 
-                        style={ styles.imageCard }
-                        source={ require('../../images/items/item_photo2.jpeg') }
-                    />
-                    <Layout style={ styles.descCard }>
-                        <Text style={ styles.cardTitle }>Slow Dancing on Hard Drugs</Text>
-                        <Text style={ styles.cardInfo }>1995, Jordan JR</Text>
-                    </Layout>
-                </Layout>
-                <Layout style={ styles.cardContainer }>
-                    <Image 
-                        style={ styles.imageCard }
-                        source={ require('../../images/items/item_photo3.jpeg') }
-                    />
-                    <Layout style={ styles.descCard }>
-                        <Text style={ styles.cardTitle }>After Days</Text>
-                        <Text style={ styles.cardInfo }>2015, Jake Hulk</Text>
-                    </Layout>
-                </Layout>
+                { extractData() }
             </ScrollView>
         </Layout>
     );
