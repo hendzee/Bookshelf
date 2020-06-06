@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { SafeAreaView, StyleSheet } from 'react-native';
+import { SafeAreaView, StyleSheet, Image } from 'react-native';
 import { 
     Layout, 
     Input, 
@@ -12,6 +12,7 @@ import {
 } from '@ui-kitten/components';
 import { CustomStatusBar , CustomTouchableOpacity, SmallModal } from '../components/general';
 import { generalSty } from '../styles'
+import ImagePicker from 'react-native-image-crop-picker';
 
 /** import CRUD function */
 import { dummyFunctionData, addPeriod } from '../modules';
@@ -28,6 +29,7 @@ class AddItemScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            selectedImagePath: null, // Selected image uri
             responseTitle: '', // Response title / message
             isResponseError: false, // Response error
             isSaved: false, // Save state
@@ -74,6 +76,30 @@ class AddItemScreen extends Component {
             this.handleBack();
         });
     };
+
+    /** Open camera */
+    openCamera = () => {
+        ImagePicker.openCamera({
+            width: 200,
+            height: 290
+        }).then(
+            image => {
+                this.setState({ selectedImagePath: image.path });
+            }
+        )
+    }
+
+    /** Open Image picker */
+    openPicker = () => {
+        ImagePicker.openPicker({
+            width: 200,
+            height: 290
+        }).then(
+            image => {
+                this.setState({ selectedImagePath: image.path });
+            }
+        )
+    }
 
     render() {
         return (
@@ -128,8 +154,14 @@ class AddItemScreen extends Component {
                     {/* Form - end */}
 
                     <Text style={ styles.inputTextStyle }>Book Cover</Text>
-                    <CustomTouchableOpacity>
+                    <CustomTouchableOpacity onPress={ this.openPicker }>
                         <Layout style={ styles.imageUploadContainer }>
+                            <Layout style={ styles.selectedImageContainer }>
+                                <Image  
+                                    style={ styles.image }
+                                    source={{ uri: this.state.selectedImagePath }}
+                                />
+                            </Layout>
                             { PlusIcon() }
                         </Layout>
                     </CustomTouchableOpacity>
@@ -185,10 +217,24 @@ const styles = StyleSheet.create({
         ...generalSty.plAll,
     },
 
+    selectedImageContainer: {
+        position: 'absolute',
+        width: '100%',
+        height: '100%',
+        ...generalSty.allRadius,
+        ...generalSty.sofyGreyBackground
+    },
+
+    image: {
+        width: '100%',
+        height: '100%',
+        resizeMode: 'cover',
+        ...generalSty.allRadius,
+    },
+
     imageUploadContainer: {
         ...generalSty.hf150,
-        width: '100%',
-        backgroundColor: '#dfe6e9',
+        ...generalSty.w110,
         justifyContent: 'center',
         alignItems: 'center'
     },
