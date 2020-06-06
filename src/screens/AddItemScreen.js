@@ -10,7 +10,12 @@ import {
     Button,
     Select,
 } from '@ui-kitten/components';
-import { CustomStatusBar , CustomTouchableOpacity, SmallModal } from '../components/general';
+import { 
+    CustomStatusBar , 
+    CustomTouchableOpacity, 
+    SmallModal,
+    SelectModal 
+} from '../components/general';
 import { generalSty, WHITE } from '../styles'
 import ImagePicker from 'react-native-image-crop-picker';
 
@@ -30,6 +35,7 @@ class AddItemScreen extends Component {
         super(props);
         this.state = {
             selectedImagePath: null, // Selected image uri
+            isPickImage: false,
             responseTitle: '', // Response title / message
             isResponseError: false, // Response error
             isSaved: false, // Save state
@@ -79,26 +85,35 @@ class AddItemScreen extends Component {
 
     /** Open camera */
     openCamera = () => {
-        ImagePicker.openCamera({
-            width: 200,
-            height: 290
-        }).then(
-            image => {
-                this.setState({ selectedImagePath: image.path });
-            }
-        )
+        this.setState({ isPickImage: false }, () => {
+            ImagePicker.openCamera({
+                width: 200,
+                height: 290
+            }).then(
+                image => {
+                    this.setState({ selectedImagePath: image.path });
+                }
+            )
+        });
     }
 
     /** Open Image picker */
     openPicker = () => {
-        ImagePicker.openPicker({
-            width: 200,
-            height: 290
-        }).then(
-            image => {
-                this.setState({ selectedImagePath: image.path });
-            }
-        )
+        this.setState({ isPickImage: false }, () => {
+            ImagePicker.openPicker({
+                width: 200,
+                height: 290
+            }).then(
+                image => {
+                    this.setState({ selectedImagePath: image.path });
+                }
+            )
+        });
+    }
+
+    /** Handle picker menu */
+    handlePickerMenu = () => {
+        this.setState({ isPickImage: true });
     }
 
     render() {
@@ -154,7 +169,7 @@ class AddItemScreen extends Component {
                     {/* Form - end */}
 
                     <Text style={ styles.inputTextStyle }>Book Cover</Text>
-                    <CustomTouchableOpacity onPress={ this.openPicker }>
+                    <CustomTouchableOpacity onPress={ this.handlePickerMenu }>
                         <Layout style={ styles.imageUploadContainer }>
                             <Layout style={ styles.selectedImageContainer }>
                                 <Image  
@@ -173,7 +188,7 @@ class AddItemScreen extends Component {
                     </Layout>
                 </Layout>
                 
-                {/* Modal when save complete */}
+                {/* Modal when saved */}
                 <SmallModal
                     title={ this.state.responseTitle }
                     isError={ this.state.isResponseError }
@@ -181,7 +196,22 @@ class AddItemScreen extends Component {
                     loading={ this.state.isLoading }
                     visible={ this.state.isSaved } 
                 />
-                
+
+                {/* Modal to choose image */}
+                <SelectModal 
+                    visible={ this.state.isPickImage }
+                    list={[
+                        {
+                            title: 'Open Camera',
+                            action: this.openCamera
+                        },
+                        {
+                            title: 'Select Image from Gallery',
+                            action: this.openPicker
+                        }
+                    ]}
+                />
+
             </SafeAreaView>
         );
     }
