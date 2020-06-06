@@ -6,8 +6,8 @@ import { generalSty } from '../../styles';
 
 const FirstContent = (props) => {
     /** Navigate to detail item screen */
-    const toDetailScreen = () => {
-        props.navigation.navigate('ITEM_DETAIL');
+    const toDetailScreen = (id) => {
+        props.navigation.navigate('ITEM_DETAIL', { id: id });
     }
 
     /** To items screen */
@@ -20,12 +20,12 @@ const FirstContent = (props) => {
         return props.data.map((item, index) => (
             <CustomTouchableOpacity 
                 key={ index } 
-                onPress={ toDetailScreen }
+                onPress={ () => toDetailScreen(item.id) }
             >
                 <Layout style={ styles.cardContainer }>
                     <Image 
                         style={ styles.imageCard }
-                        source={ require('../../images/items/item_photo1.jpeg') }
+                        source={{ uri: item.cover }}
                     />
                     <Layout style={ styles.descCard }>
                     <Text

@@ -2,8 +2,55 @@ import React from 'react';
 import { Image, StyleSheet } from 'react-native';
 import { Layout, Text } from '@ui-kitten/components';
 import { generalSty } from '../../styles';
+import { CustomTouchableOpacity } from '../general/CustomTouchableOpacity';
 
-const SecondContent = () => {
+const SecondContent = (props) => {
+    /** Extract data */
+    const extractData = () => {
+        return (
+            <Layout style={ styles.selfContainer }>
+                <Layout style={ styles.selfContent }>
+                    <CustomTouchableOpacity>
+                        <Image
+                            style={ styles.imageCard }
+                            source={{ uri: props.data.cover }} 
+                        />
+                    </CustomTouchableOpacity>
+                    <Layout style={ styles.selfContentInfo }>
+                        <Layout style={ styles.selfContentBody }>
+                            <Text
+                                numberOfLines={ 1 }
+                                ellipsizeMode='tail' 
+                                style={ styles.selfContentTitle } 
+                            >
+                                { props.data.title }
+                            </Text>
+                            <Text
+                                numberOfLines={ 1 }
+                                ellipsizeMode='tail' 
+                                style={ styles.selfContentSubtitle }
+                            >
+                                { props.data.publish_date + ', ' + props.data.author }
+                            </Text>
+                        </Layout>
+                        <Text style={ styles.selfContentLabel }>Owner</Text>
+                        <Text style={ styles.selfContentValue }>
+                            { props.data.user.first_name + ' ' + props.data.user.last_name }
+                        </Text>
+                        <Layout style={ styles.selfContentBottom }>
+                            <Layout>
+                                <Text style={ styles.selfContentLabel }>User Rating</Text>
+                                <Text style={ styles.selfContentValue }>
+                                    { props.data.user.rating }
+                                </Text>
+                            </Layout>
+                        </Layout>
+                    </Layout>
+                </Layout>
+            </Layout>
+        )
+    }
+
     return (
         <Layout style={ styles.bodyContentNoPadding }>
             <Layout style={ styles.titleContainer }>
@@ -16,35 +63,7 @@ const SecondContent = () => {
                     </Layout>
                 </Layout>
             </Layout>
-
-            <Layout style={ styles.selfContainer }>
-                <Layout style={ styles.selfContent }>
-                    <Layout>
-                        <Image
-                            style={ styles.imageCard }
-                            source={ require('../../images/items/item_photo4.jpeg') } 
-                        />
-                    </Layout>
-                    <Layout style={ styles.selfContentInfo }>
-                        <Layout style={ styles.selfContentBody }>
-                            <Text style={ styles.selfContentTitle } >Xoxo Kels</Text>
-                            <Text style={ styles.selfContentSubtitle }>2019, Abdul Malik</Text>
-                        </Layout>
-                        <Text style={ styles.selfContentLabel }>Borrow From:</Text>
-                        <Text style={ styles.selfContentValue }>Albert Setiawan</Text>
-                        <Layout style={ styles.selfContentBottom }>
-                            <Layout>
-                                <Text style={ styles.selfContentLabel }>return</Text>
-                                <Text style={ styles.selfContentValue }>15/01/2020</Text>
-                            </Layout>
-                            <Layout>
-                                <Text style={ styles.selfContentLabel }>return</Text>
-                                <Text style={ styles.selfContentValue }>15/01/2020</Text>
-                            </Layout>
-                        </Layout>
-                    </Layout>
-                </Layout>
-            </Layout>
+            { Object.entries(props.data).length > 0 ? extractData() : null }
         </Layout>
     );
 }

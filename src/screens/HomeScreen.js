@@ -17,20 +17,20 @@ class HomeScreen extends Component {
         super(props);
         this.state = {
             firstData: [],
-            secondData: [],
-            thirdData: []
+            secondData: {},
+            thirdData: {}
         }
     }
 
     async componentDidMount () {
-        var getFirstData = await getLatestItem();
-        var getSecondData = await getRecomendationItem();
-        var getThirdData = await getRandomItem();
+        let getFirstData = await getLatestItem();
+        let getSecondData = await getRecomendationItem();
+        let getThirdData = await getRandomItem();
 
         this.setState({
             firstData: getFirstData.status === status.OK ? getFirstData.data : [],
-            secondData: getSecondData.status === status.OK ? getSecondData.data : [],
-            thirdData: getThirdData.status === status.OK ? getThirdData.data : []
+            secondData: getSecondData.status === status.OK ? getSecondData.data : {},
+            thirdData: getThirdData.status === status.OK ? getThirdData.data : {}
         })
     }
 
@@ -60,8 +60,14 @@ class HomeScreen extends Component {
                             data={ this.state.firstData }
                             navigation={ this.props.navigation } 
                         />
-                        <SecondContent />
-                        <ThirdContent />
+                        <SecondContent 
+                            data={ this.state.secondData }
+                            navigation={ this.props.navigation }
+                        />
+                        <ThirdContent 
+                            data={ this.state.thirdData }
+                            navigation={ this.props.navigation }
+                        />
                     </ScrollView>
                 </Layout>
             </SafeAreaView>            

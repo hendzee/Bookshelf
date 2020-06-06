@@ -74,4 +74,22 @@ const getRandomItem = async () => {
     return response;
 }
 
-export { getItem, getLatestItem, getRecomendationItem, getRandomItem };
+/** Get specific items */
+const getSpecificItem = async (id) => {
+    var response = {};
+    var data = [];
+    var stat = status.OK;
+    var message = '';
+
+    data = await axios.get(prefix + '/items/' + id);
+    
+    response = {
+        data: data.data,
+        message: message,
+        status: stat
+    };
+
+    return response;
+}
+
+export { getItem, getLatestItem, getRecomendationItem, getRandomItem, getSpecificItem };

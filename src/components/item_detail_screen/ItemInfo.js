@@ -3,8 +3,9 @@ import { StyleSheet } from 'react-native';
 import { Layout, Text } from '@ui-kitten/components';
 import { generalSty } from '../../styles';
 
-const ItemInfo = () => {
-    return (
+const ItemInfo = (props) => {
+    /** Extract data */
+    const extractData = () => (
         <Layout>
             <Layout style={ styles.infoTextContainer }>
                 <Text>Title</Text>
@@ -35,6 +36,12 @@ const ItemInfo = () => {
                 <Text>Status</Text>
                 <Text style={ styles.boldText }>Available</Text>
             </Layout>
+        </Layout>
+    );
+
+    return (
+        <Layout>
+            { Object.entries(props.data).length > 0 ? extractData() : null }
         </Layout>
     );
 }

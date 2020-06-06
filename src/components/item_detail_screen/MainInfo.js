@@ -28,7 +28,8 @@ const MainInfo = (props) => {
         return ratingComponentList;
     }
 
-    return (
+    /** Extract data */
+    const extractData = () => (
         <Layout style={ styles.mainInfoContainer }>
             <Layout style={ styles.imageReviewContainer }>
                 <Image 
@@ -39,10 +40,10 @@ const MainInfo = (props) => {
             <Layout>
                 <Layout>
                     <Text>Owner</Text>
-                    <Text style={ styles.boldText }>Sarah Johnson</Text>
+                    <Text style={ styles.boldText }>{ props.data.user.first_name + ' ' + props.data.last_name }</Text>
                 </Layout>
                 <Layout style={ styles.ratingContainer }>
-                    { showRating(3) }
+                    { showRating( props.data.user.rating ) }
                 </Layout>
                 <Button style={ styles.button } status='basic'>
                     SEE THEIR BOOKS
@@ -51,6 +52,12 @@ const MainInfo = (props) => {
                     ADD TO LIST
                 </Button>
             </Layout>
+        </Layout>
+    )
+
+    return (
+        <Layout>
+            { Object.entries(props.data).length > 0 ? extractData() : null }
         </Layout>
     );
 }

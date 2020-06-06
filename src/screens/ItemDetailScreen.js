@@ -4,6 +4,7 @@ import { Layout, Icon, TopNavigation, TopNavigationAction } from '@ui-kitten/com
 import { generalSty } from '../styles';
 import { CustomStatusBar, FloatingButton } from '../components/general';
 import { MainInfo, ItemInfo } from '../components/item_detail_screen';
+import { status, getSpecificItem } from '../modules';
 
 const BackIcon = (style) => (
     <Icon { ...style } name='arrow-back-outline' />
@@ -14,6 +15,24 @@ const EditIcon = (style) => (
 );
 
 class ItemDetailScreen extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            data: {} // Data of item
+        }
+    }
+
+    async componentDidMount() {
+        let id = this.props.route.params.id;
+
+        let getData = await getSpecificItem(id);
+
+        this.setState({
+            data: getData.status === status.OK ? getData.data : {}
+        });
+    }
+
     /** Show back button */
     showBackButton = () => (
         <TopNavigationAction icon={ BackIcon } onPress={ this.handleBack } />
@@ -48,8 +67,13 @@ class ItemDetailScreen extends Component {
 
                 <ScrollView>
                     <Layout style={ styles.mainContainer }>
-                        <MainInfo navigation={ this.props.navigation } />
-                        <ItemInfo />
+                        <MainInfo
+                            data={ this.state.data } 
+                            navigation={ this.props.navigation } 
+                        />
+                        <ItemInfo 
+                            data={ this.state.data } 
+                        />
                     </Layout>
                 </ScrollView>
                 <FloatingButton icon='message-circle' onPress={ this.toChatDetailScreen } />
