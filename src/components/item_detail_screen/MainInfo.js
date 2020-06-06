@@ -34,7 +34,7 @@ const MainInfo = (props) => {
             <Layout style={ styles.imageReviewContainer }>
                 <Image 
                     style={ styles.imageReview }
-                    source={ require('../../images/items/item_photo1.jpeg') }
+                    source={{ uri: props.data.cover }}
                 />
             </Layout>
             <Layout>

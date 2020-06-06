@@ -5,12 +5,17 @@ import { generalSty } from '../../styles';
 import { CustomTouchableOpacity } from '../general/CustomTouchableOpacity';
 
 const SecondContent = (props) => {
+    /** Navigate to detail item screen */
+    const toDetailScreen = (id) => {
+        props.navigation.navigate('ITEM_DETAIL', { id: id });
+    }
+
     /** Extract data */
     const extractData = () => {
         return (
             <Layout style={ styles.selfContainer }>
                 <Layout style={ styles.selfContent }>
-                    <CustomTouchableOpacity>
+                    <CustomTouchableOpacity onPress={ () => toDetailScreen(props.data.id) }>
                         <Image
                             style={ styles.imageCard }
                             source={{ uri: props.data.cover }} 
