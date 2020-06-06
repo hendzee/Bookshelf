@@ -11,7 +11,7 @@ import {
     Select,
 } from '@ui-kitten/components';
 import { CustomStatusBar , CustomTouchableOpacity, SmallModal } from '../components/general';
-import { generalSty } from '../styles'
+import { generalSty, WHITE } from '../styles'
 import ImagePicker from 'react-native-image-crop-picker';
 
 /** import CRUD function */
@@ -22,7 +22,7 @@ const BackIcon = (style) => (
 );
 
 const PlusIcon = () => (
-    <Icon width={ 32 } height={ 32 } fill='#b2bec3' name='plus-circle-outline' />
+    <Icon width={ 32 } height={ 32 } fill={ WHITE } name='plus-circle-outline' />
 );
 
 class AddItemScreen extends Component {
