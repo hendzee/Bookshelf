@@ -1,5 +1,5 @@
 /** This function is give period or interval before execution function */
-const addPeriod = (paramFunction) => {
+const addPeriod = async (paramFunction) => {
     setTimeout(() => {
         paramFunction();
     }, 1000);

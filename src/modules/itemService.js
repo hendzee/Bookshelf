@@ -92,4 +92,59 @@ const getSpecificItem = async (id) => {
     return response;
 }
 
-export { getItem, getLatestItem, getRecomendationItem, getRandomItem, getSpecificItem };
+/** Add new item */
+const addItem = async (data) => {
+    return new Promise(function(resolve, reject) {
+        var response = {};
+        var formData = new FormData();
+        var message = 'Data Saved';
+        var stat = status.OK;
+
+        // formData.append('user_id', data.userId);
+        // formData.append('category', data.category);
+        // formData.append('title', data.title);
+        // formData.append('author', data.author);
+        // formData.append('publish_date', data.publishDate);
+        // formData.append('cover', data.cover);
+        
+        formData.append('user_id', 1);
+        formData.append('category', 'FUN');
+        formData.append('title', 'CODE IS FUN');
+        formData.append('author', 'VIRGINIA HENDRAS');
+        formData.append('publish_date', '2020-03-01');
+        formData.append('cover', {
+            uri: data.cover.path,
+            type: 'image/jpg',
+            name: 'image.jpg'
+        });
+
+        axios.post(prefix + '/items', formData, {headers: { 'Content-Type': 'multipart/form-data' }})
+            .then(result => {
+                response = {
+                    data: result.data,
+                    message: 'Data was Saved.',
+                    status: stat
+                }; 
+    
+                resolve(response);
+            })
+            .catch(error => {
+                response = {
+                    data: null,
+                    message: JSON.stringify(error),
+                    status: status.ERROR
+                };
+
+                reject(response);
+            })
+    });
+}
+
+export { 
+    getItem, 
+    getLatestItem, 
+    getRecomendationItem, 
+    getRandomItem, 
+    getSpecificItem,
+    addItem 
+};

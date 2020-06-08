@@ -20,7 +20,7 @@ import { generalSty, WHITE } from '../styles'
 import ImagePicker from 'react-native-image-crop-picker';
 
 /** import CRUD function */
-import { dummyFunctionData, addPeriod } from '../modules';
+import { addItem } from '../modules';
 
 const BackIcon = (style) => (
     <Icon { ...style } name='arrow-back-outline' />
@@ -34,6 +34,12 @@ class AddItemScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            userId: 1, // Data dummy
+            category: '', // Data dummy
+            title: '',
+            author: '',
+            publishDate: '',
+            cover: null,
             selectedImagePath: null, // Selected image uri
             isPickImage: false,
             responseTitle: '', // Response title / message
@@ -56,23 +62,23 @@ class AddItemScreen extends Component {
     /** Handle save data */
     handleSave = () => {
         this.setState({ isLoading: true, isSaved: true }, () => {
-            addPeriod(
-                () => {
-                    dummyFunctionData().then(response => {
-                        this.setState({ 
-                            isLoading: false, 
-                            responseTitle: response.message,
-                            isResponseError: false
-                        });
-                    }).catch(err => {
-                        this.setState({ 
-                            isLoading: false,
-                            responseTitle: err.message,
-                            isResponseError: true
-                        });
-                    })
-                }
-            )
+            let data = {
+                userId: this.state.userId,
+                category: this.state.category,
+                title: this.state.title,
+                author: this.state.author,
+                publishDate: this.state.publishDate,
+                cover: this.state.cover
+            }
+
+            addItem(data)
+                .then(res => {
+                    this.setState({ isLoading: false, responseTitle: res.message });
+                })
+                .catch(err => {
+                    this.setState({ isLoading: false, responseTitle: err.message });
+                });
+
         });
     };
 
@@ -91,7 +97,10 @@ class AddItemScreen extends Component {
                 height: 290
             }).then(
                 image => {
-                    this.setState({ selectedImagePath: image.path });
+                    this.setState({
+                        cover: image, 
+                        selectedImagePath: image.path 
+                    });
                 }
             )
         });
@@ -105,7 +114,10 @@ class AddItemScreen extends Component {
                 height: 290
             }).then(
                 image => {
-                    this.setState({ selectedImagePath: image.path });
+                    this.setState({
+                        cover: image, 
+                        selectedImagePath: image.path 
+                    });
                 }
             )
         });
@@ -137,6 +149,8 @@ class AddItemScreen extends Component {
                             placeholder='e.g. The Design of Everyday Think'
                             textStyle={ styles.inputTextStyle }
                             style={ styles.input }
+                            value={ this.state.title }
+                            onChangeText={ (text) => this.setState({ title: text }) }
                         />
 
                         <Input
@@ -145,6 +159,8 @@ class AddItemScreen extends Component {
                             placeholder='e.g. John Doe'
                             textStyle={ styles.inputTextStyle }
                             style={ styles.input }
+                            value={ this.state.author }
+                            onChangeText={ (text) => this.setState({ author: text }) }
                         />
 
                         <Input
@@ -153,6 +169,8 @@ class AddItemScreen extends Component {
                             placeholder='e.g. 2010'
                             textStyle={ styles.inputTextStyle }
                             style={ styles.input }
+                            value={ this.state.publishDate }
+                            onChangeText={ (text) => this.setState({ publishDate: text }) }
                         />
 
                         <Select
@@ -163,6 +181,9 @@ class AddItemScreen extends Component {
                                 { text: 'IT' }
                             ]}
                             style={ styles.input }
+                            
+                            selectedOption={ this.state.category }
+                            onSelect={ (text) => this.setState({ category: text }) }
                         />
 
                     </Layout>
