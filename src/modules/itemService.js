@@ -157,7 +157,6 @@ const addItem = async (data) => {
     return new Promise(function(resolve, reject) {
         var response = {};
         var formData = new FormData();
-        var stat = status.OK;
 
         formData.append('user_id', data.userId);
         formData.append('category', data.category);
@@ -175,7 +174,7 @@ const addItem = async (data) => {
                 response = {
                     data: result.data,
                     message: 'Data was Saved.',
-                    status: stat
+                    status: status.OK
                 }; 
     
                 resolve(response);

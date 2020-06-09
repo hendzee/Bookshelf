@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { SafeAreaView, StyleSheet, Image } from 'react-native';
+import { SafeAreaView, StyleSheet, Image, Keyboard } from 'react-native';
 import { 
     Layout, 
     Input, 
@@ -14,7 +14,8 @@ import {
     CustomStatusBar , 
     CustomTouchableOpacity, 
     SmallModal,
-    SelectModal 
+    SelectModal,
+    CustomDatePicker
 } from '../components/general';
 import { generalSty, WHITE } from '../styles'
 import ImagePicker from 'react-native-image-crop-picker';
@@ -40,6 +41,7 @@ class AddItemScreen extends Component {
             title: '',
             author: '',
             publishDate: '',
+            showDatePicker: false,
             cover: null,
             selectedImagePath: null, // Selected image uri
             isPickImage: false,
@@ -134,6 +136,20 @@ class AddItemScreen extends Component {
         this.setState({ isPickImage: true });
     }
 
+    /** Handle date picker popup */
+    handleDatePicker = () => {
+        this.setState({ showDatePicker: true });
+        Keyboard.dismiss();
+    }
+
+    /** Set date state */
+    setDate = (date) => {
+        this.setState({
+            publishDate: date,
+            showDatePicker: false
+        });
+    }
+
     render() {
         return (
             <SafeAreaView style={ styles.rootContainer }>
@@ -169,22 +185,24 @@ class AddItemScreen extends Component {
                             onChangeText={ (text) => this.setState({ author: text }) }
                         />
 
-                        <Input
-                            label='Publication Year'
-                            labelStyle={ styles.inputTextStyle }
-                            placeholder='e.g. 2010'
-                            textStyle={ styles.inputTextStyle }
-                            style={ styles.input }
-                            value={ this.state.publishDate }
-                            onChangeText={ (text) => this.setState({ publishDate: text }) }
-                        />
+                        <CustomTouchableOpacity onPress={ this.handleDatePicker } >
+                            <Input
+                                label='Publication Year'
+                                labelStyle={ styles.inputTextStyle }
+                                placeholder='e.g. 2010'
+                                textStyle={ styles.inputTextStyle }
+                                style={ styles.input }
+                                value={ this.state.publishDate }
+                                onChangeText={ (text) => this.setState({ publishDate: text }) }
+                                disabled
+                            />
+                        </CustomTouchableOpacity>
 
                         <Select
                             label='Category'
                             labelStyle={ styles.inputTextStyle }
                             data={ this.state.categories }
                             style={ styles.input }
-                            
                             selectedOption={ this.state.category }
                             onSelect={ (text) => this.setState({ category: text }) }
                         />
@@ -193,17 +211,18 @@ class AddItemScreen extends Component {
                     {/* Form - end */}
 
                     <Text style={ styles.inputTextStyle }>Book Cover</Text>
-                    <CustomTouchableOpacity onPress={ this.handlePickerMenu }>
-                        <Layout style={ styles.imageUploadContainer }>
-                            <Layout style={ styles.selectedImageContainer }>
-                                <Image  
-                                    style={ styles.image }
-                                    source={{ uri: this.state.selectedImagePath }}
-                                />
-                            </Layout>
-                            { PlusIcon() }
-                        </Layout>
-                    </CustomTouchableOpacity>
+                    <Layout style={ styles.imageUploadContainer }>
+                        <CustomTouchableOpacity 
+                            onPress={ this.handlePickerMenu } 
+                            style={ styles.selectedImageContainer }
+                        >
+                            <Image  
+                                style={ styles.image }
+                                source={{ uri: this.state.selectedImagePath }}
+                            />
+                        </CustomTouchableOpacity>
+                        { PlusIcon() }
+                    </Layout>
 
                     <Layout style={ styles.bottomContent }>
                         <Button onPress={ this.handleSave } status='primary'>
@@ -236,6 +255,11 @@ class AddItemScreen extends Component {
                     ]}
                 />
 
+                {/* Date time picker modal */}
+                <CustomDatePicker 
+                    show={ this.state.showDatePicker }
+                    setDate={ this.setDate } 
+                />
             </SafeAreaView>
         );
     }
