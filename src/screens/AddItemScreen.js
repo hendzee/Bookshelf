@@ -72,11 +72,11 @@ class AddItemScreen extends Component {
             }
 
             addItem(data)
-                .then(res => {
-                    this.setState({ isLoading: false, responseTitle: res.message });
+                .then(result => {
+                    this.setState({ isLoading: false, responseTitle: result.message });
                 })
-                .catch(err => {
-                    this.setState({ isLoading: false, responseTitle: err.message });
+                .catch(error => {
+                    this.setState({ isLoading: false, responseTitle: error.message });
                 });
 
         });
