@@ -20,7 +20,7 @@ import { generalSty, WHITE } from '../styles'
 import ImagePicker from 'react-native-image-crop-picker';
 
 /** import CRUD function */
-import { addItem } from '../modules';
+import { getCategory, addItem } from '../modules';
 
 const BackIcon = (style) => (
     <Icon { ...style } name='arrow-back-outline' />
@@ -35,6 +35,7 @@ class AddItemScreen extends Component {
         super(props);
         this.state = {
             userId: 1, // Data dummy
+            categories: [], // Categories list for selected input
             category: '', // Data dummy
             title: '',
             author: '',
@@ -47,6 +48,11 @@ class AddItemScreen extends Component {
             isSaved: false, // Save state
             isLoading: false // Loading state
         }
+    }
+
+    async componentDidMount() {
+        let categories = await getCategory();
+        this.setState({ categories: categories.data });
     }
 
     /** Show back button */
@@ -176,10 +182,7 @@ class AddItemScreen extends Component {
                         <Select
                             label='Category'
                             labelStyle={ styles.inputTextStyle }
-                            data={[
-                                { text: 'Biography' },
-                                { text: 'IT' }
-                            ]}
+                            data={ this.state.categories }
                             style={ styles.input }
                             
                             selectedOption={ this.state.category }

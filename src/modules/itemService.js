@@ -5,91 +5,151 @@ import { status } from './status';
 /** Get all data */
 const getItem = async () => {
     var response = {};
-    var data = [];
-    var stat = status.OK;
     var message = '';
-
-    data = await axios.get(prefix + '/items?user=true');
     
-    response = {
-        data: data.data,
-        message: message,
-        status: stat
-    };
+    return new Promise(function (resolve, reject){
+        axios.get(prefix + '/items?user=true')
+            .then(result => {
+                response = {
+                    data: result.data,
+                    message: message,
+                    status: status.OK
+                };
 
-    return response;
+                resolve(response);
+            })
+            .catch(error => {
+                message = JSON.stringify(error);
+
+                response = {
+                    data: result.data,
+                    message: message,
+                    status: status.OK
+                };
+
+                reject(response);
+            });
+    });
 }
 
 /** Get latest items */
 const getLatestItem = async () => {
     var response = {};
-    var data = [];
-    var stat = status.OK;
     var message = '';
-
-    data = await axios.get(prefix + '/items?latest=true');
     
-    response = {
-        data: data.data,
-        message: message,
-        status: stat
-    };
+    return new Promise(function (resolve, reject){
+        axios.get(prefix + '/items?latest=true')
+            .then(result => {
+                response = {
+                    data: result.data,
+                    message: message,
+                    status: status.OK
+                };
 
-    return response;
+                resolve(response);
+            })
+            .catch(error => {
+                message = JSON.stringify(error);
+
+                response = {
+                    data: result.data,
+                    message: message,
+                    status: status.OK
+                };
+
+                reject(response);
+            });
+    });
 }
 
 /** Get recomendation items */
 const getRecomendationItem = async () => {
     var response = {};
-    var data = [];
-    var stat = status.OK;
     var message = '';
-
-    data = await axios.get(prefix + '/items?recomendation=true');
     
-    response = {
-        data: data.data,
-        message: message,
-        status: stat
-    };
+    return new Promise(function (resolve, reject){
+        axios.get(prefix + '/items?recomendation=true')
+            .then(result => {
+                response = {
+                    data: result.data,
+                    message: message,
+                    status: status.OK
+                };
 
-    return response;
+                resolve(response);
+            })
+            .catch(error => {
+                message = JSON.stringify(error);
+
+                response = {
+                    data: result.data,
+                    message: message,
+                    status: status.OK
+                };
+
+                reject(response);
+            });
+    });
 }
 
 /** Get random items */
 const getRandomItem = async () => {
     var response = {};
-    var data = [];
-    var stat = status.OK;
     var message = '';
-
-    data = await axios.get(prefix + '/items?random=true');
     
-    response = {
-        data: data.data,
-        message: message,
-        status: stat
-    };
+    return new Promise(function (resolve, reject){
+        axios.get(prefix + '/items?random=true')
+            .then(result => {
+                response = {
+                    data: result.data,
+                    message: message,
+                    status: status.OK
+                };
 
-    return response;
+                resolve(response);
+            })
+            .catch(error => {
+                message = JSON.stringify(error);
+
+                response = {
+                    data: result.data,
+                    message: message,
+                    status: status.OK
+                };
+
+                reject(response);
+            });
+    });
 }
 
 /** Get specific items */
 const getSpecificItem = async (id) => {
     var response = {};
-    var data = [];
-    var stat = status.OK;
     var message = '';
-
-    data = await axios.get(prefix + '/items/' + id);
     
-    response = {
-        data: data.data,
-        message: message,
-        status: stat
-    };
+    return new Promise(function (resolve, reject){
+        axios.get(prefix + '/items/' + id)
+            .then(result => {
+                response = {
+                    data: result.data,
+                    message: message,
+                    status: status.OK
+                };
 
-    return response;
+                resolve(response);
+            })
+            .catch(error => {
+                message = JSON.stringify(error);
+
+                response = {
+                    data: result.data,
+                    message: message,
+                    status: status.OK
+                };
+
+                reject(response);
+            });
+    });
 }
 
 /** Add new item */
