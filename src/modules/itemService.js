@@ -191,11 +191,85 @@ const addItem = async (data) => {
     });
 }
 
+/** Update item */
+const updateItem = async (data, id) => {
+    return new Promise(function(resolve, reject) {
+        var response = {};
+        var formData = new FormData();
+
+        formData.append('category', data.category.text);
+        formData.append('title', data.title);
+        formData.append('author', data.author);
+        formData.append('publish_date', data.publishDate);
+        formData.append('_method', 'PUT');
+
+        if (data.cover !== null) {
+            formData.append('cover', {
+                uri: data.cover.path,
+                type: 'image/jpg',
+                name: 'image.jpg'
+            });
+        }
+
+        axios.post(prefix + '/items/' + id, formData, {headers: { 'Content-Type': 'multipart/form-data' }})
+            .then(result => {
+                response = {
+                    data: result.data,
+                    message: 'Data was updated.',
+                    status: status.OK
+                }; 
+    
+                resolve(response);
+            })
+            .catch(error => {
+                response = {
+                    data: null,
+                    message: JSON.stringify(error),
+                    status: status.ERROR
+                };
+
+                reject(response);
+            })
+    });
+}
+
+/** Delete item */
+const deleteItem = (id) => {
+    return new Promise(function(resolve, reject) {
+        var response = {};
+        var formData = new FormData();
+
+        formData.append('_method', 'DELETE');
+
+        axios.post(prefix + '/items/' + id, formData, {headers: { 'Content-Type': 'multipart/form-data' }})
+            .then(result => {
+                response = {
+                    data: result.data,
+                    message: 'Data was deleted.',
+                    status: status.OK
+                }; 
+    
+                resolve(response);
+            })
+            .catch(error => {
+                response = {
+                    data: null,
+                    message: JSON.stringify(error),
+                    status: status.ERROR
+                };
+                
+                reject(response);
+            })
+    });
+}
+
 export { 
     getItem, 
     getLatestItem, 
     getRecomendationItem, 
     getRandomItem, 
     getSpecificItem,
-    addItem 
+    addItem,
+    updateItem,
+    deleteItem
 };

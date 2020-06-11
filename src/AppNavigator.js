@@ -17,6 +17,7 @@ import {
     InboxScreen,
     AccountScreen,
     AddItemScreen,
+    EditItemScreen,
     ItemDetailScreen,
     CartScreen,
     CartConfirmationScreen,
@@ -105,6 +106,7 @@ const AppStackNavigator = () => (
         <Stack.Screen name='CHAT_DETAIL' component={ ChatDetailScreen } />
         <Stack.Screen name='CONTACT' component={ ContactScreen } />
         <Stack.Screen name='ADD_ITEM' component={ AddItemScreen } />
+        <Stack.Screen name='EDIT_ITEM' component={ EditItemScreen } />
         <Stack.Screen name='ITEM_DETAIL' component={ ItemDetailScreen } />
         <Stack.Screen name='CART' component={ CartScreen } />
         <Stack.Screen name='CART_CONFIRMATION' component={ CartConfirmationScreen } />

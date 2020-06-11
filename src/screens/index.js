@@ -6,6 +6,7 @@ export * from './AddScreen';
 export * from './InboxScreen';
 export * from './AccountScreen';
 export * from './AddItemScreen';
+export * from './EditItemScreen';
 export * from './ItemDetailScreen';
 export * from './CartScreen';
 export * from './CartConfirmationScreen';

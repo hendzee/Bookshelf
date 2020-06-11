@@ -40,7 +40,7 @@ class ItemDetailScreen extends Component {
 
     /** Show edit icon */
     showEditIcon = () => (
-        <TopNavigationAction icon={ EditIcon } onPress={ this.handleBack } />
+        <TopNavigationAction icon={ EditIcon } onPress={ this.toEditScreen } />
     );
 
     /** Handle back */
@@ -51,6 +51,11 @@ class ItemDetailScreen extends Component {
     /** Navigate to detail chat screen */
     toChatDetailScreen = () => {
         this.props.navigation.navigate('CHAT_DETAIL');
+    }
+
+    /** To edit screen */
+    toEditScreen = () => {
+        this.props.navigation.navigate('EDIT_ITEM', { id: this.state.data.id })
     }
     
     render() {
