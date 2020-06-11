@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import { Layout, Modal, Text } from '@ui-kitten/components';
-import { generalSty, } from '../../styles';
+import { generalSty, RED } from '../../styles';
 import { CustomTouchableOpacity } from './CustomTouchableOpacity';
 
 const SelectModal = (props) => {
@@ -10,10 +10,7 @@ const SelectModal = (props) => {
         return props.list.map((item, index) => (
             <CustomTouchableOpacity 
                 key={ index } 
-                style={ 
-                    index === props.list.length - 1 ? 
-                    styles.itemContainerLast : styles.itemContainer 
-                }
+                style={ styles.itemContainer }
                 onPress={ item.action }
             >
                 <Text style={ styles.centerText }>{ item.title }</Text>
@@ -29,6 +26,14 @@ const SelectModal = (props) => {
             >
                 <Layout style={ styles.modal }>
                     { extractData() }
+                    <CustomTouchableOpacity 
+                        style={ styles.itemContainerLast }
+                        onPress={ () => props.onCancel() }
+                    >
+                        <Text style={ styles.redText }>
+                            { props.cancelTitle === undefined ? 'Cancel' : props.cancelTitle }
+                        </Text>
+                    </CustomTouchableOpacity>
                 </Layout>
             </Modal>
         </Layout>
@@ -64,6 +69,10 @@ const styles = StyleSheet.create({
 
     centerText: {
         textAlign: 'center'
+    },
+
+    redText: {
+        color: RED
     }
 });
 

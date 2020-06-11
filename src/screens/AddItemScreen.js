@@ -37,7 +37,7 @@ class AddItemScreen extends Component {
         this.state = {
             userId: 1, // Data dummy
             categories: [], // Categories list for selected input
-            category: '', // Data dummy
+            category: {},
             title: '',
             author: '',
             publishDate: '',
@@ -54,7 +54,7 @@ class AddItemScreen extends Component {
 
     async componentDidMount() {
         let categories = await getCategory();
-        this.setState({ categories: categories.data });
+        this.setState({ categories: categories.data, category: categories.data[0] });
     }
 
     /** Show back button */
@@ -133,7 +133,11 @@ class AddItemScreen extends Component {
 
     /** Handle picker menu */
     handlePickerMenu = () => {
-        this.setState({ isPickImage: true });
+        if (!this.state.isPickImage) {
+            this.setState({ isPickImage: true });
+        }else {
+            this.setState({ isPickImage: false });
+        }
     }
 
     /** Handle date picker popup */
@@ -143,11 +147,17 @@ class AddItemScreen extends Component {
     }
 
     /** Set date state */
-    setDate = (date) => {
-        this.setState({
-            publishDate: date,
-            showDatePicker: false
-        });
+    setDate = (isSet, date) => {
+        if (isSet) {
+            this.setState({
+                publishDate: date,
+                showDatePicker: false
+            })
+        } else {
+            this.setState({
+                showDatePicker: false
+            });
+        }
     }
 
     render() {
@@ -204,25 +214,25 @@ class AddItemScreen extends Component {
                             data={ this.state.categories }
                             style={ styles.input }
                             selectedOption={ this.state.category }
-                            onSelect={ (text) => this.setState({ category: text }) }
+                            onSelect={ (selected) => this.setState({ category: selected }) }
                         />
 
                     </Layout>
                     {/* Form - end */}
 
                     <Text style={ styles.inputTextStyle }>Book Cover</Text>
-                    <Layout style={ styles.imageUploadContainer }>
-                        <CustomTouchableOpacity 
-                            onPress={ this.handlePickerMenu } 
-                            style={ styles.selectedImageContainer }
-                        >
+                    <CustomTouchableOpacity
+                        onPress={ this.handlePickerMenu } 
+                        style={ styles.imageUploadContainer }
+                    >
+                        <Layout style={ styles.selectedImageContainer }>
                             <Image  
                                 style={ styles.image }
                                 source={{ uri: this.state.selectedImagePath }}
                             />
-                        </CustomTouchableOpacity>
+                        </Layout>
                         { PlusIcon() }
-                    </Layout>
+                    </CustomTouchableOpacity>
 
                     <Layout style={ styles.bottomContent }>
                         <Button onPress={ this.handleSave } status='primary'>
@@ -243,6 +253,7 @@ class AddItemScreen extends Component {
                 {/* Modal to choose image */}
                 <SelectModal 
                     visible={ this.state.isPickImage }
+                    onCancel={ this.handlePickerMenu }
                     list={[
                         {
                             title: 'Open Camera',
@@ -314,7 +325,7 @@ const styles = StyleSheet.create({
         ...generalSty.hf150,
         ...generalSty.w110,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
     },
 });
 

@@ -159,7 +159,7 @@ const addItem = async (data) => {
         var formData = new FormData();
 
         formData.append('user_id', data.userId);
-        formData.append('category', data.category);
+        formData.append('category', data.category.text);
         formData.append('title', data.title);
         formData.append('author', data.author);
         formData.append('publish_date', data.publishDate);
@@ -185,7 +185,7 @@ const addItem = async (data) => {
                     message: JSON.stringify(error),
                     status: status.ERROR
                 };
-
+                console.log(JSON.stringify(error))
                 reject(response);
             })
     });
