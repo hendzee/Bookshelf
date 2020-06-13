@@ -3,16 +3,18 @@ import { prefix } from './endpoint';
 import { status } from './status';
 
 /** Get all data */
-const getItem = async () => {
+const getItem = async (page) => {
     var response = {};
     var message = '';
     
     return new Promise(function (resolve, reject){
-        axios.get(prefix + '/items?user=true')
+        axios.get(prefix + '/items?user=true&page=' + page)
             .then(result => {
                 response = {
-                    data: result.data,
+                    data: result.data.data,
                     message: message,
+                    currentPage: result.data.current_page,
+                    nextPage: result.data.next_page_url,
                     status: status.OK
                 };
 
@@ -22,9 +24,11 @@ const getItem = async () => {
                 message = JSON.stringify(error);
 
                 response = {
-                    data: result.data,
+                    data: result.data.data,
                     message: message,
-                    status: status.OK
+                    currentPage: 0,
+                    nextPage: null,
+                    status: status.ERROR
                 };
 
                 reject(response);

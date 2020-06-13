@@ -40,7 +40,7 @@ const MainInfo = (props) => {
             <Layout>
                 <Layout>
                     <Text>Owner</Text>
-                    <Text style={ styles.boldText }>{ props.data.user.first_name + ' ' + props.data.last_name }</Text>
+                    <Text style={ styles.boldText }>{ props.data.user.first_name + ' ' + props.data.user.last_name }</Text>
                 </Layout>
                 <Layout style={ styles.ratingContainer }>
                     { showRating( props.data.user.rating ) }
