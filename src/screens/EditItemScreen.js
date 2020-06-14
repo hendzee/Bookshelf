@@ -53,7 +53,7 @@ class EditItemScreen extends Component {
     }
 
     async componentDidMount() {
-        let initialData = await getSpecificItem(21);
+        let initialData = await getSpecificItem(this.props.route.params.id);
         let categories = await getCategory();
 
         this.setState({ 
