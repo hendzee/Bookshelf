@@ -5,3 +5,4 @@ export * from './itemService';
 export * from './status';
 export * from './categoryService';
 export * from './dateFormater';
+export * from './transactionService';

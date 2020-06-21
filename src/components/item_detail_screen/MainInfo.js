@@ -4,11 +4,6 @@ import { Layout, Icon, Button, Text} from '@ui-kitten/components';
 import { generalSty, YELLOW } from '../../styles';
 
 const MainInfo = (props) => {
-    /** Handle navigation to cart screen */
-    const toCart = () => {
-        props.navigation.navigate('CART');
-    }
-
     /** Set rating number */
     const showRating = (number) => {
         let ratingComponentList = [];
@@ -48,7 +43,7 @@ const MainInfo = (props) => {
                 <Button style={ styles.button } status='basic'>
                     SEE THEIR BOOKS
                 </Button>
-                <Button onPress={ toCart } style={ styles.button } status='primary'>
+                <Button onPress={ props.handleSave } style={ styles.button } status='primary'>
                     ADD TO LIST
                 </Button>
             </Layout>

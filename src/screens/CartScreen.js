@@ -1,37 +1,42 @@
 import React, { Component } from 'react';
-import { SafeAreaView, StyleSheet, Image, ScrollView } from 'react-native';
+import { SafeAreaView, StyleSheet } from 'react-native';
 import { 
     Layout, 
     Icon, 
     TopNavigation, 
     TopNavigationAction, 
-    Text, 
     Select, 
     Button 
 } from '@ui-kitten/components';
-import { generalSty, GREY } from '../styles';
-import { CustomStatusBar, CustomTouchableOpacity, SmallModal } from '../components/general';
+import { generalSty } from '../styles';
+import { CustomStatusBar, SmallModal } from '../components/general';
+
+/** CartScreen substance components */
+import { ItemList } from '../components/cart_screens';
 
 /** import CRUD function */
-import { dummyFunctionData, addPeriod } from '../modules';
+import { dummyFunctionData, addPeriod, showTransaction } from '../modules';
 
 const BackIcon = (style) => (
     <Icon { ...style } name='arrow-back-outline' />
-)
-
-const RemoveIcon = () => (
-    <Icon width={ 25 } height={ 25 } fill={ GREY } name='close-circle' />
 )
 
 class CartScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            loans: [], // List of loan items
             responseTitle: '', // Response title / message
             isResponseError: false, // Response error
             isLoading: false, // Loading state
             isSend: false // Send state
         }
+    }
+
+    async componentDidMount () {
+        let getLoansData = await showTransaction(this.props.route.params.transactionId);
+
+        this.setState({ loans: getLoansData.data.transaction.loans });
     }
 
     /** Show back button */
@@ -101,25 +106,7 @@ class CartScreen extends Component {
                     
                     {/* List item - start */}
                     <Layout style={ styles.listCardContainer }>
-                        <ScrollView showsVerticalScrollIndicator={ false }>
-                            <Layout style={ styles.cardContainer }>
-                                <Layout style={ styles.imageContainer }>
-                                    <Image 
-                                        style={ styles.imageCard }
-                                        source={ require('../images/items/item_photo1.jpeg') }
-                                    />
-                                </Layout>
-                                <Layout style={ styles.infoContainer }>
-                                    <Text style={ styles.titleItem }>Green Ember</Text>
-                                    <Text style={ styles.infoItem }>Thomas Niels</Text>
-                                </Layout>
-                                <Layout style={ styles.removeContainer }>
-                                    <CustomTouchableOpacity>
-                                        <RemoveIcon />
-                                    </CustomTouchableOpacity>
-                                </Layout>
-                            </Layout>
-                        </ScrollView>
+                        <ItemList loans={ this.state.loans } />
                     </Layout>
                     {/* List item - end */}
                     
@@ -193,36 +180,6 @@ const styles = StyleSheet.create({
         ...generalSty.greyBorder,
         ...generalSty.plBottom,
         ...generalSty.mlBottom
-    },
-
-    imageContainer: {
-        flex: 2,
-        ...generalSty.mlRight
-    },
-
-    infoContainer: {
-        flex: 6,
-        ...generalSty.mlRight
-    },
-
-    removeContainer: {
-        flex: 1,
-        alignItems: 'flex-end',
-    },
-
-    imageCard: {
-        width: 60,
-        height: 95,
-        borderRadius: 3
-    },
-
-    titleItem: {
-        fontWeight: 'bold'
-    },
-
-    infoItem: {
-        ...generalSty.smallText,
-        ...generalSty.greyText,
     },
 
     bottomContent: {

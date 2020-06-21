@@ -9,15 +9,23 @@ const SmallModal = (props) => {
         <Icon 
             width={ 32 } 
             height={ 32 }
-            fill={ props.isError ? RED : PRIMARY }
+            fill={ PRIMARY }
             name='checkmark-circle-outline' />
     );
+
+    const modalIconRed = () => (
+        <Icon 
+            width={ 32 } 
+            height={ 32 }
+            fill={ RED }
+            name='close-circle-outline' />
+    )
 
     /** Modal content */
     const modalContent = () => (
         <Layout style={ styles.smallModal }>
             <Layout style={ styles.iconContainer }>
-                { modalIcon() }
+                { props.isError ? modalIconRed() : modalIcon() }
             </Layout>
             <Text style={ styles.modalTitle }>{ props.title }</Text>
             <Button onPress={ () => props.onPress() } status='primary'>
