@@ -5,4 +5,9 @@ const convertDate = (date) => {
     return moment(date).format('YYYY-MM-DD')
 }
 
-export { convertDate }
+/** Convert duration to date */
+const durationToDate = (duration) => {
+    return moment().add(duration, 'days').format('YYYY-MM-DD');
+}
+
+export { convertDate, durationToDate }

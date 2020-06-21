@@ -71,4 +71,36 @@ const showTransaction = ($id) => {
     })
 }
 
-export { addTransaction, showTransaction }
+/** Update to waiting */
+const updateToWaiting = (id) => {
+    return new Promise(function(resolve, reject){
+        var response = {};
+        var message = '';
+
+        axios.post(prefix + '/transactions/update/waiting/' + id)
+        .then(result => {
+            response = {
+                data: result.data,
+                message: 'Request was send.',
+                status: status.OK
+            }
+            resolve(response);
+        })
+        .catch(error => {
+            message = 'There is error.'
+            
+            if (error.response) {
+                message = error.response.data.message
+            }
+
+            response = {
+                data: null,
+                message: message,
+                status: status.ERROR
+            }
+            reject(response);
+        })
+    });
+}
+
+export { addTransaction, showTransaction, updateToWaiting }
