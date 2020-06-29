@@ -1,37 +1,32 @@
 import React, { Component } from 'react';
-import { SafeAreaView, StyleSheet, ScrollView, Image } from 'react-native';
+import { SafeAreaView, StyleSheet, ScrollView } from 'react-native';
 import { 
     Layout, 
     Icon, 
     TopNavigation, 
     TopNavigationAction, 
-    Text, 
     Button, 
-    Avatar 
 } from '@ui-kitten/components';
-import { generalSty, GREY, YELLOW } from '../styles';
-import { CustomStatusBar, CustomTouchableOpacity, SmallModal } from '../components/general';
+import { generalSty } from '../styles';
+import { CustomStatusBar, SmallModal } from '../components/general';
+
+/** Substance of cart confirmation page */
+import { TopContent, MidContent, ListContent } from '../components/cart_confirmation_screen';
 
 /** import CRUD function */
-import { dummyFunctionData, addPeriod } from '../modules';
+import { dummyFunctionData, addPeriod, showTransaction } from '../modules';
 
 const BackIcon = (style) => (
     <Icon { ...style } name='arrow-back-outline' />
-)
-
-const StarIcon = () => (
-    <Icon width={ 15 } height={ 15 } fill={ YELLOW } name='star' />
-)
-
-/** Chat icon */
-const ChatIcon = (style) => (
-    <Icon width={ 25 } height={ 25 } fill={ GREY } name='message-square' />
 )
 
 class CartConfirmationScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            transaction: {}, // general info of transaction
+            relatedUsers: {}, // Borrower and owner user data
+            loans: [], // List of loan items
             responseTitle: '', // Response title / message
             isResponseError: false, // Response error
             isSend: false, // Send state
@@ -39,12 +34,22 @@ class CartConfirmationScreen extends Component {
         }
     }
 
+    async componentDidMount() {
+        let getTransactionData = await showTransaction(15);
+
+        this.setState({
+            transaction: getTransactionData.data.transaction,
+            loans: getTransactionData.data.transaction.loans,
+            relatedUsers: getTransactionData.data.user
+        })
+    }
+
     /** Show back button */
     showBackButton = () => (
         <TopNavigationAction icon={ BackIcon } onPress={ this.handleBack } />
     );
 
-    /** Hanle send */
+    /** Handle send */
     handleSend = () => {
         this.setState({ isLoading: true, isSend: true }, () => {
             addPeriod(
@@ -102,109 +107,9 @@ class CartConfirmationScreen extends Component {
 
                 <Layout style={ styles.mainContainer }>
                     <ScrollView showsVerticalScrollIndicator={ false }>
-                        {/* User info content - start */}
-                        <Layout style={ styles.topInfoContainer }>
-                            <Layout style={ styles.topInfoItem }>
-                                <Layout style={ styles.userContainer }>
-                                    <Layout style={ styles.userImageContainer }>
-                                        <Avatar source={ require('../images/users/user4.png') }/>
-                                    </Layout>
-                                    <Layout>
-                                        <Text style={ styles.textBold }>Bryan Bottom</Text>
-                                        <Layout style={ styles.topSecondInfo }>
-                                            <StarIcon />
-                                            <Text style={ styles.smallTextGrey }>4.3</Text>
-                                        </Layout>
-                                    </Layout>
-                                </Layout>
-                                <Layout style={ styles.infoRightContainer }>
-                                    <CustomTouchableOpacity>
-                                        <ChatIcon />
-                                    </CustomTouchableOpacity>
-                                </Layout>
-                            </Layout>
-                            <Layout style={ styles.topInfoItem }>
-                                <Layout style={ styles.userContainer }>
-                                    <Layout style={ styles.userImageContainer }>
-                                        <Avatar source={ require('../images/users/user1.png') } />
-                                    </Layout>
-                                    <Layout>
-                                        <Text style={ styles.textBold }>Rachel Linda</Text>
-                                        <Layout style={ styles.topSecondInfo }>
-                                            <StarIcon />
-                                            <Text style={ styles.smallTextGrey }>4.7</Text>
-                                            <Layout style={ styles.badgePrimary }>
-                                                <Text style={ styles.smallTextWhite }>Owner</Text>
-                                            </Layout>
-                                        </Layout>
-                                    </Layout>
-                                </Layout>
-                                <Layout style={ styles.infoRightContainer }>
-                                    <CustomTouchableOpacity>
-                                        <ChatIcon />
-                                    </CustomTouchableOpacity>
-                                </Layout>
-                            </Layout>
-                        </Layout>
-                        {/* User info content - end */}
-                        
-                        {/* Second info content - start */}
-                        <Layout style={ styles.secondInfoContainer }>
-                            <Layout style={ styles.secondInfoItemContainer }>
-                                <Text style={ styles.smallText }>ID</Text>
-                                <Text style={ styles.textBold }>350A12Z</Text>
-                            </Layout>
-                            <Layout style={ styles.secondInfoItemContainer }>
-                                <Text style={ styles.smallText }>Status</Text>
-                                <Text style={ styles.smallText }>Waiting Response</Text>
-                            </Layout>
-                            <Layout style={ styles.secondInfoItemContainer }>
-                                <Text style={ styles.smallText }>Duration</Text>
-                                <Text style={ styles.smallText }>7 Days</Text>
-                            </Layout>
-                        </Layout>
-                        {/* Second info content - end */}
-
-                        {/* List item - start */}
-                        <Layout style={ styles.listCardContainer }>
-                            <Layout style={ styles.cardContainer }>
-                                <Layout style={ styles.imageContainer }>
-                                    <Image 
-                                        style={ styles.imageCard }
-                                        source={ require('../images/items/item_photo1.jpeg') }
-                                    />
-                                </Layout>
-                                <Layout style={ styles.infoContainer }>
-                                    <Text style={ styles.titleItem }>Green Ember</Text>
-                                    <Text style={ styles.smallTextGrey }>Thomas Niels</Text>
-                                </Layout>
-                            </Layout>
-                            <Layout style={ styles.cardContainer }>
-                                <Layout style={ styles.imageContainer }>
-                                    <Image 
-                                        style={ styles.imageCard }
-                                        source={ require('../images/items/item_photo1.jpeg') }
-                                    />
-                                </Layout>
-                                <Layout style={ styles.infoContainer }>
-                                    <Text style={ styles.titleItem }>Green Ember</Text>
-                                    <Text style={ styles.smallTextGrey }>Thomas Niels</Text>
-                                </Layout>
-                            </Layout>
-                            <Layout style={ styles.cardContainer }>
-                                <Layout style={ styles.imageContainer }>
-                                    <Image 
-                                        style={ styles.imageCard }
-                                        source={ require('../images/items/item_photo1.jpeg') }
-                                    />
-                                </Layout>
-                                <Layout style={ styles.infoContainer }>
-                                    <Text style={ styles.titleItem }>Green Ember</Text>
-                                    <Text style={ styles.smallTextGrey }>Thomas Niels</Text>
-                                </Layout>
-                            </Layout>
-                        </Layout>
-                        {/* List item - end */}
+                        <TopContent relatedUsers={ this.state.relatedUsers } />
+                        <MidContent transaction={ this.state.transaction } />
+                        <ListContent loans={ this.state.loans } />
                     </ScrollView>
 
                     <Layout style={ styles.bottomContent }>
@@ -239,113 +144,12 @@ const styles = StyleSheet.create({
         ...generalSty.mainContainer
     },
 
-    topInfoContainer: {
-        ...generalSty.mlBottom,
-        ...generalSty.plBottom,
-        ...generalSty.greyBorder,
-        borderBottomWidth: 1,
-    },
-
-    topInfoItem: {
-        flexDirection: 'row',
-        ...generalSty.mmBottom
-    },
-
-    userContainer: {
-        flexDirection: 'row',
-        flex: 6,
-    },
-
-    userImageContainer: {
-        ...generalSty.mlRight
-    },
-
-    textBold: {
-        fontWeight: 'bold',
-    },
-
-    badgePrimary: {
-        ...generalSty.primaryBackground,
-        ...generalSty.pmLeft,
-        ...generalSty.pmRight,
-        ...generalSty.mmLeft,
-        alignSelf: 'baseline',
-        borderRadius: 3,
-        paddingVertical: 0.5,
-    },
-
-    smallTextWhite: {
-        fontSize: 10,
-        letterSpacing: 0.5,
-        ...generalSty.white
-    },
-
-    topSecondInfo: {
-        flexDirection: 'row',
-        alignItems: 'center'
-    },
-
-    infoRightContainer: {
-        flex: 1,
-        alignItems: 'flex-end'
-    },
-
-    secondInfoContainer: {
-        ...generalSty.mlBottom,
-        ...generalSty.plBottom,
-        ...generalSty.greyBorder,
-        borderBottomWidth: 1
-    },
-
-    smallTextGrey: {
-        ...generalSty.greyText,
-        ...generalSty.smallText
-    },
-
     smallText: {
         ...generalSty.smallText
     },
 
-    secondInfoItemContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        ...generalSty.mmBottom
-    },
-
     titleScreenStyle: {
         ...generalSty.titleScreenStyle
-    },
-
-    listCardContainer: {
-        ...generalSty.mlTop,
-        ...generalSty.mlBottom,
-        height: 460
-    },
-
-    cardContainer: {
-        flexDirection: 'row',
-        borderBottomWidth: 1,
-        ...generalSty.greyBorder,
-        ...generalSty.plBottom,
-        ...generalSty.mlBottom
-    },
-
-    imageContainer: {
-        ...generalSty.mlRight
-    },
-
-    imageCard: {
-        width: 60,
-        height: 95,
-        borderRadius: 3
-    },
-
-    infoContainer: {
-        ...generalSty.mlRight
-    },
-
-    titleItem: {
-        fontWeight: 'bold'
     },
 
     bottomContent: {

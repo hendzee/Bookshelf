@@ -14,7 +14,7 @@ const CustomDatePicker = (props) => {
     }
 
     const setContent = () => {
-        if (props.show !== 'undefined' && props.show) {
+        if (props.show !== undefined && props.show) {
             return (
                 <DateTimePicker
                     testID='ID'

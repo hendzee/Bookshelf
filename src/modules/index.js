@@ -6,3 +6,4 @@ export * from './status';
 export * from './categoryService';
 export * from './dateFormater';
 export * from './transactionService';
+export * from './math';
