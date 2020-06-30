@@ -30,9 +30,9 @@ class InboxScreen extends Component {
         <TopNavigationAction icon={ SearchIcon } />
     );
 
-    /** Handle navigation to cart confirmation screen */
-    toCartConfirmation = () => {
-        this.props.navigation.navigate('CART_CONFIRMATION');
+    /** Handle navigation to detail transaction screen */
+    toDetailTransaction = () => {
+        this.props.navigation.navigate('DETAIL_TRANSACTION');
     }
 
     render() {
@@ -48,7 +48,7 @@ class InboxScreen extends Component {
 
                 <Layout style={ styles.mainContainer }>
                     <ScrollView showsVerticalScrollIndicator={ false }>
-                        <CustomTouchableOpacity onPress={ this.toCartConfirmation }>
+                        <CustomTouchableOpacity onPress={ this.toDetailTransaction }>
                             <Layout style={ styles.inboxCardContainer }>
                                 <Layout style={ styles.inboxCardImageContainer }>
                                     <Avatar 

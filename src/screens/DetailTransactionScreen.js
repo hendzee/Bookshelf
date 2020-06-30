@@ -11,21 +11,27 @@ import { generalSty } from '../styles';
 import { CustomStatusBar, SmallModal } from '../components/general';
 
 /** Substance of cart confirmation page */
-import { TopContent, MidContent, ListContent } from '../components/cart_confirmation_screen';
+import { TopContent, MidContent, ListContent } from '../components/detail_transaction_screen';
 
 /** import CRUD function */
-import { dummyFunctionData, addPeriod, showTransaction } from '../modules';
+import { updateToAppointment, updateToCancel, showTransaction } from '../modules';
 
 const BackIcon = (style) => (
     <Icon { ...style } name='arrow-back-outline' />
 )
 
-class CartConfirmationScreen extends Component {
+const modalType = {
+    REQUEST: 'REQUEST',
+    CANCEL: 'CANCEL',
+}
+
+class DetailTransactionScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {
             transaction: {}, // general info of transaction
             relatedUsers: {}, // Borrower and owner user data
+            modalType: modalType.REQUEST, // Set modal for
             loans: [], // List of loan items
             responseTitle: '', // Response title / message
             isResponseError: false, // Response error
@@ -51,33 +57,63 @@ class CartConfirmationScreen extends Component {
 
     /** Handle send */
     handleSend = () => {
-        this.setState({ isLoading: true, isSend: true }, () => {
-            addPeriod(
-                () => {
-                    dummyFunctionData().then(response => {
-                        this.setState({ 
-                            isLoading: false, 
-                            responseTitle: response.message,
-                            isResponseError: false
-                        });
-                    }).catch(err => {
-                        this.setState({ 
-                            isLoading: false,
-                            responseTitle: err.message,
-                            isResponseError: true
-                        });
+        this.setState({ isSend: true, isLoading: true, modalType: modalType.REQUEST }, () => {
+            updateToAppointment(15)
+                .then(response => {
+                    this.setState({
+                        isResponseError: response.status,
+                        responseTitle: response.message,
+                        isResponseError: false
                     })
-                }
-            )
-        });
+                }).catch(error => {
+                    this.setState({
+                        isResponseError: error.status,
+                        responseTitle: error.message,
+                        isResponseError: true
+                    })
+                }).finally(() => {
+                    this.setState({ isLoading: false })
+                })
+        })
     }
 
-    /** Handle modal success save function  */
-    handleModalSend = () => {
-        this.setState({ isSend: false }, () => {
-            this.toSelectMap();
-        });
+    /** Handle modal submit  */
+    handleModalSubmit = () => {
+        if (this.state.modalType === modalType.REQUEST) {
+            this.setState({ isSend: false }, () => {
+                this.toSelectMap();
+            });
+        }else {
+            this.setState({ isSend: false })
+        }
     };
+
+    /** Handle cancel */
+    handleCancel = () => {
+        this.setState({ isSend: true, isLoading: true, modalType: modalType.CANCEL }, () => {
+            updateToCancel(15)
+                .then(response => {
+                    this.setState({
+                        isResponseError: response.status,
+                        responseTitle: response.message,
+                        isResponseError: false
+                    })
+                }).catch(error => {
+                    this.setState({
+                        isResponseError: error.status,
+                        responseTitle: error.message,
+                        isResponseError: true
+                    })
+                }).finally(() => {
+                    this.setState({ isLoading: false })
+                })
+        })
+    }
+
+    /** To Map */
+    toMap = () => {
+        this.props.navigation.navigate('SELECT_MAP')
+    }
 
     /** Show back button */
     showBackButton = () => (
@@ -99,7 +135,7 @@ class CartConfirmationScreen extends Component {
             <SafeAreaView style={ styles.rootContainer }>
                 <CustomStatusBar />
                 <TopNavigation
-                    title='Confirmation'
+                    title='Transaction'
                     titleStyle={ styles.titleScreenStyle }
                     alignment='center'
                     leftControl={ this.showBackButton() }
@@ -108,12 +144,15 @@ class CartConfirmationScreen extends Component {
                 <Layout style={ styles.mainContainer }>
                     <ScrollView showsVerticalScrollIndicator={ false }>
                         <TopContent relatedUsers={ this.state.relatedUsers } />
-                        <MidContent transaction={ this.state.transaction } />
+                        <MidContent 
+                            transaction={ this.state.transaction }
+                            toMap={ this.toMap } 
+                        />
                         <ListContent loans={ this.state.loans } />
                     </ScrollView>
 
                     <Layout style={ styles.bottomContent }>
-                        <Button status='danger'>
+                        <Button onPress={ this.handleCancel } status='danger'>
                             REJECT REQUEST
                         </Button>
                         <Button onPress={ this.handleSend } style={ styles.mainButton }>
@@ -126,7 +165,7 @@ class CartConfirmationScreen extends Component {
                 <SmallModal
                     title={ this.state.responseTitle } 
                     isError={ this.state.isResponseError }
-                    onPress={ this.handleModalSend } 
+                    onPress={ this.handleModalSubmit } 
                     loading={ this.state.isLoading }
                     visible={ this.state.isSend } 
                 />
@@ -165,4 +204,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export { CartConfirmationScreen };
+export { DetailTransactionScreen };

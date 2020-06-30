@@ -3,11 +3,54 @@ import { StyleSheet } from 'react-native';
 import { 
     Layout, 
     Text, 
+    Button,
+    Icon
 } from '@ui-kitten/components';
 import { generalSty } from '../../styles';
 import { dateToDuration } from '../../modules';
 
+const EditIcon = () => (
+    <Icon width={ 15 } height={ 15 } name='edit' />
+)
+
 const MidContent = (props) => {
+    /** Set extra data */
+    const setExtraData = () => {
+        if (props.transaction.status === 'APPOINTMENT' || props.transaction.status === 'CANCEL') {
+            return(
+                <Layout>
+                    <Layout style={ styles.secondInfoItemContainer }>
+                        <Text style={ styles.smallText }>Return Date</Text>
+                        <Text style={ styles.smallText }>20 March, 2020</Text>
+                    </Layout>
+                    <Layout style={ styles.secondInfoItemContainer }>
+                        <Layout style={ styles.leftFlexContainer }>
+                            <Text style={ styles.smallText }>Meet Point</Text>
+                        </Layout>
+                        <Layout style={ styles.rightFlexContainer }>
+                            <Text style={ styles.address }>Abraham lincoln street no.20, America</Text>
+                        </Layout>
+                    </Layout>
+                    <Layout style={ styles.secondInfoItemContainer }>
+                        <Layout style={ styles.leftFlexContainer }>
+                            <Text style={ styles.smallText }>Note</Text>
+                        </Layout>
+                        <Layout style={ styles.rightFlexContainer }>
+                            <Text style={ styles.address }>In the right of Al-Iman mosque</Text>
+                        </Layout>
+                    </Layout>
+                    <Layout style={ styles.floatRight }>
+                        <Button onPress={ props.toMap } status='basic' size='tiny' icon={ EditIcon }>
+                            Edit Map
+                        </Button>
+                    </Layout>
+                </Layout>
+            )
+        }
+
+        return null;
+    }
+
     const setContent = () => {
         if (Object.keys(props.transaction).length > 0) {
             return (
@@ -33,6 +76,7 @@ const MidContent = (props) => {
                             }
                         </Text>
                     </Layout>
+                    { setExtraData() }
                 </Layout>
             );
         }
@@ -79,6 +123,23 @@ const styles = StyleSheet.create({
 
     infoContainer: {
         ...generalSty.mlRight
+    },
+
+    leftFlexContainer: {
+        flex: 2
+    },
+
+    address: {
+        ...generalSty.smallText,
+        textAlign: 'right'
+    },
+
+    rightFlexContainer: {
+        flex: 1
+    },
+
+    floatRight: {
+        alignItems: 'flex-end'
     },
 });
 

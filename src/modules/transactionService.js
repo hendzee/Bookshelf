@@ -103,4 +103,74 @@ const updateToWaiting = (id) => {
     });
 }
 
-export { addTransaction, showTransaction, updateToWaiting }
+/** Update to make appointment */
+const updateToAppointment = (id) => {
+    return new Promise(function(resolve, reject){
+        var response = {};
+        var message = '';
+
+        axios.post(prefix + '/transactions/update/appointment/' + id)
+        .then(result => {
+            response = {
+                data: result.data,
+                message: 'Request was send.',
+                status: status.OK
+            }
+            resolve(response);
+        })
+        .catch(error => {
+            message = 'There is error.'
+            
+            if (error.response) {
+                message = error.response.data.message
+            }
+
+            response = {
+                data: null,
+                message: message,
+                status: status.ERROR
+            }
+            reject(response);
+        })
+    });
+}
+
+/** Update to cancel */
+const updateToCancel = (id) => {
+    return new Promise(function(resolve, reject){
+        var response = {};
+        var message = '';
+
+        axios.post(prefix + '/transactions/update/cancel/' + id)
+        .then(result => {
+            response = {
+                data: result.data,
+                message: 'Cancelled transaction.',
+                status: status.OK
+            }
+            resolve(response);
+        })
+        .catch(error => {
+            message = 'There is error.'
+            
+            if (error.response) {
+                message = error.response.data.message
+            }
+
+            response = {
+                data: null,
+                message: message,
+                status: status.ERROR
+            }
+            reject(response);
+        })
+    });
+}
+
+export { 
+    addTransaction, 
+    showTransaction, 
+    updateToWaiting, 
+    updateToAppointment, 
+    updateToCancel 
+}

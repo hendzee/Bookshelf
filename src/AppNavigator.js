@@ -20,9 +20,8 @@ import {
     EditItemScreen,
     ItemDetailScreen,
     CartScreen,
-    CartConfirmationScreen,
+    DetailTransactionScreen,
     SelectMapScreen,
-    CartConfirmedScreen,
     ConfirmationItemScreen,
     EditProfileScreen,
     ChangePasswordScreen,
@@ -109,9 +108,8 @@ const AppStackNavigator = () => (
         <Stack.Screen name='EDIT_ITEM' component={ EditItemScreen } />
         <Stack.Screen name='ITEM_DETAIL' component={ ItemDetailScreen } />
         <Stack.Screen name='CART' component={ CartScreen } />
-        <Stack.Screen name='CART_CONFIRMATION' component={ CartConfirmationScreen } />
+        <Stack.Screen name='DETAIL_TRANSACTION' component={ DetailTransactionScreen } />
         <Stack.Screen name='SELECT_MAP' component={ SelectMapScreen } />
-        <Stack.Screen name='CART_CONFIRMED' component={ CartConfirmedScreen } />
         <Stack.Screen name='CONFIRMATION_ITEM' component={ ConfirmationItemScreen } />
         <Stack.Screen name='EDIT_PROFILE' component={ EditProfileScreen } />
         <Stack.Screen name='CHANGE_PASSWORD' component={ ChangePasswordScreen } />
