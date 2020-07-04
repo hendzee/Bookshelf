@@ -1,5 +1,6 @@
 import Geolocation from '@react-native-community/geolocation';
 import axios from 'axios';
+import { locationiq_token } from '../../env.json';
 
 /** Get user location */
 const getUserLocation = () => {
@@ -38,7 +39,7 @@ const getLocationName = (latitude, longitude) => {
     return new Promise(function(resolve, reject){
         let response = {};
 
-        axios.get('https://us1.locationiq.com/v1/reverse.php?key=1bcaddf857650b&lat=' + latitude + '&lon=' + longitude + '&format=json')
+        axios.get('https://us1.locationiq.com/v1/reverse.php?key=' + locationiq_token + '&lat=' + latitude + '&lon=' + longitude + '&format=json')
             .then(result => {
                 response = {
                     data: result.data.display_name 

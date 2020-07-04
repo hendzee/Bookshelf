@@ -1,3 +1,5 @@
-const prefix = 'http://192.168.43.190/bookshelf_service/public'
+import { endpoint } from '../../env.json';
+
+const prefix = endpoint
 
 export { prefix };

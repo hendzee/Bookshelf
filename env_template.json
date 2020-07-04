@@ -1,0 +1,5 @@
+{
+    "HOW TO USE": "CREATE env.json, copy this code and remove this line",
+    "endpoint": "ADD YOUR ENDPOINT HERE",
+    "locationiq_token": "ADD YOUR LOCATIONIQ TOKEN HERE"
+}
