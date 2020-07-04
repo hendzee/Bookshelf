@@ -21,5 +21,18 @@ If you already done with _"Pre-Install"_ step, follow these step bellow to finis
     npm install
 ```
 
+### Database and API
+**(COMING SOON)**
+
+### Map
+This app using some procedure or some library to handle map. Generally, there are 3 library that
+use help us work with map.
+* To get latitude and longitude and view map using [React Native Maps](https://www.npmjs.com/package/react-native-maps) (using google API KEY)
+* To get user current location using [React Native Maps (Community)](https://github.com/react-native-community/react-native-maps)
+* And then to helping convert lat and long to address, using [locationIQ](https://locationiq.com/), its free!. 
+
+### env.json
+This file is use to keep information secretly and localy, so it will be more safe to write credential, token or etc. Just create **env.json** file and then copy **env_template.json** in the root of project, then fill the information.
+
 ### __Status Project__
 For now this project still on progress and not finish yet.
