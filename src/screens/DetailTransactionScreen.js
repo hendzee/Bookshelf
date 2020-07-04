@@ -110,11 +110,6 @@ class DetailTransactionScreen extends Component {
         })
     }
 
-    /** To Map */
-    toMap = () => {
-        this.props.navigation.navigate('SELECT_MAP')
-    }
-
     /** Show back button */
     showBackButton = () => (
         <TopNavigationAction icon={ BackIcon } onPress={ this.handleBack } />
@@ -127,7 +122,7 @@ class DetailTransactionScreen extends Component {
 
     /** Navigate to select map screen */
     toSelectMap = () => {
-        this.props.navigation.navigate('SELECT_MAP');
+        this.props.navigation.navigate('SELECT_MAP', { transactionId: this.state.transaction.id });
     }
     
     render() {
@@ -146,7 +141,7 @@ class DetailTransactionScreen extends Component {
                         <TopContent relatedUsers={ this.state.relatedUsers } />
                         <MidContent 
                             transaction={ this.state.transaction }
-                            toMap={ this.toMap } 
+                            toSelectMap={ this.toSelectMap } 
                         />
                         <ListContent loans={ this.state.loans } />
                     </ScrollView>

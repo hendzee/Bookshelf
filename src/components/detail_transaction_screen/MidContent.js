@@ -40,7 +40,7 @@ const MidContent = (props) => {
                         </Layout>
                     </Layout>
                     <Layout style={ styles.floatRight }>
-                        <Button onPress={ props.toMap } status='basic' size='tiny' icon={ EditIcon }>
+                        <Button onPress={ props.toSelectMap } status='basic' size='tiny' icon={ EditIcon }>
                             Edit Map
                         </Button>
                     </Layout>

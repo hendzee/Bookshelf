@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
-import { SafeAreaView, StyleSheet, Image } from 'react-native';
-import { Layout, Icon, Button, Input } from '@ui-kitten/components';
+import { SafeAreaView, StyleSheet  } from 'react-native';
+import { Layout, Icon, Button, Input, Text } from '@ui-kitten/components';
 import { generalSty } from '../styles';
 import { CustomStatusBar, CustomTouchableOpacity, SmallModal } from '../components/general';
 
 /** SelectMapScreen substance components */
-import { InfoModal } from '../components/select_map_screen';
+import { InfoModal, Map } from '../components/select_map_screen';
 
-/** import CRUD function */
-import { dummyFunctionData, addPeriod } from '../modules';
+/** import CRUD and other function */
+import { updateMap, getUserLocation, getLocationName } from '../modules';
 
 const CloseIcon = () => (
     <Icon width={ 25 } height={ 25 } name='close' />
@@ -22,6 +22,11 @@ class SelectMapScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            note: '',
+            isCurrentUserSet: false, // Map component waiting this until get user location
+            currentLatitude: 0, // Current user latitude
+            currentLongitude: 0, // Current user longitude
+            locationName: '', // Location name
             responseTitle: '', // Response title / message
             isResponseError: false, // Response error
             isSaved: false, // Saved state
@@ -29,9 +34,25 @@ class SelectMapScreen extends Component {
         }
     }
 
+    componentDidMount() {
+        getUserLocation()
+            .then(response => {
+                this.setState({ 
+                    isCurrentUserSet: true, 
+                    currentLatitude: response.data.latitude, 
+                    currentLongitude: response.data.longitude 
+                })
+            })
+            .catch(error => {
+                alert(error.message);
+            })
+    }
+
     /** Handle back */
     handleClose = () => {
-        this.props.navigation.navigate('CART_CONFIRMED');
+        if (!this.state.isResponseError) {
+            this.props.navigation.navigate('MAIN');
+        }
     }
 
     /** To chat detail */
@@ -42,23 +63,26 @@ class SelectMapScreen extends Component {
     /** Handle save data */
     handleSave = () => {
         this.setState({ isLoading: true, isSaved: true }, () => {
-            addPeriod(
-                () => {
-                    dummyFunctionData().then(response => {
-                        this.setState({ 
-                            isLoading: false, 
-                            responseTitle: response.message,
-                            isResponseError: false
-                        });
-                    }).catch(err => {
-                        this.setState({ 
-                            isLoading: false,
-                            responseTitle: err.message,
-                            isResponseError: true
-                        });
-                    })
-                }
-            )
+            let data = {
+                transactionId: this.props.route.params.transactionId,
+                currentLatitude: this.state.currentLatitude,
+                currentLongitude: this.state.currentLongitude,
+                note: this.state.note
+            }
+
+            updateMap(data)
+                .then((response) => {
+                    this.setState({ 
+                        isLoading: false, 
+                        responseTitle: response.message, 
+                        isResponseError: false });
+                })
+                .catch(error => {
+                    this.setState({ 
+                        isLoading: false, 
+                        responseTitle: error.message, 
+                        isResponseError: true })
+                })
         });
     };
 
@@ -68,49 +92,60 @@ class SelectMapScreen extends Component {
             this.handleClose();
         });
     };
+
+    /** Set location name */
+    setLocationName = (latitude, longitude) => {
+        getLocationName(latitude, longitude)
+            .then(response => {
+                this.setState({ locationName: response.data });
+            })
+            .catch(error => {
+                alert(error.message)
+            })
+    }
     
     render() {
         return (
             <SafeAreaView style={ styles.rootContainer }>
                 <CustomStatusBar />
+                
+                <Map
+                    isCurrentUserSet={ this.state.isCurrentUserSet }
+                    currentLatitude={ this.state.currentLatitude }
+                    currentLongitude={ this.state.currentLongitude } 
+                    setLocationName={ this.setLocationName } 
+                />
 
-                <Layout>
-                    <Image 
-                        style={ styles.map }
-                        source={ require('../images/others/map.png') }
-                    />
-                    <Layout style={ styles.topFloatContainer }>
-                        <Layout style={ styles.topLeftContainer }>
-                            <CustomTouchableOpacity onPress={ this.handleClose }>
-                                <CloseIcon />
-                            </CustomTouchableOpacity>
-                        </Layout>
-                        <Layout style={ styles.topRightContainer }>
-                            <CustomTouchableOpacity onPress={ this.toChatDetail }>
-                                <ChatIcon />
-                            </CustomTouchableOpacity>
-                        </Layout>
+                <Layout style={ styles.topFloatContainer }>
+                    <Layout style={ styles.topLeftContainer }>
+                        <CustomTouchableOpacity onPress={ this.handleClose }>
+                            <CloseIcon />
+                        </CustomTouchableOpacity>
                     </Layout>
-                    <Layout style={ styles.bottomContainer }>
-                        <Layout style={ styles.bottomMainContainer }>
-                            <Input
-                                label='Address'
-                                labelStyle={ styles.inputTextStyle }
-                                placeholder='Address'
-                                textStyle={ styles.inputTextStyle }
-                                style={ styles.input }
-                            />
-                            <Input
-                                label='Detail'
-                                labelStyle={ styles.inputTextStyle }
-                                placeholder='Detail Address'
-                                textStyle={ styles.inputTextStyle }
-                                style={ styles.input }
-                            />
-                            <Button onPress={ this.handleSave }>
-                                SAVE
-                            </Button>
+                    <Layout style={ styles.topRightContainer }>
+                        <CustomTouchableOpacity onPress={ this.toChatDetail }>
+                            <ChatIcon />
+                        </CustomTouchableOpacity>
+                    </Layout>
+                </Layout>
+                <Layout style={ styles.bottomContainer }>
+                    <Layout style={ styles.bottomMainContainer }>
+                        <Layout style={ styles.textInfoContainer }>
+                            <Text style={ styles.textBold }>{ this.state.locationName }</Text>
                         </Layout>
+                        <Input
+                            label='Note: '
+                            multiline={ true }
+                            labelStyle={ styles.inputTextStyle }
+                            placeholder='Detail Address, direction etc'
+                            textStyle={ styles.input }
+                            style={ styles.input }
+                            value={ this.state.note }
+                            onChangeText={ (text) => this.setState({ note: text }) }
+                        />
+                        <Button onPress={ this.handleSave }>
+                            SAVE
+                        </Button>
                     </Layout>
                 </Layout>
 
@@ -184,13 +219,23 @@ const styles = StyleSheet.create({
     },
 
     input: {
-        ...generalSty.mlBottom
+        ...generalSty.mlBottom,
+        minHeight: 70,
+        textAlignVertical: "top"
+    },
+
+    textInfoContainer: {
+        ...generalSty.mmBottom
     },
 
     inputTextStyle: {
         ...generalSty.smallText,
         ...generalSty.black
     },
+
+    textBold: {
+        fontWeight: 'bold'
+    }
 });
 
 export { SelectMapScreen };
