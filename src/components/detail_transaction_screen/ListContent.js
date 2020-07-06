@@ -10,8 +10,11 @@ const ListContent = (props) => {
     /** Extract data */
     const extractData = () => {
         if (props.loans.length > 0) {
-            return props.loans.map(item => (
-                <Layout style={ styles.cardContainer }>
+            return props.loans.map((item, index) => (
+                <Layout 
+                    key={ index } 
+                    style={ styles.cardContainer }
+                >
                     <Layout style={ styles.imageContainer }>
                         <Image 
                             style={ styles.imageCard }

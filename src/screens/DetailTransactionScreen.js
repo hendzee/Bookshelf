@@ -11,7 +11,7 @@ import { generalSty } from '../styles';
 import { CustomStatusBar, SmallModal } from '../components/general';
 
 /** Substance of cart confirmation page */
-import { TopContent, MidContent, ListContent } from '../components/detail_transaction_screen';
+import { TopContent, MidContent, ListContent, BottomContent } from '../components/detail_transaction_screen';
 
 /** import CRUD function */
 import { updateToAppointment, updateToCancel, showTransaction } from '../modules';
@@ -124,6 +124,11 @@ class DetailTransactionScreen extends Component {
     toSelectMap = () => {
         this.props.navigation.navigate('SELECT_MAP', { transactionId: this.state.transaction.id });
     }
+
+    /** Navigate to confirmation item */
+    toConfirmationItem = () => {
+        this.props.navigation.navigate('CONFIRMATION_ITEM', { loans: this.state.loans });
+    }
     
     render() {
         return (
@@ -145,15 +150,12 @@ class DetailTransactionScreen extends Component {
                         />
                         <ListContent loans={ this.state.loans } />
                     </ScrollView>
-
-                    <Layout style={ styles.bottomContent }>
-                        <Button onPress={ this.handleCancel } status='danger'>
-                            REJECT REQUEST
-                        </Button>
-                        <Button onPress={ this.handleSend } style={ styles.mainButton }>
-                            ACCEPT REQUEST
-                        </Button>
-                    </Layout>
+                    <BottomContent
+                        transaction={ this.state.transaction } 
+                        handleCancel={ this.handleCancel }
+                        handleSend={ this.handleSend }
+                        toConfirmationItem={ this.toConfirmationItem }
+                    />
                 </Layout>
                 
                 {/* Modal when send request */}
@@ -185,18 +187,6 @@ const styles = StyleSheet.create({
     titleScreenStyle: {
         ...generalSty.titleScreenStyle
     },
-
-    bottomContent: {
-        position: 'absolute',
-        bottom: 0,
-        left: 0,
-        right: 0,
-        ...generalSty.plAll,
-    },
-
-    mainButton: {
-        ...generalSty.mlTop
-    }
 });
 
 export { DetailTransactionScreen };

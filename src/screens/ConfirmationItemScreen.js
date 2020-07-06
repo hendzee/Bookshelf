@@ -23,6 +23,7 @@ class ConfirmationItemScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            checkboxItems: [], // Checkbox items
             responseTitle: '', // Response title / message
             isResponseError: false, // Response error
             isLoading: false, // Loading state
@@ -65,14 +66,75 @@ class ConfirmationItemScreen extends Component {
 
     /** Handle confirm modal button */
     handleModalConfirm = () => {
-        this.setState({ isConfirm: false, isLoading: false }, () => {
-            this.toMainPage();
-        });
+        if (this.state.checkboxItems.length < 1) {
+            alert('Minimal item must be 1.')
+        }else {
+            this.setState({ isConfirm: false, isLoading: false }, () => {
+                this.toMainPage();
+            });
+        }
     }
 
     /** to main page */
     toMainPage = () => {
         this.props.navigation.navigate('MAIN');
+    }
+
+    /** Extract data */
+    extractData = () => {
+        return this.props.route.params.loans.map((item, index) => (
+            <Layout
+                key={ index } 
+                style={ styles.listItemContainer }
+            >
+                <Layout style={ styles.cardContainer }>
+                    <Layout style={ styles.imageContainer }>
+                        <Image 
+                            style={ styles.imageCard }
+                            source={{ uri: item.items.cover }}
+                        />
+                    </Layout>
+                    <Layout style={ styles.infoContainer }>
+                        <Text style={ styles.titleItem }>
+                            { item.items.title }
+                        </Text>
+                        <Text style={ styles.infoItem }>
+                            { item.items.author }
+                        </Text>
+                    </Layout>
+                </Layout>
+
+                <Layout>
+                    <CheckBox
+                        checked={ this.setActiveCheckbox(item.items.id) } 
+                        onChange={(_) => this.handleCheckbox(item.items.id) } 
+                    >
+                    </CheckBox>
+                </Layout>
+            </Layout>
+        ));
+    }
+
+    /** Handle Checkbox */
+    handleCheckbox = (key) => {
+        let tempCheckboxList = this.state.checkboxItems;
+
+        if (tempCheckboxList.includes(key)) {
+            tempCheckboxList.splice( tempCheckboxList.indexOf(key) , 1);
+        }else {
+            tempCheckboxList.push(key)
+        }
+
+        this.setState({ checkboxItems: tempCheckboxList });
+    }
+
+    /** Set active checkbox */
+    setActiveCheckbox = (key) => {
+        if (this.state.checkboxItems.includes(key)){
+            return true;
+        }
+
+        return false;
     }
     
     render() {
@@ -88,54 +150,12 @@ class ConfirmationItemScreen extends Component {
                 
                 <Layout style={ styles.mainContainer }>
                     <ScrollView showsVerticalScrollIndicator={ false }>
-                        {/* Item list - start */}
-                        <Layout>
-                            <Layout style={ styles.listItemContainer }>
-                                <Layout style={ styles.cardContainer }>
-                                    <Layout style={ styles.imageContainer }>
-                                        <Image 
-                                            style={ styles.imageCard }
-                                            source={ require('../images/items/item_photo1.jpeg') }
-                                        />
-                                    </Layout>
-                                    <Layout style={ styles.infoContainer }>
-                                        <Text style={ styles.titleItem }>Green Ember</Text>
-                                        <Text style={ styles.infoItem }>Thomas Niels</Text>
-                                    </Layout>
-                                </Layout>
-
-                                <Layout>
-                                    <CheckBox>
-                                    </CheckBox>
-                                </Layout>
-                            </Layout>
-                            
-                            <Layout style={ styles.listItemContainer }>
-                                <Layout style={ styles.cardContainer }>
-                                    <Layout style={ styles.imageContainer }>
-                                        <Image 
-                                            style={ styles.imageCard }
-                                            source={ require('../images/items/item_photo1.jpeg') }
-                                        />
-                                    </Layout>
-                                    <Layout style={ styles.infoContainer }>
-                                        <Text style={ styles.titleItem }>Green Ember</Text>
-                                        <Text style={ styles.infoItem }>Thomas Niels</Text>
-                                    </Layout>
-                                </Layout>
-
-                                <Layout>
-                                    <CheckBox>
-                                    </CheckBox>
-                                </Layout>
-                            </Layout>
-                        </Layout>
-                        {/* Item list - end */}
+                       { this.extractData() }
                     </ScrollView>
 
                     <Layout style={ styles.bottomContent }>
                         <Button onPress={ this.handleConfirmation }>
-                            SEND REQUEST
+                            CONFIRM
                         </Button>
                     </Layout>
                 </Layout>
