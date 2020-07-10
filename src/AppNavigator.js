@@ -8,7 +8,8 @@ import {
     BottomNavigationTab, 
     Icon, 
 } from '@ui-kitten/components';
-import { 
+import {
+    LoginScreen,
     HomeScreen, 
     ChatScreen, 
     ChatDetailScreen, 
@@ -34,7 +35,7 @@ import {
     SearchItemResultScreen,
     SearchItemFilter,
     ItemsScreen,
-    TransactionScreen
+    TransactionScreen,
 } from './screens';
 
 /** Home icon */
@@ -101,6 +102,7 @@ const TabBarNavigator = () => (
 
 const AppStackNavigator = () => (
     <Stack.Navigator headerMode='none'>
+        <Stack.Screen name='LOGIN' component={ LoginScreen } />
         <Stack.Screen name='MAIN' component={ TabBarNavigator } />
         <Stack.Screen name='CHAT_DETAIL' component={ ChatDetailScreen } />
         <Stack.Screen name='CONTACT' component={ ContactScreen } />

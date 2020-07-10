@@ -4,8 +4,7 @@ import {
     Layout, 
     Icon, 
     TopNavigation, 
-    TopNavigationAction, 
-    Button, 
+    TopNavigationAction,
 } from '@ui-kitten/components';
 import { generalSty } from '../styles';
 import { CustomStatusBar, SmallModal } from '../components/general';
@@ -41,7 +40,7 @@ class DetailTransactionScreen extends Component {
     }
 
     async componentDidMount() {
-        let getTransactionData = await showTransaction(15);
+        let getTransactionData = await showTransaction(3);
 
         this.setState({
             transaction: getTransactionData.data.transaction,
@@ -79,7 +78,7 @@ class DetailTransactionScreen extends Component {
 
     /** Handle modal submit  */
     handleModalSubmit = () => {
-        if (this.state.modalType === modalType.REQUEST) {
+        if (this.state.modalType === modalType.REQUEST && !this.state.isResponseError) {
             this.setState({ isSend: false }, () => {
                 this.toSelectMap();
             });
