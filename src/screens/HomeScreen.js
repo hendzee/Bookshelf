@@ -8,6 +8,9 @@ import { status, getLatestItem, getRecomendationItem, getRandomItem } from '../m
 /** Homescreen substance components */
 import { FirstContent, SecondContent, ThirdContent } from '../components/home_screens';
 
+/** Redux */
+import { connect } from 'react-redux';
+
 const SearchIcon = (style) => (
     <Icon { ...style } name='search-outline' />
 );
@@ -23,9 +26,9 @@ class HomeScreen extends Component {
     }
 
     async componentDidMount () {
-        let getFirstData = await getLatestItem();
-        let getSecondData = await getRecomendationItem();
-        let getThirdData = await getRandomItem();
+        let getFirstData = await getLatestItem(this.props.userData.token);
+        let getSecondData = await getRecomendationItem(this.props.userData.token);
+        let getThirdData = await getRandomItem(this.props.userData.token);
 
         this.setState({
             firstData: getFirstData.status === status.OK ? getFirstData.data : [],
@@ -89,4 +92,12 @@ const styles = StyleSheet.create({
     },
 });
 
-export { HomeScreen };
+const mapStateToProps = state => {
+    return {
+        userData: state.auth.userData
+    }
+}
+
+const rdxHomeScreen = connect(mapStateToProps)(HomeScreen);
+
+export { rdxHomeScreen as HomeScreen };

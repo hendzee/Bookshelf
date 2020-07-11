@@ -3,12 +3,15 @@ import { prefix } from './endpoint';
 import { status } from './status';
 
 /** Get all data */
-const getItem = async (page) => {
+const getItem = async (page, token) => {
     var response = {};
     var message = '';
+    var auth = 'Bearer ' + token;
     
     return new Promise(function (resolve, reject){
-        axios.get(prefix + '/items?user=true&page=' + page)
+        axios.get(prefix + '/items?user=true&page=' + page, {
+            headers: { 'Authorization':  + auth }
+        })
             .then(result => {
                 response = {
                     data: result.data.data,
@@ -37,12 +40,16 @@ const getItem = async (page) => {
 }
 
 /** Get latest items */
-const getLatestItem = async () => {
+const getLatestItem = async (token) => {
     var response = {};
     var message = '';
     
+    var auth = 'Bearer ' + token;
+
     return new Promise(function (resolve, reject){
-        axios.get(prefix + '/items?latest=true')
+        axios.get(prefix + '/items?latest=true', {
+            headers: { 'Authorization': auth }
+        })
             .then(result => {
                 response = {
                     data: result.data,
@@ -67,12 +74,15 @@ const getLatestItem = async () => {
 }
 
 /** Get recomendation items */
-const getRecomendationItem = async () => {
+const getRecomendationItem = async (token) => {
     var response = {};
     var message = '';
+    var auth = 'Bearer ' + token;
     
     return new Promise(function (resolve, reject){
-        axios.get(prefix + '/items?recomendation=true')
+        axios.get(prefix + '/items?recomendation=true', {
+            headers: { 'Authorization': auth }
+        })
             .then(result => {
                 response = {
                     data: result.data,
@@ -86,7 +96,7 @@ const getRecomendationItem = async () => {
                 message = JSON.stringify(error);
 
                 response = {
-                    data: result.data,
+                    data: error.data,
                     message: message,
                     status: status.OK
                 };
@@ -97,12 +107,15 @@ const getRecomendationItem = async () => {
 }
 
 /** Get random items */
-const getRandomItem = async () => {
+const getRandomItem = async (token) => {
     var response = {};
     var message = '';
+    var auth = 'Bearer ' + token;
     
     return new Promise(function (resolve, reject){
-        axios.get(prefix + '/items?random=true')
+        axios.get(prefix + '/items?random=true', {
+            headers: { 'Authorization': auth }
+        })
             .then(result => {
                 response = {
                     data: result.data,

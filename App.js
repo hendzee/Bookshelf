@@ -9,13 +9,19 @@ import AppNavigator from './src/AppNavigator';
 
 const theme = { ...lightTheme, ...appTheme }
 
+/** Redux pusposed */
+import configure from './src/store/configure';
+import { Provider } from 'react-redux';
+
+const store = configure();
+
 const App = () => (
-  <>
+  <Provider store={ store }>
     <IconRegistry icons={ EvaIconsPack }/>
     <ApplicationProvider mapping={ mapping } theme={ theme }>
       <AppNavigator />
     </ApplicationProvider>
-  </>
+  </Provider>
 );
 
 export default App;

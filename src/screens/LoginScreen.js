@@ -3,7 +3,6 @@ import { SafeAreaView, StyleSheet } from 'react-native';
 import { 
     Layout, 
     Icon, 
-    TopNavigationAction, 
     Input, 
     Text,
     Button
@@ -11,7 +10,12 @@ import {
 import { generalSty, GREY } from '../styles';
 import { CustomStatusBar, SmallModal } from '../components/general';
 
+/** Functions */
 import { setSecureInput, login, setUserData, getUserData } from '../modules';
+
+/** Redux */
+import { connect } from 'react-redux';
+import { rdxSetUserData } from '../store/actions';
 
 const EyeIcon = () => (
     <Icon fill={ GREY } name='eye-outline'/>
@@ -68,6 +72,9 @@ class LoginScreen extends Component {
                     id: response.data.id,
                     token: response.data.token
                 }
+
+                /** Save on redux userdata */
+                this.props.onRdxSetUserData(storeData);
 
                 setUserData(storeData)
                     .then(_ => {
@@ -186,4 +193,12 @@ const styles = StyleSheet.create({
     },
 });
 
-export { LoginScreen };
+const mapDispatchToProps = dispatch => {
+    return {
+        onRdxSetUserData: (data) => dispatch(rdxSetUserData(data))
+    }
+}
+
+const rdxLoginScreen = connect(null, mapDispatchToProps)(LoginScreen);
+
+export { rdxLoginScreen as LoginScreen };
