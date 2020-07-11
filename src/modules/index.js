@@ -8,3 +8,5 @@ export * from './dateFormater';
 export * from './transactionService';
 export * from './math';
 export * from './geoLocation';
+export * from './authService';
+export * from './localData';

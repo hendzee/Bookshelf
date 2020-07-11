@@ -11,7 +11,7 @@ import {
 import { generalSty, GREY } from '../styles';
 import { CustomStatusBar, SmallModal } from '../components/general';
 
-import { setSecureInput } from '../modules';
+import { setSecureInput, login, setUserData, getUserData } from '../modules';
 
 const EyeIcon = () => (
     <Icon fill={ GREY } name='eye-outline'/>
@@ -38,6 +38,48 @@ class LoginScreen extends Component {
         this.setState({ 
             isSecureInput: setSecureInput(this.state.isSecureInput, selectedIndex) 
         });
+    }
+
+    /** Set user data */
+    setUserData = () => {
+        let data = {
+            id: '1',
+            token: '730dksf92kdf.hsd9fhasd02ks3kd'
+        };
+
+        getUserData();
+    }
+
+    /** To Main */
+    toMain = () => {
+        this.props.navigation.navigate('MAIN');
+    }
+
+    /** Hanlde login */
+    handleLogin = () => {
+        let data = {
+            email: 'ypudjiastuti@utami.net',
+            password: 'password123'
+        }
+
+        login(data)
+            .then(response => {
+                let storeData = {
+                    id: response.data.id,
+                    token: response.data.token
+                }
+
+                setUserData(storeData)
+                    .then(_ => {
+                        this.toMain();
+                    })
+                    .catch(error => {
+                        alert(error.message);
+                    });
+            })
+            .catch(error => {
+                alert(error.message)
+            })
     }
     
     render() {
@@ -67,7 +109,7 @@ class LoginScreen extends Component {
                     />
                     <Button
                         style={ styles.button } 
-                        onPress={ null } 
+                        onPress={ this.handleLogin } 
                         status='primary'
                     >
                         LOGIN
@@ -115,8 +157,8 @@ const styles = StyleSheet.create({
     },
 
     mainTitle: {
-        fontSize: 30,
-        height: 30,
+        fontSize: 40,
+        height: 60,
         justifyContent: 'flex-start',
         textAlignVertical: 'center',
         fontWeight: 'bold'

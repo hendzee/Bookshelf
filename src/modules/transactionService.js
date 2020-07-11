@@ -34,6 +34,7 @@ const addTransaction = (data) => {
                     message: message,
                     status: status.ERROR
                 }
+                
                 reject(response);
             })
     })
