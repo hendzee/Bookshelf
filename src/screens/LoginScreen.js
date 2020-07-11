@@ -11,7 +11,7 @@ import { generalSty, GREY } from '../styles';
 import { CustomStatusBar, SmallModal } from '../components/general';
 
 /** Functions */
-import { setSecureInput, login, setUserData, getUserData } from '../modules';
+import { setSecureInput, login, setUserData } from '../modules';
 
 /** Redux */
 import { connect } from 'react-redux';
@@ -29,6 +29,8 @@ class LoginScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            email: '',
+            password: '',
             isSecureInput: [ true ], // Secure input for current password (index 0)
             responseTitle: '', // Response title / message
             isResponseError: false, // Response error
@@ -44,26 +46,18 @@ class LoginScreen extends Component {
         });
     }
 
-    /** Set user data */
-    setUserData = () => {
-        let data = {
-            id: '1',
-            token: '730dksf92kdf.hsd9fhasd02ks3kd'
-        };
-
-        getUserData();
-    }
-
     /** To Main */
     toMain = () => {
-        this.props.navigation.navigate('MAIN');
+        this.props.navigation.reset({
+            routes: [{ name: 'MAIN' }]
+        });
     }
 
     /** Hanlde login */
     handleLogin = () => {
         let data = {
-            email: 'ypudjiastuti@utami.net',
-            password: 'password123'
+            email: this.state.email,
+            password: this.state.password
         }
 
         login(data)
@@ -104,7 +98,10 @@ class LoginScreen extends Component {
                         style={ styles.input }
                         label='Email'
                         labelStyle={ styles.inputTextStyle } 
-                        placeholder='johndoe@gmail.com' 
+                        placeholder='johndoe@gmail.com'
+                        autoCapitalize='none'
+                        value={ this.state.email }
+                        onChangeText={ text => this.setState({ email: text.toLocaleLowerCase() }) }
                     />
                     <Input 
                         style={ styles.input }
@@ -113,6 +110,8 @@ class LoginScreen extends Component {
                         icon={ this.state.isSecureInput[0] ? EyeIcon : EyeOffIcon }
                         onIconPress={ () => this.handleSecureText(0) }
                         secureTextEntry={ this.state.isSecureInput[0] }
+                        value={ this.state.password }
+                        onChangeText={ text => this.setState({ password: text }) }
                     />
                     <Button
                         style={ styles.button } 
