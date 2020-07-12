@@ -11,7 +11,7 @@ import { generalSty, GREY } from '../styles';
 import { CustomStatusBar, SmallModal } from '../components/general';
 
 /** Functions */
-import { setSecureInput, login, setUserData } from '../modules';
+import { setSecureInput, login, setUserData, register } from '../modules';
 
 /** Redux */
 import { connect } from 'react-redux';
@@ -25,12 +25,14 @@ const EyeOffIcon = () => (
     <Icon fill={ GREY } name='eye-off-outline'/>
 );
 
-class LoginScreen extends Component {
+class RegisterScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {
             email: '',
             password: '',
+            firstName: '',
+            lastName: '',
             isSecureInput: [ true ], // Secure input for current password (index 0)
             responseTitle: '', // Response title / message
             isResponseError: false, // Response error
@@ -46,11 +48,6 @@ class LoginScreen extends Component {
         });
     }
 
-    /** To Register */
-    toRegister = () => {
-        this.props.navigation.navigate('REGISTER');
-    }
-
     /** To Main */
     toMain = () => {
         this.props.navigation.reset({
@@ -58,14 +55,21 @@ class LoginScreen extends Component {
         });
     }
 
-    /** Hanlde login */
-    handleLogin = () => {
+    /** Back to login */
+    backToLogin = () => {
+        this.props.navigation.goBack();
+    }
+
+    /** Hanlde register */
+    handleRegister = () => {
         let data = {
             email: this.state.email,
-            password: this.state.password
+            password: this.state.password,
+            firstName: this.state.firstName,
+            lastName: this.state.lastName
         }
 
-        login(data)
+        register(data)
             .then(response => {
                 let storeData = {
                     id: response.data.id,
@@ -96,7 +100,7 @@ class LoginScreen extends Component {
                 <Layout style={ styles.mainContainer }>
                     <Layout style={ styles.mainTitleContainer }>
                         <Text style={ styles.mainTitle } status='primary'>
-                            Login
+                            Sign Up
                         </Text>
                     </Layout>
                     <Input 
@@ -118,21 +122,39 @@ class LoginScreen extends Component {
                         value={ this.state.password }
                         onChangeText={ text => this.setState({ password: text }) }
                     />
+                    <Input 
+                        style={ styles.input }
+                        label='Fisrt Name'
+                        labelStyle={ styles.inputTextStyle } 
+                        placeholder='John'
+                        autoCapitalize='words'
+                        value={ this.state.firstName }
+                        onChangeText={ text => this.setState({ firstName: text }) }
+                    />
+                    <Input 
+                        style={ styles.input }
+                        label='Last Name'
+                        labelStyle={ styles.inputTextStyle } 
+                        placeholder='Doe'
+                        autoCapitalize='words'
+                        value={ this.state.lastName }
+                        onChangeText={ text => this.setState({ lastName: text }) }
+                    />
                     <Button
                         style={ styles.button } 
-                        onPress={ this.handleLogin } 
+                        onPress={ this.handleRegister } 
                         status='primary'
                     >
-                        LOGIN
+                        SIGN UP
                     </Button>
                     <Layout>
                         <Text style={ styles.bottomText }>
-                            Dont have account ? 
+                            Already have account ? 
                             <Text
-                                onPress={ () => this.toRegister() } 
+                                onPress={ () => this.backToLogin() } 
                                 style={ styles.bold }
                             >
-                                { ' ' + 'Sign Up' }
+                                { ' ' + 'Login' }
                             </Text>
                         </Text>
                     </Layout>
@@ -203,6 +225,6 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-const rdxLoginScreen = connect(null, mapDispatchToProps)(LoginScreen);
+const rdxRegisterScreen = connect(null, mapDispatchToProps)(RegisterScreen);
 
-export { rdxLoginScreen as LoginScreen };
+export { rdxRegisterScreen as RegisterScreen };
