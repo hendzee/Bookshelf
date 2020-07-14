@@ -17,6 +17,9 @@ import { ItemList } from '../components/cart_screens';
 /** import CRUD function */
 import { showTransaction, durationToDate, updateToWaiting } from '../modules';
 
+/** Redux */
+import { connect } from 'react-redux';
+
 const BackIcon = (style) => (
     <Icon { ...style } name='arrow-back-outline' />
 )
@@ -43,7 +46,7 @@ class CartScreen extends Component {
     }
 
     async componentDidMount () {
-        let getLoansData = await showTransaction(this.props.route.params.transactionId);
+        let getLoansData = await showTransaction(this.props.route.params.transactionId, this.props.auth.token);
 
         this.setState({ loans: getLoansData.data.transaction.loans });
     }
@@ -61,7 +64,7 @@ class CartScreen extends Component {
     /** Handle send request */
     handleSend = () => {
         this.setState({ isLoading: true, isSend: true }, () => {
-            updateToWaiting(this.props.route.params.transactionId)
+            updateToWaiting(this.props.route.params.transactionId, this.props.auth.token)
                 .then(response => {
                     this.setState({ 
                         isLoading: false,
@@ -242,4 +245,12 @@ const styles = StyleSheet.create({
     }
 });
 
-export { CartScreen };
+const mapStateToProps = state => {
+    return {
+        auth: state.auth.userData
+    }
+}
+
+const rdxCartScreen = connect(mapStateToProps)(CartScreen);
+
+export { rdxCartScreen as CartScreen };

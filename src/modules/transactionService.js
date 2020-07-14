@@ -1,9 +1,10 @@
 import axios from 'axios';
 import { prefix } from './endpoint';
 import { status } from './status';
+import { connect } from 'react-redux';
 
 /** Add transaction */
-const addTransaction = (data) => {
+const addTransaction = (data, token) => {
     return new Promise(function(resolve, reject) {
         var response = {};
         var message = '';
@@ -12,8 +13,11 @@ const addTransaction = (data) => {
             borrower_id: data.borrowerId,
             item_id: data.itemId
         }
+        var auth = 'Bearer ' + token;
 
-        axios.post(prefix + '/transactions', dataSend)
+        axios.post(prefix + '/transactions', dataSend, {
+            headers: { 'Authorization':  auth }
+        })
             .then(result => {
                 response = {
                     data: result.data,
@@ -41,12 +45,15 @@ const addTransaction = (data) => {
 }
 
 /** Show transaction */
-const showTransaction = (id) => {
+const showTransaction = (id, token) => {
     return new Promise(function(resolve, reject){
         var response = {};
         var message = '';
+        var auth = 'Bearer ' + token;
 
-        axios.get(prefix + '/transactions/' + id)
+        axios.get(prefix + '/transactions/' + id, {
+            headers: { 'Authorization':  auth }
+        })
             .then(result => {
                 response = {
                     data: result.data,
@@ -73,12 +80,15 @@ const showTransaction = (id) => {
 }
 
 /** Update to waiting */
-const updateToWaiting = (id) => {
+const updateToWaiting = (id, token) => {
     return new Promise(function(resolve, reject){
         var response = {};
         var message = '';
+        var auth = 'Bearer ' + token;
 
-        axios.post(prefix + '/transactions/update/waiting/' + id)
+        axios.post(prefix + '/transactions/update/waiting/' + id, {
+            headers: { 'Authorization':  auth }
+        })
         .then(result => {
             response = {
                 data: result.data,
@@ -93,6 +103,8 @@ const updateToWaiting = (id) => {
             if (error.response) {
                 message = error.response.data.message
             }
+
+            message = JSON.stringify(error)
 
             response = {
                 data: null,

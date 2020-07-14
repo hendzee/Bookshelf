@@ -37,6 +37,7 @@ class ItemDetailScreen extends Component {
         let getData = await getSpecificItem(id, this.props.auth.token);
 
         this.setState({
+            userId: this.props.auth.id,
             data: getData.status === status.OK ? getData.data : {}
         });
     }
@@ -82,7 +83,7 @@ class ItemDetailScreen extends Component {
                 itemId: this.state.data.id
             }
 
-            addTransaction(data)
+            addTransaction(data, this.props.auth.token)
                 .then((response) => {
                     this.setState({ isLoading: false, isSaved: false }, () => {
                         this.toCart(response.data.id);
