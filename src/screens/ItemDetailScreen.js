@@ -6,6 +6,9 @@ import { CustomStatusBar, FloatingButton, SmallModal } from '../components/gener
 import { MainInfo, ItemInfo } from '../components/item_detail_screen';
 import { status, getSpecificItem, addTransaction } from '../modules';
 
+/** Redux */
+import { connect } from 'react-redux';
+
 const BackIcon = (style) => (
     <Icon { ...style } name='arrow-back-outline' />
 )
@@ -19,7 +22,7 @@ class ItemDetailScreen extends Component {
         super(props);
 
         this.state = {
-            userId: 3,
+            userId: 0,
             data: {}, // Data of item
             responseTitle: '', // Response title / message
             isResponseError: false, // Response error
@@ -31,7 +34,7 @@ class ItemDetailScreen extends Component {
     async componentDidMount() {
         let id = this.props.route.params.id;
 
-        let getData = await getSpecificItem(id);
+        let getData = await getSpecificItem(id, this.props.auth.token);
 
         this.setState({
             data: getData.status === status.OK ? getData.data : {}
@@ -43,11 +46,6 @@ class ItemDetailScreen extends Component {
         <TopNavigationAction icon={ BackIcon } onPress={ this.handleBack } />
     );
 
-    /** Show edit icon */
-    showEditIcon = () => (
-        <TopNavigationAction icon={ EditIcon } onPress={ this.toEditScreen } />
-    );
-
     /** Handle back */
     handleBack = () => {
         this.props.navigation.goBack();
@@ -56,6 +54,18 @@ class ItemDetailScreen extends Component {
     /** Navigate to detail chat screen */
     toChatDetailScreen = () => {
         this.props.navigation.navigate('CHAT_DETAIL');
+    }
+
+    /** Set edit button */
+    setEditButton = () => {
+        if (Object.keys(this.state.data).length < 1 || 
+            (this.state.data.user.id !== this.props.auth.id)) {
+            return null;
+        }
+
+        return (
+            <TopNavigationAction icon={ EditIcon } onPress={ this.toEditScreen } />
+        )
     }
 
     /** To edit screen */
@@ -99,6 +109,18 @@ class ItemDetailScreen extends Component {
         this.props.navigation.navigate('CART', { transactionId: transactionId });
     }
 
+    /** Set floatng button */
+    setFloatingButton = () => {
+        if (Object.keys(this.state.data).length < 1 || 
+            (this.state.data.user.id === this.props.auth.id)) {
+            return null;
+        }
+
+        return (
+            <FloatingButton icon='message-circle' onPress={ this.toChatDetailScreen } />
+        )
+    }
+
     render() {
         return (
             <SafeAreaView style={ styles.rootContainer }>
@@ -108,12 +130,13 @@ class ItemDetailScreen extends Component {
                     titleStyle={ styles.titleScreenStyle }
                     alignment='center'
                     leftControl={ this.showBackButton() }
-                    rightControls={ this.showEditIcon() }
+                    rightControls={ this.setEditButton() }
                 />
 
                 <ScrollView>
                     <Layout style={ styles.mainContainer }>
                         <MainInfo
+                            userId={ this.props.auth.id }
                             data={ this.state.data } 
                             navigation={ this.props.navigation } 
                             handleSave={ this.handleSave }
@@ -123,7 +146,7 @@ class ItemDetailScreen extends Component {
                         />
                     </Layout>
                 </ScrollView>
-                <FloatingButton icon='message-circle' onPress={ this.toChatDetailScreen } />
+                { this.setFloatingButton() }
 
                 {/* Modal when saved */}
                 <SmallModal
@@ -152,4 +175,12 @@ const styles = StyleSheet.create({
     },
 });
 
-export { ItemDetailScreen };
+const mapStateToProps = state => {
+    return {
+        auth: state.auth.userData
+    }
+}
+
+const rdxItemDetailScreen = connect(mapStateToProps)(ItemDetailScreen);
+
+export { rdxItemDetailScreen as ItemDetailScreen };

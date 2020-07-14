@@ -140,12 +140,15 @@ const getRandomItem = async (token) => {
 }
 
 /** Get specific items */
-const getSpecificItem = async (id) => {
+const getSpecificItem = async (id, token) => {
     var response = {};
     var message = '';
+    var auth = 'Bearer ' + token;
     
     return new Promise(function (resolve, reject){
-        axios.get(prefix + '/items/' + id)
+        axios.get(prefix + '/items/' + id, {
+            headers: { 'Authorization': auth }
+        })
             .then(result => {
                 response = {
                     data: result.data,
@@ -170,10 +173,11 @@ const getSpecificItem = async (id) => {
 }
 
 /** Add new item */
-const addItem = async (data) => {
+const addItem = async (data, token) => {
     return new Promise(function(resolve, reject) {
         var response = {};
         var formData = new FormData();
+        var auth = 'Bearer ' + token;
 
         formData.append('user_id', data.userId);
         formData.append('category', data.category.text);
@@ -186,7 +190,10 @@ const addItem = async (data) => {
             name: 'image.jpg'
         });
 
-        axios.post(prefix + '/items', formData, {headers: { 'Content-Type': 'multipart/form-data' }})
+        axios.post(prefix + '/items', formData, { headers: { 
+            'Content-Type': 'multipart/form-data',
+            'Authorization':  auth
+        }})
             .then(result => {
                 response = {
                     data: result.data,
@@ -209,10 +216,11 @@ const addItem = async (data) => {
 }
 
 /** Update item */
-const updateItem = async (data, id) => {
+const updateItem = async (data, id, token) => {
     return new Promise(function(resolve, reject) {
         var response = {};
         var formData = new FormData();
+        var auth = 'Bearer ' + token;
 
         formData.append('category', data.category.text);
         formData.append('title', data.title);
@@ -228,7 +236,11 @@ const updateItem = async (data, id) => {
             });
         }
 
-        axios.post(prefix + '/items/' + id, formData, {headers: { 'Content-Type': 'multipart/form-data' }})
+        axios.post(prefix + '/items/' + id, formData, {
+            headers: {
+                'Authorization':  auth, 
+                'Content-Type': 'multipart/form-data' 
+            }})
             .then(result => {
                 response = {
                     data: result.data,
@@ -251,14 +263,19 @@ const updateItem = async (data, id) => {
 }
 
 /** Delete item */
-const deleteItem = (id) => {
+const deleteItem = (id, token) => {
     return new Promise(function(resolve, reject) {
         var response = {};
         var formData = new FormData();
+        var auth = 'Bearer ' + token;
 
         formData.append('_method', 'DELETE');
 
-        axios.post(prefix + '/items/' + id, formData, {headers: { 'Content-Type': 'multipart/form-data' }})
+        axios.post(prefix + '/items/' + id, formData, {
+            headers: {
+                'Authorization':  auth, 
+                'Content-Type': 'multipart/form-data' 
+            }})
             .then(result => {
                 response = {
                     data: result.data,

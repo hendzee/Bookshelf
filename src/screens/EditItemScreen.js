@@ -23,6 +23,9 @@ import ImagePicker from 'react-native-image-crop-picker';
 /** import CRUD function */
 import { getCategory, deleteItem, getSpecificItem, updateItem } from '../modules';
 
+/** Redux */
+import { connect } from 'react-redux';
+
 const BackIcon = (style) => (
     <Icon { ...style } name='arrow-back-outline' />
 );
@@ -31,11 +34,17 @@ const PlusIcon = () => (
     <Icon width={ 32 } height={ 32 } fill={ WHITE } name='plus-circle-outline' />
 );
 
+const modalType = {
+    SAVE: 'SAVE',
+    DELETE: 'DELETE'
+}
+
 class EditItemScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            userId: 1, // Data dummy
+            userId: 0,
+            modalType: modalType.SAVE,
             categories: [], // Categories list for selected input
             category: {},
             title: '',
@@ -53,10 +62,11 @@ class EditItemScreen extends Component {
     }
 
     async componentDidMount() {
-        let initialData = await getSpecificItem(this.props.route.params.id);
+        let initialData = await getSpecificItem(this.props.route.params.id, this.props.auth.token);
         let categories = await getCategory();
 
-        this.setState({ 
+        this.setState({
+            userId: this.props.auth.id, 
             categories: categories.data, 
             title: initialData.data.title,
             author: initialData.data.author,
@@ -76,9 +86,14 @@ class EditItemScreen extends Component {
         this.props.navigation.goBack();
     };
 
+    /** To main */
+    toMain = () => {
+        this.props.navigation.navigate('MAIN');
+    }
+
     /** Handle save data */
     handleSave = () => {
-        this.setState({ isLoading: true, isSaved: true }, () => {
+        this.setState({ modalType: modalType.SAVE, isLoading: true, isSaved: true }, () => {
             let data = {
                 userId: this.state.userId,
                 category: this.state.category,
@@ -88,7 +103,7 @@ class EditItemScreen extends Component {
                 cover: this.state.cover
             }
 
-            updateItem(data, this.props.route.params.id)
+            updateItem(data, this.props.route.params.id, this.props.auth.token)
                 .then(result => {
                     this.setState({ isLoading: false, responseTitle: result.message });
                 })
@@ -101,8 +116,8 @@ class EditItemScreen extends Component {
 
     /** Handle delete data */
     handleDelete = () => {
-        this.setState({ isLoading: true, isSaved: true }, () => {
-            deleteItem(this.props.route.params.id)
+        this.setState({ modalType: modalType.DELETE, isLoading: true, isSaved: true }, () => {
+            deleteItem(this.props.route.params.id, this.props.auth.token)
                 .then(result => {
                     this.setState({ isLoading: false, responseTitle: result.message });
                 })
@@ -113,10 +128,14 @@ class EditItemScreen extends Component {
         });
     }
 
-    /** Handle modal success save function  */
-    handleModalSave = () => {
+    /** Handle submit modal function  */
+    handleModalSubmit = () => {
         this.setState({ isSaved: false }, () => {
-            this.handleBack();
+            if (this.state.modalType === modalType.SAVE) {
+                this.handleBack();
+            }else {
+                this.toMain();
+            }
         });
     };
 
@@ -273,7 +292,7 @@ class EditItemScreen extends Component {
                 <SmallModal
                     title={ this.state.responseTitle }
                     isError={ this.state.isResponseError }
-                    onPress={ this.handleModalSave } 
+                    onPress={ this.handleModalSubmit } 
                     loading={ this.state.isLoading }
                     visible={ this.state.isSaved } 
                 />
@@ -361,4 +380,12 @@ const styles = StyleSheet.create({
     }
 });
 
-export { EditItemScreen };
+const mapStateToProps = state => {
+    return {
+        auth: state.auth.userData
+    }
+}
+
+const rdxEditItemScreen = connect(mapStateToProps)(EditItemScreen);
+
+export { rdxEditItemScreen as EditItemScreen };

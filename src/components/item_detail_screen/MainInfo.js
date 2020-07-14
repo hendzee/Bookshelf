@@ -23,6 +23,24 @@ const MainInfo = (props) => {
         return ratingComponentList;
     }
 
+    /** Set adding item box */
+    const setAddBox = () => {
+        if (props.data.user.id === props.userId) {
+            return null;
+        }
+
+        return(
+            <Layout>
+                <Button style={ styles.button } status='basic'>
+                    SEE THEIR BOOKS
+                </Button>
+                <Button onPress={ props.handleSave } style={ styles.button } status='primary'>
+                    ADD TO LIST
+                </Button>
+            </Layout>
+        );
+    }
+
     /** Extract data */
     const extractData = () => (
         <Layout style={ styles.mainInfoContainer }>
@@ -40,12 +58,7 @@ const MainInfo = (props) => {
                 <Layout style={ styles.ratingContainer }>
                     { showRating( props.data.user.rating ) }
                 </Layout>
-                <Button style={ styles.button } status='basic'>
-                    SEE THEIR BOOKS
-                </Button>
-                <Button onPress={ props.handleSave } style={ styles.button } status='primary'>
-                    ADD TO LIST
-                </Button>
+                { setAddBox() }
             </Layout>
         </Layout>
     )

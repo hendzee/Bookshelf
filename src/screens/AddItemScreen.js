@@ -23,6 +23,9 @@ import ImagePicker from 'react-native-image-crop-picker';
 /** import CRUD function */
 import { getCategory, addItem } from '../modules';
 
+/** Redux */
+import { connect } from 'react-redux';
+
 const BackIcon = (style) => (
     <Icon { ...style } name='arrow-back-outline' />
 );
@@ -35,7 +38,7 @@ class AddItemScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            userId: 1, // Data dummy
+            userId: 0,
             categories: [], // Categories list for selected input
             category: {},
             title: '',
@@ -54,7 +57,11 @@ class AddItemScreen extends Component {
 
     async componentDidMount() {
         let categories = await getCategory();
-        this.setState({ categories: categories.data, category: categories.data[0] });
+        this.setState({ 
+            userId: this.props.auth.id,
+            categories: categories.data, 
+            category: categories.data[0] 
+        });
     }
 
     /** Show back button */
@@ -79,7 +86,7 @@ class AddItemScreen extends Component {
                 cover: this.state.cover
             }
 
-            addItem(data)
+            addItem(data, this.props.auth.token)
                 .then(result => {
                     this.setState({ isLoading: false, responseTitle: result.message });
                 })
@@ -181,6 +188,7 @@ class AddItemScreen extends Component {
                             placeholder='e.g. The Design of Everyday Think'
                             textStyle={ styles.inputTextStyle }
                             style={ styles.input }
+                            autoCapitalize='words'
                             value={ this.state.title }
                             onChangeText={ (text) => this.setState({ title: text }) }
                         />
@@ -329,4 +337,12 @@ const styles = StyleSheet.create({
     },
 });
 
-export { AddItemScreen };
+const mapStateToProps = state => {
+    return {
+        auth: state.auth.userData
+    }
+}
+
+const rdxAddItemScreen = connect(mapStateToProps)(AddItemScreen);
+
+export { rdxAddItemScreen as AddItemScreen };
