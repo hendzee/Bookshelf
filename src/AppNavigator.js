@@ -44,9 +44,19 @@ const HomeIcon = (style) => (
     <Icon {...style} name='home-outline' />
 )
 
+/** Home icon active */
+const ActiveHomeIcon = (style) => (
+    <Icon {...style} name='home' />
+)
+
 /** Chat icon */
 const ChatIcon = (style) => (
     <Icon {...style} name='message-square-outline' />
+)
+
+/** Chat icon active */
+const ActiveChatIcon = (style) => (
+    <Icon {...style} name='message-square' />
 )
 
 /** Chat icon */
@@ -59,9 +69,19 @@ const InboxIcon = (style) => (
     <Icon {...style} name='email-outline' />
 )
 
+/** Inbox icon active */
+const ActiveInboxIcon = (style) => (
+    <Icon {...style} name='email' />
+)
+
 /** Account icon */
 const AccountIcon = (style) => (
     <Icon {...style} name='person-outline' />
+)
+
+/** Account icon */
+const ActiveAccountIcon = (style) => (
+    <Icon {...style} name='person' />
 )
 
 const BottomTab = createBottomTabNavigator();
@@ -75,11 +95,11 @@ const BottomTabBar = ({ navigation, state }) => {
     return (
         <SafeAreaView>
             <BottomNavigation appearance='noIndicator' selectedIndex={ state.index } onSelect={ onSelect }>
-                <BottomNavigationTab title='Home' icon={ HomeIcon } />
-                <BottomNavigationTab title='Chat' icon={ ChatIcon } />
+                <BottomNavigationTab title='Home' icon={ state.index === 0 ? ActiveHomeIcon : HomeIcon } />
+                <BottomNavigationTab title='Chat' icon={ state.index === 1 ? ActiveChatIcon : ChatIcon } />
                 <BottomNavigationTab title='Add' icon={ AddIcon } />
-                <BottomNavigationTab title='Inbox' icon={ InboxIcon } />
-                <BottomNavigationTab title='Account' icon={ AccountIcon } />
+                <BottomNavigationTab title='Inbox' icon={ state.index === 3 ? ActiveInboxIcon : InboxIcon } />
+                <BottomNavigationTab title='Account' icon={ state.index === 4 ? ActiveAccountIcon : AccountIcon } />
             </BottomNavigation>
         </SafeAreaView>
     )
