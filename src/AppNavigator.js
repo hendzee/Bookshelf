@@ -110,7 +110,7 @@ const TabBarNavigator = () => (
         <BottomTab.Screen name='HOME' component={ HomeScreen } />
         <BottomTab.Screen name='CHAT' component={ ChatScreen } />
         <BottomTab.Screen 
-            name='TRANSACTION' 
+            name='TRANSACTION_MENU' 
             component={ TransactionMenuScreen }
             options={{
                 tabBarVisible: false
