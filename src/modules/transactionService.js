@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { prefix } from './endpoint';
 import { status } from './status';
-import { connect } from 'react-redux';
 
 /** Add transaction */
 const addTransaction = (data, token) => {
@@ -86,8 +85,8 @@ const updateToWaiting = (id, token) => {
         var message = '';
         var auth = 'Bearer ' + token;
 
-        axios.post(prefix + '/transactions/update/waiting/' + id, {
-            headers: { 'Authorization':  auth }
+        axios.post(prefix + '/transactions/update/waiting/' + id, null, {
+            headers: { 'Authorization': auth }
         })
         .then(result => {
             response = {
@@ -101,9 +100,15 @@ const updateToWaiting = (id, token) => {
             message = 'There is error.'
             
             if (error.response) {
-                message = error.response.data.message
+                if (error.response.data.message) {
+                    message = error.response.data.message
+                }else {
+                    message = 'Failed to request'
+                }
             }
 
+            console.log(JSON.stringify(error))
+            
             response = {
                 data: null,
                 message: message,
@@ -217,11 +222,53 @@ const updateMap = (data) => {
     });
 }
 
+/** Delete loan item */
+const deleteLoanItem = (id, token) => {
+    return new Promise(function(resolve, reject){
+        var response = {};
+        var message = '';
+        var formData = new FormData();
+        var auth = 'Bearer ' + token;
+
+        formData = {
+            _method: 'DELETE'
+        }
+
+        axios.post(prefix + '/loans/' + id, formData, {
+            headers: { 'Authorization': auth }
+        })
+            .then(result => {
+                response = {
+                    data: result.data,
+                    message: 'Data deleted.',
+                    status: status.OK
+                }
+                resolve(response);
+            })
+            .catch(error => {
+                message = 'There is error.'
+                
+                if (error.response) {
+                    message = error.response.data.message
+                }
+
+                response = {
+                    data: null,
+                    message: message,
+                    status: status.ERROR
+                }
+
+                reject(response);
+            })
+    });
+}
+
 export { 
     addTransaction, 
     showTransaction, 
     updateToWaiting, 
     updateToAppointment, 
     updateToCancel,
-    updateMap
+    updateMap,
+    deleteLoanItem
 }

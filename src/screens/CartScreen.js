@@ -15,7 +15,7 @@ import { CustomStatusBar, SmallModal } from '../components/general';
 import { ItemList } from '../components/cart_screens';
 
 /** import CRUD function */
-import { showTransaction, durationToDate, updateToWaiting } from '../modules';
+import { showTransaction, durationToDate, updateToWaiting, deleteLoanItem } from '../modules';
 
 /** Redux */
 import { connect } from 'react-redux';
@@ -36,7 +36,7 @@ class CartScreen extends Component {
         super(props);
         this.state = {
             loans: [], // List of loan items
-            duration: {}, // Selected duration
+            duration: { text: durations.ONE_DAY }, // Selected duration
             durationDate: '', // Converted duration value to date
             responseTitle: '', // Response title / message
             isResponseError: false, // Response error
@@ -125,6 +125,46 @@ class CartScreen extends Component {
         }
     }
 
+    /** Remove item */
+    removeItem = (removedId) => {
+        let tempLoans = [];
+
+        this.setState({ isSend: true, isLoading: true }, () => {
+            deleteLoanItem(removedId, this.props.auth.token)
+            .then(_ => {
+                for(let i=0; i<this.state.loans.length; i++) {
+                    if (this.state.loans[i].id === removedId) {
+                        continue;
+                    }else {
+                        tempLoans.push(this.state.loans[i]);
+                    }
+                }
+        
+                this.setState({
+                    isLoading: false,
+                    isSend: false,
+                    isResponseError: false,
+                    loans: tempLoans 
+                }, () => {
+                    if (tempLoans.length < 1) {
+                        this.setState({ 
+                            isLoading: false,
+                            isSend: true,
+                            responseTitle: 'Data request is empty.'
+                         })
+                    }
+                })
+            })
+            .catch(error => {
+                this.setState({ 
+                    isLoading: false,
+                    responseTitle: error.message,
+                    isResponseError: true
+                });
+            })
+        })
+    }
+
     render() {
         return (
             <SafeAreaView style={ styles.rootContainer }>
@@ -156,7 +196,10 @@ class CartScreen extends Component {
                     
                     {/* List item - start */}
                     <Layout style={ styles.listCardContainer }>
-                        <ItemList loans={ this.state.loans } />
+                        <ItemList 
+                            removeItem={ this.removeItem } 
+                            loans={ this.state.loans } 
+                        />
                     </Layout>
                     {/* List item - end */}
                     

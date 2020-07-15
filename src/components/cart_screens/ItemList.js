@@ -22,11 +22,15 @@ const ItemList = (props) => {
                             />
                         </Layout>
                         <Layout style={ styles.infoContainer }>
-                            <Text style={ styles.titleItem }>{ item.items.title }</Text>
-                            <Text style={ styles.infoItem }>{ item.items.author }</Text>
+                            <Text style={ styles.titleItem }>
+                                { item.items.title }
+                            </Text>
+                            <Text style={ styles.infoItem }>
+                                { item.items.author }
+                            </Text>
                         </Layout>
                         <Layout style={ styles.removeContainer }>
-                            <CustomTouchableOpacity>
+                            <CustomTouchableOpacity onPress={ () => props.removeItem(item.id) }>
                                 <RemoveIcon />
                             </CustomTouchableOpacity>
                         </Layout>
