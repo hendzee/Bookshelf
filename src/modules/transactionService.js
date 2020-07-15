@@ -104,8 +104,6 @@ const updateToWaiting = (id, token) => {
                 message = error.response.data.message
             }
 
-            message = JSON.stringify(error)
-
             response = {
                 data: null,
                 message: message,
