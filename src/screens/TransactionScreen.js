@@ -11,18 +11,52 @@ import {
     Avatar 
 } from '@ui-kitten/components';
 import { generalSty } from '../styles';
-import { CustomStatusBar, CustomTouchableOpacity } from '../components/general';
+import { CustomStatusBar } from '../components/general';
+
+/** Substance of transaction screen */
+import { StepIndicator } from '../components/transaction_screen';
+
+/** Modules */
+import { showListTransaction } from '../modules';
+
+/** Redux */
+import { connect } from 'react-redux';
 
 const BackIcon = (style) => (
     <Icon { ...style } name='arrow-back-outline' />
 );
 
+const statusType = {
+    STATUS_LEND: 'STATUS_LEND',
+    STATUS_BORROW: 'STATUS_BORROW'
+}
+
 class TransactionScreen extends Component {
     constructor(props) {
         super(props);
-        this.state = { 
+        this.state = {
+            borrowData: null,
+            lendData: null,
             selectedIndex: 0
         }
+    }
+
+    componentDidMount() {
+        showListTransaction(this.props.auth.id, statusType.STATUS_LEND, this.props.auth.token)
+            .then(responseLend => {
+                this.setState({ lendData: responseLend.data }, () => {
+                    showListTransaction(this.props.auth.id, statusType.STATUS_BORROW, this.props.auth.token)
+                    .then(responseBorrow => {
+                        this.setState({ borrowData: responseBorrow.data })
+                    })
+                    .catch(error => {
+                        alert('Failed to get data.')
+                    })
+                })
+            })
+            .catch(_ => {
+                alert('Failed to get data.')
+            })
     }
 
     /** Show back button */
@@ -56,47 +90,12 @@ class TransactionScreen extends Component {
                         selectedIndex={this.state.selectedIndex}
                         onSelect={index => this.setSelectedIndex(index)}>
 
-                        <Tab title='ME'>
-                            <CustomTouchableOpacity style={styles.tabContainer}>
-                                <Layout style={ styles.itemContainer }>
-                                    <Layout style={ styles.row }>
-                                        <Avatar 
-                                            source={ require('../images/users/user2.png') }
-                                            style={ styles.avatar }
-                                            size='giant'
-                                        />
-                                        <Layout>
-                                            <Text>Cynthia</Text>
-                                            <Text style={ styles.bold }>#35021AZ</Text>
-                                        </Layout>
-                                    </Layout>
-                                    <Layout style={ styles.badgePrimary }>
-                                        <Text style={ styles.smallTextWhite }>Waiting Confirmation</Text>
-                                    </Layout>
-                                </Layout>
-                            </CustomTouchableOpacity>
-                        </Tab>
-                        <Tab title='PEOPLE'>
-                            <Layout style={styles.tabContainer}>
-                                <Layout style={ styles.itemContainer }>
-                                    <Layout style={ styles.row }>
-                                        <Avatar 
-                                            source={ require('../images/users/user2.png') }
-                                            style={ styles.avatar }
-                                            size='giant'
-                                        />
-                                        <Layout>
-                                            <Text>Cynthia</Text>
-                                            <Text style={ styles.bold }>#35021AZ</Text>
-                                        </Layout>
-                                    </Layout>
-                                    <Layout style={ styles.badgePrimary }>
-                                        <Text style={ styles.smallTextWhite }>Waiting Confirmation</Text>
-                                    </Layout>
-                                </Layout>
+                        <Tab title='BORROW'>
+                            <Layout style={ styles.itemContainer2 }>
+                                <StepIndicator />
                             </Layout>
                         </Tab>
-                        <Tab title='HITORY'>
+                        <Tab title='LEND'>
                             <Layout style={styles.tabContainer}>
                                 <Layout style={ styles.itemContainer }>
                                     <Layout style={ styles.row }>
@@ -144,9 +143,12 @@ const styles = StyleSheet.create({
         ...generalSty.plRight
     },
 
+    itemContainer2: {
+        ...generalSty.plAll
+    },
+
     itemContainer: {
         flexDirection: 'row',
-        justifyContent: 'space-between',
         borderBottomWidth: 1,
         ...generalSty.greyBorder,
         ...generalSty.mltop,
@@ -187,4 +189,12 @@ const styles = StyleSheet.create({
     },
 });
 
-export { TransactionScreen };
+const mapToState = state => {
+    return {
+        auth: state.auth.userData
+    }
+}
+
+const rdxTransactionScreen = connect(mapToState)(TransactionScreen);
+
+export { rdxTransactionScreen as TransactionScreen };

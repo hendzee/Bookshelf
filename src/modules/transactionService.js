@@ -78,6 +78,52 @@ const showTransaction = (id, token) => {
     })
 }
 
+/** Show list transaction */
+const showListTransaction = (id, data, token) => {
+    return new Promise(function(resolve, reject){
+        var response = {};
+        var message = '';
+        var auth = 'Bearer ' + token;
+
+        axios.get(prefix + '/transactions/show-list/' + id + '?person=' + data, {
+            headers: { 'Authorization':  auth }
+        })
+            .then(result => {
+                response = {
+                    data: result.data,
+                    message: 'Item was added',
+                    status: status.OK
+                }
+
+                if (result.data.notFound) {
+                    response = {
+                        data: null,
+                        message: 'Item was added',
+                        status: status.OK
+                    }
+                }
+
+                resolve(response);
+            })
+            .catch(error => {
+                message = 'There is error.'
+
+                console.log(JSON.stringify(error))
+                
+                if (error.response) {
+                    message = error.response.data.message
+                }
+
+                response = {
+                    data: null,
+                    message: message,
+                    status: status.ERROR
+                }
+                reject(response);
+            })
+    })
+}
+
 /** Update to waiting */
 const updateToWaiting = (id, token) => {
     return new Promise(function(resolve, reject){
@@ -132,6 +178,7 @@ const updateToAppointment = (id) => {
                 message: 'Request was send.',
                 status: status.OK
             }
+            console.log(JSON.stringify(result));
             resolve(response);
         })
         .catch(error => {
@@ -265,7 +312,8 @@ const deleteLoanItem = (id, token) => {
 
 export { 
     addTransaction, 
-    showTransaction, 
+    showTransaction,
+    showListTransaction,
     updateToWaiting, 
     updateToAppointment, 
     updateToCancel,
