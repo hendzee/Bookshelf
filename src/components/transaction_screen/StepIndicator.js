@@ -3,30 +3,7 @@ import { StyleSheet } from 'react-native';
 import { Layout, Text } from '@ui-kitten/components';
 import { generalSty, GREY, WHITE } from '../../styles';
 
-const StepIndicator = () => {
-    const data = [
-        {
-        info: 'WAITING',
-        subInfo: '10 Juli, 2020',
-        active: true,
-        },
-        {
-            info: 'APPOINTMENT',
-            subInfo: '10 Juli, 2020',
-            active: false
-        },
-        {
-            info: 'BORROW',
-            subInfo: '10 Juli, 2020',
-            active: false
-        },
-        {
-            info: 'RETURN',
-            subInfo: '10 Juli, 2020',
-            active: false
-        },
-    ];
-
+const StepIndicator = (props) => {
     const setStrip = (isPut, active) => {
         if (isPut) {
             return(
@@ -66,15 +43,19 @@ const StepIndicator = () => {
     }
 
     const setContent = () => {
-        let wholeContent = [];
-
-        for(let i=0; i<data.length; i++){
-            wholeContent.push(
-                smallGroup(i+1, data.length, data[i].info, data[i].subInfo, data[i].active)
-            )
+        if (props.listData.length > 0) {
+            let wholeContent = [];
+    
+            for(let i=0; i<props.listData.length; i++){
+                wholeContent.push(
+                    smallGroup(i+1, props.listData.length, props.listData[i].info, props.listData[i].subInfo, props.listData[i].active)
+                )
+            }
+    
+            return wholeContent;
         }
 
-        return wholeContent;
+        return null;
     }
 
     return (

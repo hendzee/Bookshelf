@@ -89,15 +89,15 @@ const showListTransaction = (id, data, token) => {
             headers: { 'Authorization':  auth }
         })
             .then(result => {
-                response = {
-                    data: result.data,
-                    message: 'Item was added',
-                    status: status.OK
-                }
-
                 if (result.data.notFound) {
                     response = {
                         data: null,
+                        message: 'Item was added',
+                        status: status.OK
+                    }
+                }else {
+                    response = {
+                        data: result.data,
                         message: 'Item was added',
                         status: status.OK
                     }

@@ -15,6 +15,9 @@ import { TopContent, MidContent, ListContent, BottomContent } from '../component
 /** import CRUD function */
 import { updateToAppointment, updateToCancel, showTransaction } from '../modules';
 
+/** Redux */
+import { connect } from 'react-redux';
+
 const BackIcon = (style) => (
     <Icon { ...style } name='arrow-back-outline' />
 )
@@ -40,7 +43,10 @@ class DetailTransactionScreen extends Component {
     }
 
     async componentDidMount() {
-        let getTransactionData = await showTransaction(3);
+        let getTransactionData = await showTransaction(
+            this.props.route.params.transactionId,
+            this.props.auth.token
+        );
 
         this.setState({
             transaction: getTransactionData.data.transaction,
@@ -188,4 +194,12 @@ const styles = StyleSheet.create({
     },
 });
 
-export { DetailTransactionScreen };
+const mapStateToProps = state => {
+    return {
+        auth: state.auth.userData
+    }
+}
+
+const rdxDetailTransactionScreen = connect(mapStateToProps)(DetailTransactionScreen)
+
+export { rdxDetailTransactionScreen as DetailTransactionScreen };

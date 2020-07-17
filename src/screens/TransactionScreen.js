@@ -6,15 +6,14 @@ import {
     TopNavigation, 
     TopNavigationAction, 
     TabView, 
-    Tab, 
-    Text,
-    Avatar 
+    Tab,
+    Button
 } from '@ui-kitten/components';
 import { generalSty } from '../styles';
 import { CustomStatusBar } from '../components/general';
 
 /** Substance of transaction screen */
-import { StepIndicator } from '../components/transaction_screen';
+import { StepIndicator, EmptyList } from '../components/transaction_screen';
 
 /** Modules */
 import { showListTransaction } from '../modules';
@@ -37,6 +36,8 @@ class TransactionScreen extends Component {
         this.state = {
             borrowData: null,
             lendData: null,
+            indicatorBorrowData: [], // List of status indicator
+            indicatorLendData: [], // List of status indicator
             selectedIndex: 0
         }
     }
@@ -45,11 +46,15 @@ class TransactionScreen extends Component {
         showListTransaction(this.props.auth.id, statusType.STATUS_LEND, this.props.auth.token)
             .then(responseLend => {
                 this.setState({ lendData: responseLend.data }, () => {
+                    this.setIndicatorData(responseLend.data, statusType.STATUS_LEND)
+                    
                     showListTransaction(this.props.auth.id, statusType.STATUS_BORROW, this.props.auth.token)
                     .then(responseBorrow => {
-                        this.setState({ borrowData: responseBorrow.data })
+                        this.setState({ borrowData: responseBorrow.data }, () => {
+                            this.setIndicatorData(responseBorrow.data, statusType.STATUS_BORROW);
+                        })
                     })
-                    .catch(error => {
+                    .catch(_ => {
                         alert('Failed to get data.')
                     })
                 })
@@ -73,6 +78,115 @@ class TransactionScreen extends Component {
     setSelectedIndex = (index) => {
         this.setState({ selectedIndex: index })
     }
+
+    /** Set indicator data */
+    setIndicatorData = (listData, personStatus) => {
+        if(listData) {
+            let activeStatus1 = false;
+            let activeStatus2 = false;
+            let activeStatus3 = false;
+            let activeStatus4 = false;
+
+            switch (listData.status) {
+                case 'WAITING':
+                    activeStatus1 = true;
+                    activeStatus2 = false;
+                    activeStatus3 = false;
+                    activeStatus4 = false;
+                    break;
+
+                case 'APPOINTMENT':
+                    activeStatus1 = true;
+                    activeStatus2 = true;
+                    activeStatus3 = false;
+                    activeStatus4 = false;
+                    break;
+
+                case 'BORROWED':
+                    activeStatus1 = true;
+                    activeStatus2 = true;
+                    activeStatus3 = true;
+                    activeStatus4 = false;
+                    break;
+
+                case 'RETURNED':
+                    activeStatus1 = true;
+                    activeStatus2 = true;
+                    activeStatus3 = true;
+                    activeStatus4 = true;
+                    break;
+            
+                default:
+                    activeStatus1 = false;
+                    activeStatus2 = false;
+                    activeStatus3 = false;
+                    activeStatus4 = false;
+                    break;
+            }
+
+            let indicatorData = [
+                {
+                    info: 'WAITING',
+                    subInfo: 'No Info',
+                    active: activeStatus1
+                },
+                {
+                    info: 'APPOINTMENT',
+                    subInfo: 'No Info',
+                    active: activeStatus2
+                },
+                {
+                    info: 'BORROWED',
+                    subInfo: 'No Info',
+                    active: activeStatus3
+                },
+                {
+                    info: 'RETURNED',
+                    subInfo: 'No Info',
+                    active: activeStatus4
+                },
+            ]
+            
+            if (personStatus === statusType.STATUS_BORROW) {
+                this.setState({ indicatorBorrowData: indicatorData });
+            }else {
+                this.setState({ indicatorLendData: indicatorData });
+            }
+        }
+
+    }
+
+    /** Set content tab */
+    setContentTab = (component, dataSize) => {
+        if (dataSize) {
+            return component;
+        }
+
+        return (<EmptyList />);
+    }
+
+    /** To detail transaction */
+    toDetailTransaction = (id) => {
+        this.props.navigation.navigate('DETAIL_TRANSACTION', { transactionId: id });
+    }
+
+    /** Set bottom content */
+    setBottomContent = (listData) => {
+        if(listData) {
+            return (
+                <Layout style={ styles.bottomContent }>
+                    <Button 
+                        onPress={ () => this.toDetailTransaction(listData.id) } 
+                        style={ styles.mainButton }
+                    >
+                        DETAIL TRANSACTION
+                    </Button>
+                </Layout>
+            );
+        }
+
+        return null;
+    }
     
     render() {
         return (
@@ -91,28 +205,15 @@ class TransactionScreen extends Component {
                         onSelect={index => this.setSelectedIndex(index)}>
 
                         <Tab title='BORROW'>
-                            <Layout style={ styles.itemContainer2 }>
-                                <StepIndicator />
+                            <Layout style={ styles.itemContainer }>
+                                { this.setContentTab(<StepIndicator listData={ this.state.indicatorBorrowData } />, this.state.borrowData) }
+                                { this.setBottomContent(this.state.borrowData) }
                             </Layout>
                         </Tab>
                         <Tab title='LEND'>
-                            <Layout style={styles.tabContainer}>
-                                <Layout style={ styles.itemContainer }>
-                                    <Layout style={ styles.row }>
-                                        <Avatar 
-                                            source={ require('../images/users/user2.png') }
-                                            style={ styles.avatar }
-                                            size='giant'
-                                        />
-                                        <Layout>
-                                            <Text>Cynthia</Text>
-                                            <Text style={ styles.bold }>#35021AZ</Text>
-                                        </Layout>
-                                    </Layout>
-                                    <Layout style={ styles.badgePrimary }>
-                                        <Text style={ styles.smallTextWhite }>Waiting Confirmation</Text>
-                                    </Layout>
-                                </Layout>
+                            <Layout style={ styles.itemContainer }>
+                                { this.setContentTab(<StepIndicator listData={ this.state.indicatorLendData } />, this.state.lendData) }
+                                { this.setBottomContent(this.state.lendData) }
                             </Layout>
                         </Tab>
                     </TabView>
@@ -137,56 +238,27 @@ const styles = StyleSheet.create({
 
     tabContainer: {
         flexGrow: 1,
-        height: '100%',
         ...generalSty.mlTop,
         ...generalSty.plTop,
         ...generalSty.plRight
     },
 
-    itemContainer2: {
+    itemContainer: {
+        height: '97.5%',
         ...generalSty.plAll
     },
 
-    itemContainer: {
-        flexDirection: 'row',
-        borderBottomWidth: 1,
-        ...generalSty.greyBorder,
-        ...generalSty.mltop,
-        ...generalSty.plBottom
+    bottomContent: {
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        right: 0,
+        ...generalSty.plAll,
     },
 
-    row: {
-        flexDirection: 'row'
-    },
-
-    avatar: {
-        ...generalSty.mmRight
-    },
-
-    bold: {
-        fontWeight: 'bold',
-        ...generalSty.smallText
-    },
-
-    subInfo: {
-        ...generalSty.smallText,
-        ...generalSty.greyText
-    },
-
-    badgePrimary: {
-        ...generalSty.primaryBackground,
-        ...generalSty.pmLeft,
-        ...generalSty.pmRight,
-        alignSelf: 'baseline',
-        borderRadius: 3,
-        paddingVertical: 0.5,
-    },
-
-    smallTextWhite: {
-        fontSize: 10,
-        letterSpacing: 0.5,
-        ...generalSty.white
-    },
+    mainButton: {
+        ...generalSty.mlTop
+    }
 });
 
 const mapToState = state => {
