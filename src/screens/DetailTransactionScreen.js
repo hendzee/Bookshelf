@@ -144,6 +144,11 @@ class DetailTransactionScreen extends Component {
         this.props.navigation.navigate('SELECT_MAP', { transactionId: this.state.transaction.id });
     }
 
+    /** Navigate to show map */
+    toShowMap = () => {
+        this.props.navigation.navigate('SHOW_MAP', { transaction: this.state.transaction });
+    }
+
     /** Navigate to confirmation item */
     toConfirmationItem = () => {
         this.props.navigation.navigate('CONFIRMATION_ITEM', { loans: this.state.loans });
@@ -189,7 +194,9 @@ class DetailTransactionScreen extends Component {
                         />
                         <MidContent 
                             transaction={ this.state.transaction }
-                            toSelectMap={ this.toSelectMap } 
+                            toSelectMap={ this.toSelectMap }
+                            toShowMap={ this.toShowMap }
+                            isMapEditable={ this.props.auth.id === this.state.transaction.owner_id }
                         />
                         <ListContent loans={ this.state.loans } />
                     </ScrollView>
@@ -202,7 +209,7 @@ class DetailTransactionScreen extends Component {
                     isError={ this.state.isResponseError }
                     onPress={ this.handleModalSubmit } 
                     loading={ this.state.isLoading }
-                    visible={ this.state.isSend } 
+                    visible={ this.state.isSend }
                 />
             </SafeAreaView>
         );

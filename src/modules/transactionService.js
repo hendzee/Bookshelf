@@ -178,10 +178,10 @@ const updateToAppointment = (id, token) => {
         .then(result => {
             response = {
                 data: result.data,
-                message: 'Request was send.',
+                message: 'Request accepted.',
                 status: status.OK
             }
-            console.log(JSON.stringify(result));
+
             resolve(response);
         })
         .catch(error => {
@@ -237,18 +237,22 @@ const updateToCancel = (id, token) => {
 }
 
 /** Update map */
-const updateMap = (data) => {
+const updateMap = (data, token) => {
     return new Promise(function(resolve, reject){
         var response = {};
         var message = '';
         var id = data.transactionId;
         var dataSend = {
+            location_name: data.locationName,
             map_lat: data.currentLatitude.toString(),
             map_long: data.currentLongitude.toString(),
             map_note: data.note
         }
+        var auth = 'Bearer ' + token;
 
-        axios.post(prefix + '/transactions/update/map/' + id, dataSend)
+        axios.post(prefix + '/transactions/update/map/' + id, dataSend, {
+            headers: { 'Authorization': auth }
+        })
             .then(result => {
                 response = {
                     data: result.data,

@@ -14,6 +14,36 @@ const EditIcon = () => (
 )
 
 const MidContent = (props) => {
+    /** Set edit map */
+    setEditMap = () => {
+        if (props.isMapEditable) {
+            return(
+                <Layout style={ styles.floatRight }>
+                    <Button 
+                        onPress={ props.toSelectMap } 
+                        status='basic' 
+                        size='tiny' 
+                        icon={ EditIcon }
+                    >
+                        Edit Map
+                    </Button>
+                </Layout>
+            );
+        }
+
+        return(
+            <Layout style={ styles.floatRight }>
+                <Button 
+                    onPress={ props.toShowMap } 
+                    status='basic' 
+                    size='tiny' 
+                >
+                    Show Map
+                </Button>
+            </Layout>
+        );
+    }
+
     /** Set extra data */
     const setExtraData = () => {
         if (props.transaction.status === 'APPOINTMENT' || props.transaction.status === 'CANCEL') {
@@ -28,7 +58,9 @@ const MidContent = (props) => {
                             <Text style={ styles.smallText }>Meet Point</Text>
                         </Layout>
                         <Layout style={ styles.rightFlexContainer }>
-                            <Text style={ styles.address }>Abraham lincoln street no.20, America</Text>
+                            <Text style={ styles.address }>
+                                { props.transaction.location_name }
+                            </Text>
                         </Layout>
                     </Layout>
                     <Layout style={ styles.secondInfoItemContainer }>
@@ -36,14 +68,12 @@ const MidContent = (props) => {
                             <Text style={ styles.smallText }>Note</Text>
                         </Layout>
                         <Layout style={ styles.rightFlexContainer }>
-                            <Text style={ styles.address }>In the right of Al-Iman mosque</Text>
+                            <Text style={ styles.address }>
+                                { props.transaction.map_note }
+                            </Text>
                         </Layout>
                     </Layout>
-                    <Layout style={ styles.floatRight }>
-                        <Button onPress={ props.toSelectMap } status='basic' size='tiny' icon={ EditIcon }>
-                            Edit Map
-                        </Button>
-                    </Layout>
+                    { setEditMap() }
                 </Layout>
             )
         }

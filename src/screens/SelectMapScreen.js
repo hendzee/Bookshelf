@@ -10,6 +10,9 @@ import { InfoModal, Map } from '../components/select_map_screen';
 /** import CRUD and other function */
 import { updateMap, getUserLocation, getLocationName } from '../modules';
 
+/** Redux */
+import { connect } from 'react-redux';
+
 const CloseIcon = () => (
     <Icon width={ 25 } height={ 25 } name='close' />
 )
@@ -49,9 +52,9 @@ class SelectMapScreen extends Component {
     }
 
     /** Handle back */
-    handleClose = () => {
+    handleBack = () => {
         if (!this.state.isResponseError) {
-            this.props.navigation.navigate('MAIN');
+            this.props.navigation.goBack();
         }
     }
 
@@ -65,31 +68,35 @@ class SelectMapScreen extends Component {
         this.setState({ isLoading: true, isSaved: true }, () => {
             let data = {
                 transactionId: this.props.route.params.transactionId,
+                locationName: this.state.locationName,
                 currentLatitude: this.state.currentLatitude,
                 currentLongitude: this.state.currentLongitude,
                 note: this.state.note
             }
 
-            updateMap(data)
-                .then((response) => {
-                    this.setState({ 
-                        isLoading: false, 
-                        responseTitle: response.message, 
-                        isResponseError: false });
-                })
-                .catch(error => {
-                    this.setState({ 
-                        isLoading: false, 
-                        responseTitle: error.message, 
-                        isResponseError: true })
-                })
+            updateMap(
+                data,
+                this.props.auth.token
+            )
+            .then((response) => {
+                this.setState({ 
+                    isLoading: false, 
+                    responseTitle: response.message, 
+                    isResponseError: false });
+            })
+            .catch(error => {
+                this.setState({ 
+                    isLoading: false, 
+                    responseTitle: error.message, 
+                    isResponseError: true })
+            })
         });
     };
 
     /** Handle modal success save function  */
     handleModalSave = () => {
         this.setState({ isSaved: false }, () => {
-            this.handleClose();
+            this.handleBack();
         });
     };
 
@@ -118,7 +125,7 @@ class SelectMapScreen extends Component {
 
                 <Layout style={ styles.topFloatContainer }>
                     <Layout style={ styles.topLeftContainer }>
-                        <CustomTouchableOpacity onPress={ this.handleClose }>
+                        <CustomTouchableOpacity onPress={ this.handleBack }>
                             <CloseIcon />
                         </CustomTouchableOpacity>
                     </Layout>
@@ -238,4 +245,12 @@ const styles = StyleSheet.create({
     }
 });
 
-export { SelectMapScreen };
+const mapStateToProps = state => {
+    return {
+        auth: state.auth.userData
+    }
+}
+
+const rdxSelectMapScreen = connect(mapStateToProps)(SelectMapScreen);
+
+export { rdxSelectMapScreen as SelectMapScreen };
