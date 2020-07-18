@@ -166,12 +166,15 @@ const updateToWaiting = (id, token) => {
 }
 
 /** Update to make appointment */
-const updateToAppointment = (id) => {
+const updateToAppointment = (id, token) => {
     return new Promise(function(resolve, reject){
         var response = {};
         var message = '';
+        var auth = 'Bearer ' + token;
 
-        axios.post(prefix + '/transactions/update/appointment/' + id)
+        axios.post(prefix + '/transactions/update/appointment/' + id, null, {
+            headers: { 'Authorization': auth }
+        })
         .then(result => {
             response = {
                 data: result.data,
@@ -199,12 +202,15 @@ const updateToAppointment = (id) => {
 }
 
 /** Update to cancel */
-const updateToCancel = (id) => {
+const updateToCancel = (id, token) => {
     return new Promise(function(resolve, reject){
         var response = {};
         var message = '';
+        var auth = 'Bearer ' + token;
 
-        axios.post(prefix + '/transactions/update/cancel/' + id)
+        axios.post(prefix + '/transactions/update/cancel/' + id, null, {
+            headers: { 'Authorization': auth }
+        })
         .then(result => {
             response = {
                 data: result.data,

@@ -20,6 +20,32 @@ const ChatIcon = () => (
 )
 
 const TopContent = (props) => {
+    /** Set owner chat */
+    const setOwnerChat = () => {
+        if (props.userId === props.transaction.owner_id) {
+            return (
+                <CustomTouchableOpacity>
+                    <ChatIcon />
+                </CustomTouchableOpacity>
+            );
+        }
+
+        return null;
+    }
+
+    /** Set owner chat */
+    const setBorrowerChat = () => {
+        if (props.userId === props.transaction.borrower_id) {
+            return (
+                <CustomTouchableOpacity>
+                    <ChatIcon />
+                </CustomTouchableOpacity>
+            );
+        }
+
+        return null;
+    }
+
     /** Set main content */
     const setContent = () => {
         if (Object.keys(props.relatedUsers).length > 0) {
@@ -43,9 +69,7 @@ const TopContent = (props) => {
                             </Layout>
                         </Layout>
                         <Layout style={ styles.infoRightContainer }>
-                            <CustomTouchableOpacity>
-                                <ChatIcon />
-                            </CustomTouchableOpacity>
+                            { setOwnerChat() }
                         </Layout>
                     </Layout>
                     <Layout style={ styles.topInfoItem }>
@@ -69,9 +93,7 @@ const TopContent = (props) => {
                             </Layout>
                         </Layout>
                         <Layout style={ styles.infoRightContainer }>
-                            <CustomTouchableOpacity>
-                                <ChatIcon />
-                            </CustomTouchableOpacity>
+                            { setBorrowerChat() }
                         </Layout>
                     </Layout>
                 </Layout>

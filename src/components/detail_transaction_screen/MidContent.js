@@ -57,13 +57,13 @@ const MidContent = (props) => {
                 <Layout style={ styles.secondInfoContainer }>
                     <Layout style={ styles.secondInfoItemContainer }>
                         <Text style={ styles.smallText }>ID</Text>
-                        <Text style={ styles.textBold }>
+                        <Text style={ styles.smallText }>
                             { props.transaction.id }
                         </Text>
                     </Layout>
                     <Layout style={ styles.secondInfoItemContainer }>
                         <Text style={ styles.smallText }>Status</Text>
-                        <Text style={ styles.smallText }>
+                        <Text style={ styles.textBold }>
                             { props.transaction.status }
                         </Text>
                     </Layout>
@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
     },
 
     smallText: {
-        ...generalSty.smallText
+        ...generalSty.smallText,
     },
 
     secondInfoItemContainer: {

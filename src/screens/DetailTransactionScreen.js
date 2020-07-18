@@ -63,7 +63,10 @@ class DetailTransactionScreen extends Component {
     /** Handle send */
     handleSend = () => {
         this.setState({ isSend: true, isLoading: true, modalType: modalType.REQUEST }, () => {
-            updateToAppointment(15)
+            updateToAppointment(
+                this.state.transaction.id,
+                this.props.auth.token
+            )
                 .then(response => {
                     this.setState({
                         isResponseError: response.status,
@@ -96,12 +99,23 @@ class DetailTransactionScreen extends Component {
     /** Handle cancel */
     handleCancel = () => {
         this.setState({ isSend: true, isLoading: true, modalType: modalType.CANCEL }, () => {
-            updateToCancel(15)
+            updateToCancel(
+                this.state.transaction.id,
+                this.props.auth.token
+            )
                 .then(response => {
-                    this.setState({
-                        isResponseError: response.status,
-                        responseTitle: response.message,
-                        isResponseError: false
+                    this.setState(prevState => ({
+                        ...prevState,
+                        transaction: {
+                            ...prevState.transaction,
+                            status: 'CANCEL'
+                        }
+                    }), () => {
+                        this.setState({
+                            isResponseError: response.status,
+                            responseTitle: response.message,
+                            isResponseError: false
+                        })
                     })
                 }).catch(error => {
                     this.setState({
@@ -134,6 +148,26 @@ class DetailTransactionScreen extends Component {
     toConfirmationItem = () => {
         this.props.navigation.navigate('CONFIRMATION_ITEM', { loans: this.state.loans });
     }
+
+    /** Set bottom content */
+    setBottomContent = () => {
+        if (Object.keys(this.state.transaction).length > 0) {
+            if (this.state.transaction.owner_id === this.props.auth.id) {
+                return(
+                    <BottomContent
+                        transaction={ this.state.transaction } 
+                        handleCancel={ this.handleCancel }
+                        handleSend={ this.handleSend }
+                        toConfirmationItem={ this.toConfirmationItem }
+                    />
+                );
+            }
+
+            return null;
+        }
+
+        return null;
+    }
     
     render() {
         return (
@@ -148,19 +182,18 @@ class DetailTransactionScreen extends Component {
 
                 <Layout style={ styles.mainContainer }>
                     <ScrollView showsVerticalScrollIndicator={ false }>
-                        <TopContent relatedUsers={ this.state.relatedUsers } />
+                        <TopContent
+                            userId={ this.props.auth.id }
+                            transaction={ this.state.transaction } 
+                            relatedUsers={ this.state.relatedUsers } 
+                        />
                         <MidContent 
                             transaction={ this.state.transaction }
                             toSelectMap={ this.toSelectMap } 
                         />
                         <ListContent loans={ this.state.loans } />
                     </ScrollView>
-                    <BottomContent
-                        transaction={ this.state.transaction } 
-                        handleCancel={ this.handleCancel }
-                        handleSend={ this.handleSend }
-                        toConfirmationItem={ this.toConfirmationItem }
-                    />
+                    { this.setBottomContent() }
                 </Layout>
                 
                 {/* Modal when send request */}
