@@ -157,18 +157,15 @@ class DetailTransactionScreen extends Component {
     /** Set bottom content */
     setBottomContent = () => {
         if (Object.keys(this.state.transaction).length > 0) {
-            if (this.state.transaction.owner_id === this.props.auth.id) {
-                return(
-                    <BottomContent
-                        transaction={ this.state.transaction } 
-                        handleCancel={ this.handleCancel }
-                        handleSend={ this.handleSend }
-                        toConfirmationItem={ this.toConfirmationItem }
-                    />
-                );
-            }
-
-            return null;
+            return(
+                <BottomContent
+                    isOwner={ this.state.transaction.owner_id === this.props.auth.id }
+                    transaction={ this.state.transaction } 
+                    handleCancel={ this.handleCancel }
+                    handleSend={ this.handleSend }
+                    toConfirmationItem={ this.toConfirmationItem }
+                />
+            );
         }
 
         return null;
@@ -199,8 +196,8 @@ class DetailTransactionScreen extends Component {
                             isMapEditable={ this.props.auth.id === this.state.transaction.owner_id }
                         />
                         <ListContent loans={ this.state.loans } />
+                        { this.setBottomContent() }
                     </ScrollView>
-                    { this.setBottomContent() }
                 </Layout>
                 
                 {/* Modal when send request */}
@@ -222,7 +219,8 @@ const styles = StyleSheet.create({
     },
 
     mainContainer: {
-        ...generalSty.mainContainer
+        ...generalSty.mainContainer,
+        ...generalSty.plBottom
     },
 
     smallText: {

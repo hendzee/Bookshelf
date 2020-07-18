@@ -60,7 +60,6 @@ const styles = StyleSheet.create({
     listCardContainer: {
         ...generalSty.mlTop,
         ...generalSty.mlBottom,
-        height: 460
     },
 
     cardContainer: {

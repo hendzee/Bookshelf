@@ -8,48 +8,76 @@ const BottomContent = (props) => {
         let content = [];
 
         if (Object.keys(props.transaction).length > 0) {
-            switch (props.transaction.status) {
-                case 'WAITING':
-                    content.push(
-                        <Button onPress={ props.handleCancel } status='danger'>
-                            REJECT REQUEST
-                        </Button>
-                    );
-                    content.push(
-                        <Button onPress={ props.handleSend } style={ styles.mainButton }>
-                            ACCEPT REQUEST
-                        </Button>
-                    );
-                    break;
+            if (props.isOwner) {
+                switch (props.transaction.status) {
+                    case 'WAITING':
+                        content.push(
+                            <Button onPress={ props.handleCancel } status='danger'>
+                                REJECT REQUEST
+                            </Button>
+                        );
+                        content.push(
+                            <Button onPress={ props.handleSend } style={ styles.mainButton }>
+                                ACCEPT REQUEST
+                            </Button>
+                        );
+                        break;
+    
+                    case 'APPOINTMENT':
+                        content.push(
+                            <Button onPress={ props.handleCancel } status='danger'>
+                                CANCEL TRANSACTION
+                            </Button>
+                        ); 
+                        content.push(
+                            <Button onPress={ props.toConfirmationItem } style={ styles.mainButton }>
+                                CONFIRM TRANSACTION
+                            </Button>
+                        );
+                        break;
+    
+                    case 'BORROWED':
+                        content.push(
+                            <Button onPress={ props.handleSend } style={ styles.mainButton }>
+                                RETURN ITEMS
+                            </Button>
+                        );
+                        break;
+                
+                    default:
+                        content.push(
+                            <Layout></Layout>
+                        )
+                        break;
+                }    
+            }else {
+                switch (props.transaction.status) {
+                    case 'APPOINTMENT':
+                        content.push(
+                            <Button 
+                                onPress={ props.toConfirmationItem } 
+                                style={ styles.mainButton }
+                            >
+                                CONFIRM TRANSACTION
+                            </Button>
+                        );
+                        break;
+    
+                    case 'BORROWED':
+                        content.push(
+                            <Button onPress={ props.handleSend } style={ styles.mainButton }>
+                                RETURN ITEMS
+                            </Button>
+                        );
+                        break;
 
-                case 'APPOINTMENT':
-                    content.push(
-                        <Button onPress={ props.handleCancel } status='danger'>
-                            CANCEL TRANSACTION
-                        </Button>
-                    ); 
-                    content.push(
-                        <Button onPress={ props.toConfirmationItem } style={ styles.mainButton }>
-                            CONFIRM ITEMS
-                        </Button>
-                    );
-                    break;
-
-                case 'BORROWED':
-                    content.push(
-                        <Button onPress={ props.handleSend } style={ styles.mainButton }>
-                            RETURN ITEMS
-                        </Button>
-                    );
-                    break;
-            
-                default:
-                    content.push(
-                        <Layout></Layout>
-                    )
-                    break;
+                    default:
+                        content.push(
+                            <Layout></Layout>
+                        )
+                        break;
+                }
             }
-
             return content;
         }
 
@@ -57,21 +85,13 @@ const BottomContent = (props) => {
     }
 
     return (
-        <Layout style={ styles.bottomContent }>
+        <Layout>
             { setContent() }
         </Layout>
     );
 }
 
 const styles = StyleSheet.create({
-    bottomContent: {
-        position: 'absolute',
-        bottom: 0,
-        left: 0,
-        right: 0,
-        ...generalSty.plAll,
-    },
-
     mainButton: {
         ...generalSty.mlTop
     }
