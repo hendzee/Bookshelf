@@ -108,8 +108,6 @@ const showListTransaction = (id, data, token) => {
             .catch(error => {
                 message = 'There is error.'
 
-                console.log(JSON.stringify(error))
-                
                 if (error.response) {
                     message = error.response.data.message
                 }
@@ -153,8 +151,6 @@ const updateToWaiting = (id, token) => {
                 }
             }
 
-            console.log(JSON.stringify(error))
-            
             response = {
                 data: null,
                 message: message,

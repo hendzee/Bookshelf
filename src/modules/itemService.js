@@ -209,7 +209,6 @@ const addItem = async (data, token) => {
                     message: JSON.stringify(error),
                     status: status.ERROR
                 };
-                console.log(JSON.stringify(error))
                 reject(response);
             })
     });
