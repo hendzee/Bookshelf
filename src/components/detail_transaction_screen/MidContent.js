@@ -46,7 +46,8 @@ const MidContent = (props) => {
 
     /** Set extra data */
     const setExtraData = () => {
-        if (props.transaction.status === 'APPOINTMENT' || props.transaction.status === 'CANCEL') {
+        if (props.transaction.status === 'APPOINTMENT' || props.transaction.status === 'BORROWED' 
+            || props.transaction.status === 'CANCEL') {
             return(
                 <Layout>
                     <Layout style={ styles.secondInfoItemContainer }>

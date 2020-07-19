@@ -30,7 +30,7 @@ const BottomContent = (props) => {
                             </Button>
                         ); 
                         content.push(
-                            <Button onPress={ props.toConfirmationItem } style={ styles.mainButton }>
+                            <Button onPress={ props.handleConfirmationBorrowed } style={ styles.mainButton }>
                                 CONFIRM TRANSACTION
                             </Button>
                         );
@@ -38,7 +38,7 @@ const BottomContent = (props) => {
     
                     case 'BORROWED':
                         content.push(
-                            <Button onPress={ props.handleSend } style={ styles.mainButton }>
+                            <Button onPress={ props.handleConfirmationReturned } style={ styles.mainButton }>
                                 RETURN ITEMS
                             </Button>
                         );
@@ -55,7 +55,7 @@ const BottomContent = (props) => {
                     case 'APPOINTMENT':
                         content.push(
                             <Button 
-                                onPress={ props.toConfirmationItem } 
+                                onPress={ props.handleConfirmationBorrowed } 
                                 style={ styles.mainButton }
                             >
                                 CONFIRM TRANSACTION
@@ -65,7 +65,7 @@ const BottomContent = (props) => {
     
                     case 'BORROWED':
                         content.push(
-                            <Button onPress={ props.handleSend } style={ styles.mainButton }>
+                            <Button onPress={ props.handleConfirmationReturned } style={ styles.mainButton }>
                                 RETURN ITEMS
                             </Button>
                         );

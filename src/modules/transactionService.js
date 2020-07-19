@@ -201,6 +201,84 @@ const updateToAppointment = (id, token) => {
     });
 }
 
+/** Update to make appointment */
+const updateToBorrowed = (id, data, token) => {
+    return new Promise(function(resolve, reject){
+        var response = {};
+        var message = '';
+        var dataSend = {
+            owner_status: data
+        }
+        var auth = 'Bearer ' + token;
+
+        axios.post(prefix + '/transactions/update/borrowed/' + id, dataSend, {
+            headers: { 'Authorization': auth }
+        })
+        .then(result => {
+            response = {
+                data: result.data,
+                message: result.data,
+                status: status.OK
+            }
+
+            resolve(response);
+        })
+        .catch(error => {
+            message = 'There is error.'
+            
+            if (error.response) {
+                message = error.response.data.message
+            }
+
+            response = {
+                data: null,
+                message: message,
+                status: status.ERROR
+            }
+            reject(response);
+        })
+    });
+}
+
+/** Update to make returned */
+const updateToReturned = (id, data, token) => {
+    return new Promise(function(resolve, reject){
+        var response = {};
+        var message = '';
+        var dataSend = {
+            owner_status: data
+        }
+        var auth = 'Bearer ' + token;
+
+        axios.post(prefix + '/transactions/update/returned/' + id, dataSend, {
+            headers: { 'Authorization': auth }
+        })
+        .then(result => {
+            response = {
+                data: result.data,
+                message: result.data,
+                status: status.OK
+            }
+
+            resolve(response);
+        })
+        .catch(error => {
+            message = 'There is error.'
+            
+            if (error.response) {
+                message = error.response.data.message
+            }
+
+            response = {
+                data: null,
+                message: message,
+                status: status.ERROR
+            }
+            reject(response);
+        })
+    });
+}
+
 /** Update to cancel */
 const updateToCancel = (id, token) => {
     return new Promise(function(resolve, reject){
@@ -326,6 +404,8 @@ export {
     showListTransaction,
     updateToWaiting, 
     updateToAppointment, 
+    updateToBorrowed,
+    updateToReturned,
     updateToCancel,
     updateMap,
     deleteLoanItem

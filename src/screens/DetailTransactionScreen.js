@@ -13,7 +13,13 @@ import { CustomStatusBar, SmallModal } from '../components/general';
 import { TopContent, MidContent, ListContent, BottomContent } from '../components/detail_transaction_screen';
 
 /** import CRUD function */
-import { updateToAppointment, updateToCancel, showTransaction } from '../modules';
+import { 
+    updateToAppointment, 
+    updateToBorrowed, 
+    updateToReturned, 
+    updateToCancel, 
+    showTransaction 
+} from '../modules';
 
 /** Redux */
 import { connect } from 'react-redux';
@@ -87,13 +93,7 @@ class DetailTransactionScreen extends Component {
 
     /** Handle modal submit  */
     handleModalSubmit = () => {
-        if (this.state.modalType === modalType.REQUEST && !this.state.isResponseError) {
-            this.setState({ isSend: false }, () => {
-                this.toSelectMap();
-            });
-        }else {
-            this.setState({ isSend: false })
-        }
+        this.setState({ isSend: false })
     };
 
     /** Handle cancel */
@@ -112,14 +112,12 @@ class DetailTransactionScreen extends Component {
                         }
                     }), () => {
                         this.setState({
-                            isResponseError: response.status,
                             responseTitle: response.message,
                             isResponseError: false
                         })
                     })
                 }).catch(error => {
                     this.setState({
-                        isResponseError: error.status,
                         responseTitle: error.message,
                         isResponseError: true
                     })
@@ -154,6 +152,72 @@ class DetailTransactionScreen extends Component {
         this.props.navigation.navigate('CONFIRMATION_ITEM', { loans: this.state.loans });
     }
 
+    /** Confirmation borrow */
+    handleConfirmationBorrowed = () => {
+        let data = '';
+
+        if (this.state.transaction.id === this.props.auth.id) {
+            data = 'OWNER'
+        }else {
+            data = 'BORROWER'
+        }
+
+        this.setState({ isSend: true, isLoading: true, modalType: modalType.REQUEST }, () => {
+            updateToBorrowed(
+                this.state.transaction.id, 
+                data, 
+                this.props.auth.token
+            )
+            .then(response => {
+                this.setState({
+                    isLoading: false,
+                    responseTitle: response.message,
+                    isResponseError: false
+                })
+            })
+            .catch(error => {
+                this.setState({
+                    isLoading: false,
+                    responseTitle: error.message,
+                    isResponseError: true
+                })
+            })
+        })
+    }
+
+    /** Handle confirmation return */
+    handleConfirmationReturned = () => {
+        let data = '';
+
+        if (this.state.transaction.id === this.props.auth.id) {
+            data = 'OWNER'
+        }else {
+            data = 'BORROWER'
+        }
+
+        this.setState({ isSend: true, isLoading: true, modalType: modalType.REQUEST }, () => {
+            updateToReturned(
+                this.state.transaction.id, 
+                data, 
+                this.props.auth.token
+            )
+            .then(response => {
+                this.setState({
+                    isLoading: false,
+                    responseTitle: response.message,
+                    isResponseError: false
+                })
+            })
+            .catch(error => {
+                this.setState({
+                    isLoading: false,
+                    responseTitle: error.message,
+                    isResponseError: true
+                })
+            })
+        })
+    }
+
     /** Set bottom content */
     setBottomContent = () => {
         if (Object.keys(this.state.transaction).length > 0) {
@@ -163,7 +227,8 @@ class DetailTransactionScreen extends Component {
                     transaction={ this.state.transaction } 
                     handleCancel={ this.handleCancel }
                     handleSend={ this.handleSend }
-                    toConfirmationItem={ this.toConfirmationItem }
+                    handleConfirmationBorrowed={ this.handleConfirmationBorrowed }
+                    handleConfirmationReturned={ this.handleConfirmationReturned }
                 />
             );
         }
@@ -220,7 +285,6 @@ const styles = StyleSheet.create({
 
     mainContainer: {
         ...generalSty.mainContainer,
-        ...generalSty.plBottom
     },
 
     smallText: {
