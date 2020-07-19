@@ -15,7 +15,6 @@ export * from './CartScreen';
 export * from './DetailTransactionScreen';
 export * from './SelectMapScreen';
 export * from './ShowMapScreen';
-export * from './ConfirmationItemScreen';
 export * from './EditProfileScreen';
 export * from './ChangePasswordScreen';
 export * from './SettingLanguageScreen';
