@@ -28,18 +28,12 @@ const BackIcon = (style) => (
     <Icon { ...style } name='arrow-back-outline' />
 )
 
-const modalType = {
-    REQUEST: 'REQUEST',
-    CANCEL: 'CANCEL',
-}
-
 class DetailTransactionScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {
             transaction: {}, // general info of transaction
             relatedUsers: {}, // Borrower and owner user data
-            modalType: modalType.REQUEST, // Set modal for
             loans: [], // List of loan items
             responseTitle: '', // Response title / message
             isResponseError: false, // Response error
@@ -66,39 +60,34 @@ class DetailTransactionScreen extends Component {
         <TopNavigationAction icon={ BackIcon } onPress={ this.handleBack } />
     );
 
-    /** Handle send */
-    handleSend = () => {
-        this.setState({ isSend: true, isLoading: true, modalType: modalType.REQUEST }, () => {
-            updateToAppointment(
-                this.state.transaction.id,
-                this.props.auth.token
-            )
-                .then(response => {
-                    this.setState({
-                        isResponseError: response.status,
-                        responseTitle: response.message,
-                        isResponseError: false
-                    })
-                }).catch(error => {
-                    this.setState({
-                        isResponseError: error.status,
-                        responseTitle: error.message,
-                        isResponseError: true
-                    })
-                }).finally(() => {
-                    this.setState({ isLoading: false })
-                })
-        })
-    }
-
     /** Handle modal submit  */
     handleModalSubmit = () => {
         this.setState({ isSend: false })
     };
 
+    /** Show back button */
+    showBackButton = () => (
+        <TopNavigationAction icon={ BackIcon } onPress={ this.handleBack } />
+    );
+
+    /** Handle back */
+    handleBack = () => {
+        this.props.navigation.goBack();
+    }
+
+    /** Navigate to select map screen */
+    toSelectMap = () => {
+        this.props.navigation.navigate('SELECT_MAP', { transactionId: this.state.transaction.id });
+    }
+
+    /** Navigate to show map */
+    toShowMap = () => {
+        this.props.navigation.navigate('SHOW_MAP', { transaction: this.state.transaction });
+    }
+
     /** Handle cancel */
     handleCancel = () => {
-        this.setState({ isSend: true, isLoading: true, modalType: modalType.CANCEL }, () => {
+        this.setState({ isSend: true, isLoading: true }, () => {
             updateToCancel(
                 this.state.transaction.id,
                 this.props.auth.token
@@ -127,29 +116,29 @@ class DetailTransactionScreen extends Component {
         })
     }
 
-    /** Show back button */
-    showBackButton = () => (
-        <TopNavigationAction icon={ BackIcon } onPress={ this.handleBack } />
-    );
-
-    /** Handle back */
-    handleBack = () => {
-        this.props.navigation.goBack();
-    }
-
-    /** Navigate to select map screen */
-    toSelectMap = () => {
-        this.props.navigation.navigate('SELECT_MAP', { transactionId: this.state.transaction.id });
-    }
-
-    /** Navigate to show map */
-    toShowMap = () => {
-        this.props.navigation.navigate('SHOW_MAP', { transaction: this.state.transaction });
-    }
-
-    /** Navigate to confirmation item */
-    toConfirmationItem = () => {
-        this.props.navigation.navigate('CONFIRMATION_ITEM', { loans: this.state.loans });
+    /** Handle send */
+    handleUpdateToAppointment = () => {
+        this.setState({ isSend: true, isLoading: true }, () => {
+            updateToAppointment(
+                this.state.transaction.id,
+                this.props.auth.token
+            )
+                .then(response => {
+                    this.setState({
+                        isResponseError: response.status,
+                        responseTitle: response.message,
+                        isResponseError: false
+                    })
+                }).catch(error => {
+                    this.setState({
+                        isResponseError: error.status,
+                        responseTitle: error.message,
+                        isResponseError: true
+                    })
+                }).finally(() => {
+                    this.setState({ isLoading: false })
+                })
+        })
     }
 
     /** Confirmation borrow */
@@ -162,7 +151,7 @@ class DetailTransactionScreen extends Component {
             data = 'BORROWER'
         }
 
-        this.setState({ isSend: true, isLoading: true, modalType: modalType.REQUEST }, () => {
+        this.setState({ isSend: true, isLoading: true }, () => {
             updateToBorrowed(
                 this.state.transaction.id, 
                 data, 
@@ -195,7 +184,7 @@ class DetailTransactionScreen extends Component {
             data = 'BORROWER'
         }
 
-        this.setState({ isSend: true, isLoading: true, modalType: modalType.REQUEST }, () => {
+        this.setState({ isSend: true, isLoading: true }, () => {
             updateToReturned(
                 this.state.transaction.id, 
                 data, 
@@ -226,7 +215,7 @@ class DetailTransactionScreen extends Component {
                     isOwner={ this.state.transaction.owner_id === this.props.auth.id }
                     transaction={ this.state.transaction } 
                     handleCancel={ this.handleCancel }
-                    handleSend={ this.handleSend }
+                    handleUpdateToAppointment={ this.handleUpdateToAppointment }
                     handleConfirmationBorrowed={ this.handleConfirmationBorrowed }
                     handleConfirmationReturned={ this.handleConfirmationReturned }
                 />

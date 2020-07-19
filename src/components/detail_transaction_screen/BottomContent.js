@@ -17,7 +17,7 @@ const BottomContent = (props) => {
                             </Button>
                         );
                         content.push(
-                            <Button onPress={ props.handleSend } style={ styles.mainButton }>
+                            <Button onPress={ props.handleUpdateToAppointment } style={ styles.mainButton }>
                                 ACCEPT REQUEST
                             </Button>
                         );

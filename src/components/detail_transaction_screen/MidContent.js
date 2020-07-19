@@ -16,7 +16,8 @@ const EditIcon = () => (
 const MidContent = (props) => {
     /** Set edit map */
     setEditMap = () => {
-        if (props.isMapEditable) {
+        if (props.isMapEditable && props.transaction.status !== 'RETURNED' 
+            && props.transaction.status !== 'LISTING' && props.transaction.status !== 'CANCEL') {
             return(
                 <Layout style={ styles.floatRight }>
                     <Button 
@@ -47,7 +48,7 @@ const MidContent = (props) => {
     /** Set extra data */
     const setExtraData = () => {
         if (props.transaction.status === 'APPOINTMENT' || props.transaction.status === 'BORROWED' 
-            || props.transaction.status === 'CANCEL') {
+            || props.transaction.status === 'RETURNED' ||  props.transaction.status === 'CANCEL') {
             return(
                 <Layout>
                     <Layout style={ styles.secondInfoItemContainer }>
