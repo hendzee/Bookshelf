@@ -15,6 +15,9 @@ import {
 } from '../components/general';
 import { getItem } from '../modules';
 
+/** Redux */
+import { connect } from 'react-redux';
+
 const BackIcon = () => (
     <Icon width={ 25 } height={ 25 } name='arrow-back-outline' />
 );
@@ -36,13 +39,18 @@ class ItemsScreen extends Component {
     }
 
     async componentDidMount() {
-        let items = await getItem(this.state.currentPage);
-
-        this.setState({ 
-            items: items.data,
-            currentPage: items.currentPage,
-            nextPage: items.nextPage 
+        getItem(this.state.currentPage, this.props.auth.token)
+        .then(response => {
+            this.setState({ 
+                items: response.data,
+                currentPage: response.currentPage,
+                nextPage: response.nextPage 
+            });
+        })
+        .catch((_) => {
+            alert('Something wrong.')
         });
+
     }
 
     /** Show back button */
@@ -168,4 +176,12 @@ const styles = StyleSheet.create({
     },
 });
 
-export { ItemsScreen };
+const mapStateToProps = state => {
+    return {
+        auth: state.auth.userData
+    }
+}
+
+const rdxItemsScreen = connect(mapStateToProps)(ItemsScreen)
+
+export { rdxItemsScreen as ItemsScreen };

@@ -4,13 +4,13 @@ import { status } from './status';
 
 /** Get all data */
 const getItem = async (page, token) => {
-    var response = {};
-    var message = '';
-    var auth = 'Bearer ' + token;
-    
     return new Promise(function (resolve, reject){
+        var response = {};
+        var message = '';
+        var auth = 'Bearer ' + token;
+
         axios.get(prefix + '/items?user=true&page=' + page, {
-            headers: { 'Authorization':  + auth }
+            headers: { 'Authorization': auth }
         })
             .then(result => {
                 response = {

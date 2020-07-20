@@ -29,8 +29,8 @@ class LoginScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            email: '',
-            password: '',
+            email: 'hendras@gmail.com',
+            password: 'hendras123',
             isSecureInput: [ true ], // Secure input for current password (index 0)
             responseTitle: '', // Response title / message
             isResponseError: false, // Response error
