@@ -15,7 +15,12 @@ import { CustomStatusBar, SmallModal } from '../components/general';
 import { ItemList } from '../components/cart_screens';
 
 /** import CRUD function */
-import { showTransaction, durationToDate, updateToWaiting, deleteLoanItem } from '../modules';
+import { 
+    showCart,
+    durationToDate, 
+    updateToWaiting, 
+    deleteLoanItem 
+} from '../modules';
 
 /** Redux */
 import { connect } from 'react-redux';
@@ -35,6 +40,7 @@ class CartScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            transaction: {},
             loans: [], // List of loan items
             duration: { text: durations.ONE_DAY }, // Selected duration
             durationDate: '', // Converted duration value to date
@@ -46,9 +52,20 @@ class CartScreen extends Component {
     }
 
     async componentDidMount () {
-        let getLoansData = await showTransaction(this.props.route.params.transactionId, this.props.auth.token);
-
-        this.setState({ loans: getLoansData.data.transaction.loans });
+        showCart(this.props.auth.id, this.props.auth.token)
+            .then(response => {
+                if(!response.data.not_found) {
+                    this.setState({
+                        transaction: response.data.transaction, 
+                        loans: response.data.transaction.loans 
+                    });
+                }else {
+                    alert('Data is empty.')
+                }
+            })
+            .catch((_) => {
+                alert('Something wrong, try again later.')
+            })
     }
 
     /** Show back button */
@@ -64,7 +81,7 @@ class CartScreen extends Component {
     /** Handle send request */
     handleSend = () => {
         this.setState({ isLoading: true, isSend: true }, () => {
-            updateToWaiting(this.props.route.params.transactionId, this.props.auth.token)
+            updateToWaiting(this.state.transaction.id, this.props.auth.token)
                 .then(response => {
                     this.setState({ 
                         isLoading: false,

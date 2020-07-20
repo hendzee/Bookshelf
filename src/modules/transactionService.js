@@ -43,6 +43,40 @@ const addTransaction = (data, token) => {
     })
 }
 
+/** Show cart data */
+const showCart = (id, token) => {
+    return new Promise(function(resolve, reject){
+        var response = {};
+        var message = '';
+        var auth = 'Bearer ' + token;
+
+    axios.get(prefix + '/transactions/?borrower_id=' + id, {
+        headers: { 'Authorization':  auth }
+    })
+    .then(result => {
+        response = {
+            data: result.data,
+            message: 'Item was added',
+            status: status.OK
+        }
+        resolve(response);
+    })
+    .catch(error => {
+        message = 'There is error.'
+
+        if (error.response) {
+            message = error.response.data.message
+        }
+
+        response = {
+            data: null,
+            message: message,
+            status: status.ERROR
+        }
+        reject(response);
+    })
+})}
+
 /** Show transaction */
 const showTransaction = (id, token) => {
     return new Promise(function(resolve, reject){
@@ -156,6 +190,7 @@ const updateToWaiting = (id, token) => {
                 message: message,
                 status: status.ERROR
             }
+            
             reject(response);
         })
     });
@@ -395,7 +430,8 @@ const deleteLoanItem = (id, token) => {
 }
 
 export { 
-    addTransaction, 
+    addTransaction,
+    showCart,
     showTransaction,
     showListTransaction,
     updateToWaiting, 

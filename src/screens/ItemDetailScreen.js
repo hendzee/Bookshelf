@@ -84,9 +84,9 @@ class ItemDetailScreen extends Component {
             }
 
             addTransaction(data, this.props.auth.token)
-                .then((response) => {
+                .then((_) => {
                     this.setState({ isLoading: false, isSaved: false }, () => {
-                        this.toCart(response.data.id);
+                        this.toCart();
                     });
                 })
                 .catch(error => {
@@ -106,8 +106,8 @@ class ItemDetailScreen extends Component {
     };
 
     /** Handle navigation to cart screen */
-    toCart = (transactionId) => {
-        this.props.navigation.navigate('CART', { transactionId: transactionId });
+    toCart = () => {
+        this.props.navigation.navigate('CART');
     }
 
     /** Set floatng button */

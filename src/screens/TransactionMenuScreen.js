@@ -11,7 +11,7 @@ const CloseIcon = () => (
 /** Screens enum */
 const screens = {
     ADD_ITEM: 'ADD_ITEM',
-    LIBRARY: 'LIBRARY',
+    CART: 'CART',
     TRANSACTION: 'TRANSACTION'
 }
 
@@ -30,8 +30,8 @@ class TransactionMenuScreen extends Component {
                 screen = 'ADD_ITEM'
                 break;
 
-            case screens.LIBRARY:
-                screen = 'ADD_ITEM'
+            case screens.CART:
+                screen = 'CART'
                 break;
 
             case screens.TRANSACTION:
@@ -71,14 +71,14 @@ class TransactionMenuScreen extends Component {
                                 </Layout>
                             </CustomTouchableOpacity>
 
-                            <CustomTouchableOpacity>
+                            <CustomTouchableOpacity onPress={ () => this.handleMenuNavigation(screens.CART) }>
                                 <Layout style={ styles.menuChildren }>
                                     <Avatar 
                                         size='giant'
                                         style={ styles.menuIcon }
                                         source={ require('../images/icons/icon_menu2.png') }
                                     />
-                                    <Text>Library</Text>
+                                    <Text>Cart</Text>
                                 </Layout>
                             </CustomTouchableOpacity>
 
