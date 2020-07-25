@@ -4,6 +4,12 @@ import { Layout, Icon, TopNavigationAction, Autocomplete } from '@ui-kitten/comp
 import { generalSty } from '../styles';
 import { CustomStatusBar, CustomTouchableOpacity } from '../components/general';
 
+/** Search services */
+import { searchItem } from '../modules';
+
+/** Redux */
+import { connect } from 'react-redux';
+
 const BackIcon = () => (
     <Icon width={ 25 } height={ 25 } name='arrow-back-outline' />
 );
@@ -18,26 +24,8 @@ class SearchItemScreen extends Component {
         this.searchRef = React.createRef();
         this.state = {
             /** Data search dummy */
-            dataSearch: [
-                {
-                    id: 1,
-                    title: 'Winnie the Pooh'
-                },
-                {
-                    id: 2, 
-                    title: 'Harry Potter'
-                }
-            ],
-            selectedData: null // Selected data
-        }
-    }
-
-    /** Set autocomplete */
-    setAutocomplete = () => {
-        if (this.state.dataSearch.length > 0) {
-            this.searchRef.show();
-        }else {
-            this.searchRef.blur();
+            dataSearch: [],
+            selectedData: '' // Selected data
         }
     }
 
@@ -64,14 +52,24 @@ class SearchItemScreen extends Component {
     }
 
     /** Handle on change data */
-    handleOnChangeData = ({ text }) => {
-        this.setState({ selectedData: text });
+    handleOnChangeData = ( text ) => {
+        this.setState({ selectedData: text }, () => {
+            searchItem(this.state.selectedData, this.props.auth.token)
+            .then(response => {
+                this.setState({ dataSearch: response.data });
+            })
+            .catch(error => {
+                alert(error.message)
+            })
+        });
     }
 
-    /** To search item result screem */
+    /** To search item result screen */
     toResult = () => {
-        this.searchRef.current.hide();
-        this.props.navigation.navigate('SEARCH_ITEM_RESULT');
+        this.props.navigation.navigate(
+            'SEARCH_ITEM_RESULT',
+            { title: this.state.selectedData } 
+        );
     }
 
     /** Handle search */
@@ -99,11 +97,10 @@ class SearchItemScreen extends Component {
                                 placeholder='Search your book here'
                                 data={ this.state.dataSearch }
                                 value={ this.state.selectedData }
-                                onChangeText={ this.handleOnChangeData }
+                                onChangeText={(text) => this.handleOnChangeData(text) }
                                 onSelect={ this.handleOnSelect }
                                 returnKeyType='search'
                                 autoFocus={ true }
-                                blurOnSubmit={ true }
                                 onSubmitEditing={ this.handleSearch }
                             />
                         </Layout>
@@ -141,4 +138,12 @@ const styles = StyleSheet.create({
     }
 });
 
-export { SearchItemScreen };
+const mapStateToProps = state => {
+    return { 
+        auth: state.auth.userData
+    }
+}
+
+const rdxSearchItemScreen = connect(mapStateToProps)(SearchItemScreen);
+
+export { rdxSearchItemScreen as SearchItemScreen };

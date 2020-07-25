@@ -172,6 +172,87 @@ const getSpecificItem = async (id, token) => {
     });
 }
 
+/** Search item */
+const searchItem = async (search, token) => {
+    var response = {};
+    var message = '';
+    var auth = 'Bearer ' + token;
+    var searchText = search;
+    
+    return new Promise(function (resolve, reject){
+        axios.get(prefix + '/items?search=' + searchText, {
+            headers: { 'Authorization': auth }
+        })
+        .then(result => {
+            response = {
+                data: extractSearch(result.data),
+                message: message,
+                status: status.OK
+            };
+
+            resolve(response);
+        })
+        .catch(error => {
+            message = JSON.stringify(error);
+
+            response = {
+                data: result.data,
+                message: message,
+                status: status.OK
+            };
+
+            reject(response);
+        });
+    });
+}
+
+/** Extract search */
+const extractSearch = (data) => {
+    return data.map((item, index) => {
+        return {
+            id: index,
+            title: item.title
+        }
+    })
+}
+
+/** Search detail */
+const searchItemDetail = async (search, page, token) => {
+    return new Promise(function (resolve, reject){
+        var response = {};
+        var message = '';
+        var auth = 'Bearer ' + token;
+
+        axios.get(prefix + '/items?search_detail=' + search + '&page=' + page, {
+            headers: { 'Authorization': auth }
+        })
+            .then(result => {
+                response = {
+                    data: result.data.data,
+                    message: message,
+                    currentPage: result.data.current_page,
+                    nextPage: result.data.next_page_url,
+                    status: status.OK
+                };
+
+                resolve(response);
+            })
+            .catch(error => {
+                message = JSON.stringify(error);
+
+                response = {
+                    data: result.data.data,
+                    message: message,
+                    currentPage: 0,
+                    nextPage: null,
+                    status: status.ERROR
+                };
+
+                reject(response);
+            });
+    });
+}
+
 /** Add new item */
 const addItem = async (data, token) => {
     return new Promise(function(resolve, reject) {
@@ -302,6 +383,8 @@ export {
     getRecomendationItem, 
     getRandomItem, 
     getSpecificItem,
+    searchItem,
+    searchItemDetail,
     addItem,
     updateItem,
     deleteItem

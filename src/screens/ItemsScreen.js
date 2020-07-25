@@ -72,7 +72,7 @@ class ItemsScreen extends Component {
     loadMore = async () => {
         if (this.state.nextPage !== null) {
             this.setState({ isLoadMore: true }, () => {
-                getItem(this.state.currentPage + 1)
+                getItem(this.state.currentPage + 1, this.props.auth.token)
                     .then(items => {
                         this.setState({  
                             items: [ ...this.state.items, ...items.data ],
