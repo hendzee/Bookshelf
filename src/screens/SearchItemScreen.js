@@ -15,6 +15,7 @@ const RemoveIcon = (style) => (
 class SearchItemScreen extends Component {
     constructor(props) {
         super(props);
+        this.searchRef = React.createRef();
         this.state = {
             /** Data search dummy */
             dataSearch: [
@@ -31,6 +32,15 @@ class SearchItemScreen extends Component {
         }
     }
 
+    /** Set autocomplete */
+    setAutocomplete = () => {
+        if (this.state.dataSearch.length > 0) {
+            this.searchRef.show();
+        }else {
+            this.searchRef.blur();
+        }
+    }
+
     /** Show back button */
     showBackButton = () => (
         <TopNavigationAction icon={ BackIcon } onPress={ this.handleBack } />
@@ -43,7 +53,9 @@ class SearchItemScreen extends Component {
 
     /** Handle on select */
     handleOnSelect = ({ title }) => {
-        this.setState({ selectedData: title });
+        this.setState({ selectedData: title }, () => {
+            this.toResult();
+        });
     }
 
     /** Remove selected data */
@@ -53,11 +65,12 @@ class SearchItemScreen extends Component {
 
     /** Handle on change data */
     handleOnChangeData = ({ text }) => {
-        this.setState({ selectedData: text })
+        this.setState({ selectedData: text });
     }
 
     /** To search item result screem */
     toResult = () => {
+        this.searchRef.current.hide();
         this.props.navigation.navigate('SEARCH_ITEM_RESULT');
     }
 
@@ -80,6 +93,7 @@ class SearchItemScreen extends Component {
                         </Layout>
                         <Layout style={ styles.searchContainer }>
                             <Autocomplete 
+                                ref={ this.searchRef }
                                 icon={ RemoveIcon }
                                 onIconPress={ this.removeSelectedData }
                                 placeholder='Search your book here'
@@ -89,6 +103,7 @@ class SearchItemScreen extends Component {
                                 onSelect={ this.handleOnSelect }
                                 returnKeyType='search'
                                 autoFocus={ true }
+                                blurOnSubmit={ true }
                                 onSubmitEditing={ this.handleSearch }
                             />
                         </Layout>

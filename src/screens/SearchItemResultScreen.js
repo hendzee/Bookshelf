@@ -66,7 +66,7 @@ class SearchItemResultScreen extends Component {
 
                     {/* Main content - start */}
                     <Layout>
-                        <ListItem navigation={ this.props.navigation } />
+                        {/* <ListItem navigation={ this.props.navigation } /> */}
                     </Layout>
                     {/* Main content - end */}
 
