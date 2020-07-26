@@ -36,21 +36,43 @@ class SearchItemResultScreen extends Component {
     }
 
     async componentDidMount() {
-        searchItemDetail(
-            this.props.route.params.title,
-            this.state.currentPage, 
-            this.props.auth.token
-        )
-        .then(response => {
-            this.setState({ 
-                items: response.data,
-                currentPage: response.currentPage,
-                nextPage: response.nextPage 
-            });
-        })
-        .catch((_) => {
-            alert('Something wrong.')
+        let data = {
+            search: this.props.route.params.title,
+            orderBy: this.props.searchFilter.orderBy,
+            ASC: this.props.searchFilter.ASC
+        }
+
+        /** Should be refreshed after back to this page */
+        this._unsubscribe = this.props.navigation.addListener('focus', () => {
+            this.setState({
+                /** Reset data every enter this page */
+                items: [],
+                currentPage: 1,
+                nextPage: null,
+                isLoadMore: false,
+                isEnd: false
+            }, () => {
+                searchItemDetail(
+                    data,
+                    this.state.currentPage, 
+                    this.props.auth.token
+                )
+                .then(response => {
+                    this.setState({ 
+                        items: response.data,
+                        currentPage: response.currentPage,
+                        nextPage: response.nextPage 
+                    });
+                })
+                .catch((_) => {
+                    alert('Something wrong.')
+                });
+            })
         });
+    }
+
+    componentWillUnmount() {
+        this._unsubscribe();
     }
 
     /** Load more flatlist */
@@ -189,7 +211,8 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => {
     return {
-        auth: state.auth.userData
+        auth: state.auth.userData,
+        searchFilter: state.searchFilter.filterData
     }
 }
 

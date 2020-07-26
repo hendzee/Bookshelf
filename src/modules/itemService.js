@@ -217,13 +217,20 @@ const extractSearch = (data) => {
 }
 
 /** Search detail */
-const searchItemDetail = async (search, page, token) => {
+const searchItemDetail = async (data, page, token) => {
     return new Promise(function (resolve, reject){
         var response = {};
         var message = '';
         var auth = 'Bearer ' + token;
 
-        axios.get(prefix + '/items?search_detail=' + search + '&page=' + page, {
+        axios.get(prefix 
+            + '/items?search_detail=' 
+            + data.search
+            + '&order_by='
+            + data.orderBy
+            + '&asc='
+            + data.ASC 
+            + '&page=' + page, {
             headers: { 'Authorization': auth }
         })
             .then(result => {
@@ -241,7 +248,7 @@ const searchItemDetail = async (search, page, token) => {
                 message = JSON.stringify(error);
 
                 response = {
-                    data: result.data.data,
+                    data: error.data.data,
                     message: message,
                     currentPage: 0,
                     nextPage: null,

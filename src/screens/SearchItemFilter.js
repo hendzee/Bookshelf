@@ -11,8 +11,9 @@ import {
 import { generalSty } from '../styles';
 import { CustomStatusBar, SmallModal } from '../components/general';
 
-/** import CRUD function */
-import { dummyFunctionData, addPeriod } from '../modules';
+/** Redux */
+import { connect } from 'react-redux';
+import { rdxSetSearchFilter } from '../store/actions';
 
 const CloseIcon = (style) => (
     <Icon { ...style } name='close-outline' />
@@ -31,6 +32,16 @@ class SearchItemFilter extends Component {
         }
     }
 
+    componentDidMount() {
+        this._unsubscribe = this.props.navigation.addListener('focus', () => {
+            this.setInitialState();
+        })
+    }
+
+    componentWillUnmount() {
+        this._unsubscribe();
+    }
+
     /** Show back button */
     showBackButton = () => (
         <TopNavigationAction icon={ CloseIcon } onPress={ this.handleBack } />
@@ -41,34 +52,53 @@ class SearchItemFilter extends Component {
         this.props.navigation.goBack();
     }
 
+    /** Initial state option 1 and 2 */
+    setInitialState = () => {
+        let option1 = 1;
+        let option2 = 1;
+
+        if (this.props.searchFilter.orderBy === 'ORDER_BY_TITLE') {
+            option1 = 1;
+        }else {
+            option1 = 2;
+        }
+        
+        if (this.props.searchFilter.ASC === 'ASC') {
+            option2 = 1;
+        }else {
+            option2 = 2;
+        }
+
+        this.setState({ 
+            selectedOption1: option1,
+            selectedOption2: option2
+         })
+    }
+
     /** Handle save data */
     handleSave = () => {
-        this.setState({ isLoading: true, isSaved: true }, () => {
-            addPeriod(
-                () => {
-                    dummyFunctionData().then(response => {
-                        this.setState({ 
-                            isLoading: false, 
-                            responseTitle: response.message,
-                            isResponseError: false
-                        });
-                    }).catch(err => {
-                        this.setState({ 
-                            isLoading: false,
-                            responseTitle: err.message,
-                            isResponseError: true
-                        });
-                    })
-                }
-            )
-        });
-    };
+        let orderBy = '';
+        let asc = '';
 
-    /** Handle modal success save function  */
-    handleModalSave = () => {
-        this.setState({ isSaved: false }, () => {
-            this.handleBack();
-        });
+        if (this.state.selectedOption1 === 1) {
+            orderBy = 'ORDER_BY_TITLE'
+        }else {
+            orderBy = 'ORDER_BY_DATE'
+        }
+
+        if (this.state.selectedOption2 === 1) {
+            asc = 'ASC'
+        }else {
+            asc = 'DESC'
+        }
+
+        let data = {
+            orderBy: orderBy,
+            ASC: asc
+        }
+
+        this.props.onRdxSetSearchFilter(data)
+        this.handleBack();
     };
 
     /** Handle option 1 */
@@ -208,4 +238,21 @@ const styles = StyleSheet.create({
     },
 });
 
-export { SearchItemFilter };
+const mapStateToProps = state => {
+    return {
+        searchFilter: state.searchFilter.filterData
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+       onRdxSetSearchFilter : (data) => dispatch(rdxSetSearchFilter(data))
+    }
+}
+
+const rdxSearchItemFilter = connect(
+    mapStateToProps, 
+    mapDispatchToProps
+)(SearchItemFilter)
+
+export { rdxSearchItemFilter as SearchItemFilter };

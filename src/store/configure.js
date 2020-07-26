@@ -1,8 +1,9 @@
 import { createStore, combineReducers } from 'redux';
-import { authReducer } from './reducers';
+import { authReducer, searchFilterReducer } from './reducers';
 
 const rootReducer = combineReducers({
-    auth: authReducer
+    auth: authReducer,
+    searchFilter: searchFilterReducer
 });
 
 const configure = () => {
