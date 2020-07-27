@@ -97,7 +97,8 @@ class SearchItemFilter extends Component {
             ASC: asc
         }
 
-        this.props.onRdxSetSearchFilter(data)
+        this.props.onRdxSetSearchFilter(data);
+        
         this.handleBack();
     };
 

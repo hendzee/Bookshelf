@@ -9,7 +9,7 @@ const initialState = {
 
 const searchFilterReducer = (state = initialState, action) => {
     switch (action.type) {
-        case actionTypes.SET_USER_DATA:
+        case actionTypes.SET_SEARCH_ITEM_FILTER:
             return Object.assign({}, state, {
                 filterData: action.data
             })

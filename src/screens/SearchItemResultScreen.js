@@ -36,12 +36,6 @@ class SearchItemResultScreen extends Component {
     }
 
     async componentDidMount() {
-        let data = {
-            search: this.props.route.params.title,
-            orderBy: this.props.searchFilter.orderBy,
-            ASC: this.props.searchFilter.ASC
-        }
-
         /** Should be refreshed after back to this page */
         this._unsubscribe = this.props.navigation.addListener('focus', () => {
             this.setState({
@@ -52,21 +46,7 @@ class SearchItemResultScreen extends Component {
                 isLoadMore: false,
                 isEnd: false
             }, () => {
-                searchItemDetail(
-                    data,
-                    this.state.currentPage, 
-                    this.props.auth.token
-                )
-                .then(response => {
-                    this.setState({ 
-                        items: response.data,
-                        currentPage: response.currentPage,
-                        nextPage: response.nextPage 
-                    });
-                })
-                .catch((_) => {
-                    alert('Something wrong.')
-                });
+                this.loadDataFirstTime();
             })
         });
     }
@@ -75,12 +55,43 @@ class SearchItemResultScreen extends Component {
         this._unsubscribe();
     }
 
+    /** Load data first time */
+    loadDataFirstTime = () => {
+        let data = {
+            search: this.props.route.params.title,
+            orderBy: this.props.searchFilter.orderBy,
+            ASC: this.props.searchFilter.ASC
+        }
+
+        searchItemDetail(
+            data,
+            this.state.currentPage, 
+            this.props.auth.token
+        )
+        .then(response => {
+            this.setState({ 
+                items: response.data,
+                currentPage: response.currentPage,
+                nextPage: response.nextPage 
+            });
+        })
+        .catch((_) => {
+            alert('Something wrong.')
+        });
+    }
+
     /** Load more flatlist */
     loadMore = async () => {
         if (this.state.nextPage !== null) {
             this.setState({ isLoadMore: true }, () => {
+                let data = {
+                    search: this.props.route.params.title,
+                    orderBy: this.props.searchFilter.orderBy,
+                    ASC: this.props.searchFilter.ASC
+                }
+
                 searchItemDetail(
-                    this.props.route.params.title,
+                    data,
                     this.state.currentPage + 1, 
                     this.props.auth.token
                 )
