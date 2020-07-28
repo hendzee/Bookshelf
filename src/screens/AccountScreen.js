@@ -22,7 +22,8 @@ class AccountScreen extends Component {
             'ABOUT', // 3
             'SERVICE', // 4
             'POLICY', // 5
-            'SUPPORT' // 6
+            'SUPPORT', // 6
+            'USER_ITEMS' // 7
         ];
 
         this.props.navigation.navigate(pageList[selectedIndex]);
@@ -63,6 +64,24 @@ class AccountScreen extends Component {
                                         <Text>Borowed</Text>
                                     </Layout>
                                 </Layout>
+                            </Card>
+
+                            <Card
+                                disabled
+                                style={ styles.card }>
+                                <Text style={ styles.cardTitle }>My Library</Text>
+                                <CustomTouchableOpacity 
+                                    onPress={ () => this.handleNavigation(7) }
+                                >
+                                    <Layout style={ styles.itemMenuLast }>
+                                        <Layout style={ styles.itemMenuName }>
+                                            <Text>My Library</Text>
+                                        </Layout>
+                                        <Layout style={ styles.arrowIcon }>
+                                            { ChevronRight() }
+                                        </Layout>
+                                    </Layout>
+                                </CustomTouchableOpacity>
                             </Card>
                             
                             <Card

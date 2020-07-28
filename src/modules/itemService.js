@@ -39,6 +39,47 @@ const getItem = async (page, token) => {
     });
 }
 
+/** Get all data with specific id */
+const UserGetItem = async (data, page, token) => {
+    return new Promise(function (resolve, reject){
+        var response = {};
+        var message = '';
+        var auth = 'Bearer ' + token;
+
+        alert(data.userId)
+
+        axios.get(prefix + '/items?user_specific=true'
+            + '&user_id=' + data.userId
+            + '&page=' + page, {
+            headers: { 'Authorization': auth }
+        })
+            .then(result => {
+                response = {
+                    data: result.data.data,
+                    message: message,
+                    currentPage: result.data.current_page,
+                    nextPage: result.data.next_page_url,
+                    status: status.OK
+                };
+
+                resolve(response);
+            })
+            .catch(error => {
+                message = JSON.stringify(error);
+
+                response = {
+                    data: result.data.data,
+                    message: message,
+                    currentPage: 0,
+                    nextPage: null,
+                    status: status.ERROR
+                };
+
+                reject(response);
+            });
+    });
+}
+
 /** Get latest items */
 const getLatestItem = async (token) => {
     var response = {};
@@ -260,6 +301,9 @@ const searchItemDetail = async (data, page, token) => {
     });
 }
 
+/** Search item with specific user */
+
+
 /** Add new item */
 const addItem = async (data, token) => {
     return new Promise(function(resolve, reject) {
@@ -385,7 +429,8 @@ const deleteItem = (id, token) => {
 }
 
 export { 
-    getItem, 
+    getItem,
+    UserGetItem,
     getLatestItem, 
     getRecomendationItem, 
     getRandomItem, 
