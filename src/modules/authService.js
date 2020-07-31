@@ -74,4 +74,40 @@ const register = (data) => {
     })
 }
 
-export { login, register }
+const getProfileData = (id, token) => {
+    return new Promise(function(resolve, reject){
+        var response = {};
+        var message = 'Data wrong.';
+        var auth = 'Bearer ' + token;
+
+        axios.get(prefix + '/users/' + id, {
+            headers: { 'Authorization': auth }
+        })
+            .then(result => {
+                response = {
+                    data: result.data,
+                    message: message,
+                    status: status.OK
+                };
+                
+                resolve(response);
+            })
+            .catch(error => {
+                message = 'Cant get data.';
+
+                if (error.response) {
+                    message = error.response.data.message
+                }
+
+                response = {
+                    data: [],
+                    message: JSON.stringify(message),
+                    status: status.ERROR
+                };
+                
+                reject(response);
+            });
+    })
+}
+
+export { login, register, getProfileData }

@@ -9,11 +9,15 @@ import {
     Button,
     Avatar
 } from '@ui-kitten/components';
-import { CustomStatusBar , CustomTouchableOpacity, SmallModal } from '../components/general';
+import { CustomStatusBar , CustomTouchableOpacity, SmallModal, SelectModal } from '../components/general';
 import { generalSty } from '../styles'
+import ImagePicker from 'react-native-image-crop-picker';
 
-/** import CRUD function */
+/** Services and modules */
 import { dummyFunctionData, addPeriod } from '../modules';
+
+/** Redux */
+import { connect } from 'react-redux';
 
 const BackIcon = (style) => (
     <Icon { ...style } name='arrow-back-outline' />
@@ -27,6 +31,11 @@ class EditProfileScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            firstName: this.props.route.params.profileData.first_name,
+            lastName: this.props.route.params.profileData.last_name,
+            email: this.props.route.params.profileData.email,
+            phone: this.props.route.params.profileData.phone,
+            isPickImage: false,
             responseTitle: '', // Response title / message
             isResponseError: false, // Response error
             isSaved: false, // Saved state
@@ -43,6 +52,49 @@ class EditProfileScreen extends Component {
     handleBack = () => {
         this.props.navigation.goBack();
     };
+
+    /** Handle picker menu */
+    handlePickerMenu = () => {
+        if (!this.state.isPickImage) {
+            this.setState({ isPickImage: true });
+        }else {
+            this.setState({ isPickImage: false });
+        }
+    }
+
+    /** Open camera */
+    openCamera = () => {
+        this.setState({ isPickImage: false }, () => {
+            ImagePicker.openCamera({
+                width: 200,
+                height: 290
+            }).then(
+                image => {
+                    this.setState({
+                        cover: image, 
+                        selectedImagePath: image.path 
+                    });
+                }
+            )
+        });
+    }
+
+    /** Open Image picker */
+    openPicker = () => {
+        this.setState({ isPickImage: false }, () => {
+            ImagePicker.openPicker({
+                width: 200,
+                height: 290
+            }).then(
+                image => {
+                    this.setState({
+                        cover: image, 
+                        selectedImagePath: image.path 
+                    });
+                }
+            )
+        });
+    }
 
     /** Handle save data */
     handleSave = () => {
@@ -93,7 +145,7 @@ class EditProfileScreen extends Component {
                                 source={ require('../images/users/user1.png') } 
                             />
                             <Layout style={ styles.cameraButtonContainer }>
-                                <CustomTouchableOpacity>
+                                <CustomTouchableOpacity onPress={ this.handlePickerMenu }>
                                     <Layout style={ styles.cameraIcon }>
                                         <CameraIcon />
                                     </Layout>
@@ -106,8 +158,17 @@ class EditProfileScreen extends Component {
                     {/* Form - start */}
                     <Layout>
                         <Input
-                            label='Name'
+                            label='First Name'
                             labelStyle={ styles.inputTextStyle }
+                            value={ this.state.firstName }
+                            placeholder='e.g. John Doe'
+                            textStyle={ styles.inputTextStyle }
+                            style={ styles.input }
+                        />
+                        <Input
+                            label='Last Name'
+                            labelStyle={ styles.inputTextStyle }
+                            value={ this.state.lastName }
                             placeholder='e.g. John Doe'
                             textStyle={ styles.inputTextStyle }
                             style={ styles.input }
@@ -115,6 +176,7 @@ class EditProfileScreen extends Component {
                         <Input
                             label='Email'
                             labelStyle={ styles.inputTextStyle }
+                            value={ this.state.email }
                             placeholder='e.g. john_doe@gmail.com'
                             textStyle={ styles.inputTextStyle }
                             style={ styles.input }
@@ -122,7 +184,8 @@ class EditProfileScreen extends Component {
                         <Input
                             label='Phone'
                             labelStyle={ styles.inputTextStyle }
-                            placeholder='e.g. 08123380897'
+                            value={ this.state.phone }
+                            placeholder='e.g. 081xxx'
                             textStyle={ styles.inputTextStyle }
                             style={ styles.input }
                         />
@@ -143,6 +206,22 @@ class EditProfileScreen extends Component {
                     onPress={ this.handleModalSave } 
                     loading={ this.state.isLoading }
                     visible={ this.state.isSaved } 
+                />
+
+                {/* Modal to choose image */}
+                <SelectModal 
+                    visible={ this.state.isPickImage }
+                    onCancel={ this.handlePickerMenu }
+                    list={[
+                        {
+                            title: 'Open Camera',
+                            action: this.openCamera
+                        },
+                        {
+                            title: 'Select Image from Gallery',
+                            action: this.openPicker
+                        }
+                    ]}
                 />
                 
             </SafeAreaView>
@@ -207,4 +286,12 @@ const styles = StyleSheet.create({
     },
 });
 
-export { EditProfileScreen };
+const mapStateToProps = state => {
+    return {
+        auth: state.auth.userData
+    }
+}
+
+const rdxEditProfileScreen = connect(mapStateToProps)(EditProfileScreen);
+
+export { rdxEditProfileScreen as EditProfileScreen };

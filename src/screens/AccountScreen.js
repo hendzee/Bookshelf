@@ -7,6 +7,9 @@ import { generalSty } from '../styles'
 /** Redux */
 import { connect } from 'react-redux';
 
+/** Services and modulse */
+import { getProfileData } from '../modules';
+
 const ChevronRight = () => (
     <Icon width={ 32 } height={ 32 } name='chevron-right-outline' />
 );
@@ -16,6 +19,20 @@ const LogoutIcon = () => (
 );
 
 class AccountScreen extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            profileData: {
+                first_name: 'Loading...',
+                last_name: ''
+            }
+        }
+    }
+
+    componentDidMount() {
+        this.setProfileData();
+    }
+
     /** Handle navigation menu */
     handleNavigation = (selectedIndex) => {
         const pageList = [
@@ -31,10 +48,22 @@ class AccountScreen extends Component {
 
         if (selectedIndex === 7) {
             this.props.navigation.navigate(pageList[selectedIndex], { userId: this.props.auth.id });
+        }else if(selectedIndex === 0) {
+            this.props.navigation.navigate(pageList[selectedIndex], { profileData: this.state.profileData });
         }else {
             this.props.navigation.navigate(pageList[selectedIndex]);
         }
+    }
 
+    /** Get profile data */
+    setProfileData = () => {
+        getProfileData(this.props.auth.id, this.props.auth.token)
+        .then(response => {
+            this.setState({ profileData: response.data })
+        })
+        .catch(error => {
+            alert(error.message);
+        })
     }
 
     render() {
@@ -50,9 +79,14 @@ class AccountScreen extends Component {
                                 <Avatar
                                     size='giant'
                                     style={ styles.userImage }
-                                    source={ require('../images/users/user1.png') }
+                                    source={ require('../images/users/profile_default.png') }
                                 />
-                                <Text style={ styles.userName }>Rachel Linda</Text>
+                                <Text style={ styles.userName }>
+                                    { 
+                                        this.state.profileData.first_name 
+                                        + ' ' + this.state.profileData.last_name 
+                                    }
+                                </Text>
                             </Layout>
                         </Layout>
 
