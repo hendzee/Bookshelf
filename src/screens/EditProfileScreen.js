@@ -35,6 +35,7 @@ class EditProfileScreen extends Component {
             lastName: this.props.route.params.profileData.last_name,
             email: this.props.route.params.profileData.email,
             phone: this.props.route.params.profileData.phone,
+            photo: this.props.route.params.profileData.photo,
             isPickImage: false,
             responseTitle: '', // Response title / message
             isResponseError: false, // Response error
@@ -142,7 +143,7 @@ class EditProfileScreen extends Component {
                             <Avatar 
                                 size='giant'
                                 style={ styles.userImage }
-                                source={ require('../images/users/user1.png') } 
+                                source={{ uri: this.state.photo }} 
                             />
                             <Layout style={ styles.cameraButtonContainer }>
                                 <CustomTouchableOpacity onPress={ this.handlePickerMenu }>

@@ -24,7 +24,8 @@ class AccountScreen extends Component {
         this.state = {
             profileData: {
                 first_name: 'Loading...',
-                last_name: ''
+                last_name: '',
+                photo: '../images/profile_default.png'
             }
         }
     }
@@ -79,7 +80,7 @@ class AccountScreen extends Component {
                                 <Avatar
                                     size='giant'
                                     style={ styles.userImage }
-                                    source={ require('../images/users/profile_default.png') }
+                                    source={{ uri: this.state.profileData.photo }}
                                 />
                                 <Text style={ styles.userName }>
                                     { 
