@@ -31,10 +31,18 @@ const MainInfo = (props) => {
 
         return(
             <Layout>
-                <Button style={ styles.button } status='basic'>
+                <Button 
+                    onPress={ () => props.toUserLibrary(props.data.user.id) }
+                    style={ styles.button } 
+                    status='basic'
+                >
                     SEE THEIR BOOKS
                 </Button>
-                <Button onPress={ props.handleSave } style={ styles.button } status='primary'>
+                <Button 
+                    onPress={ props.handleSave }
+                    style={ styles.button } 
+                    status='primary'
+                >
                     ADD TO LIST
                 </Button>
             </Layout>

@@ -1,21 +1,16 @@
 import React, { Component } from 'react';
 import { SafeAreaView, StyleSheet, FlatList } from 'react-native';
-import { 
-    Layout, 
-    Icon, 
-    TopNavigationAction, 
-    Input,
-} from '@ui-kitten/components';
+import { Layout, Icon, TopNavigationAction, Input } from '@ui-kitten/components';
 import { generalSty } from '../styles';
 import { 
     CustomStatusBar, 
     CustomTouchableOpacity, 
-    ListItem,
-    FLatlistLoading 
+    FLatlistLoading, 
+    ListItem 
 } from '../components/general';
 
-/** Services and module */
-import { UserGetItem } from '../modules';
+/** Services */
+import { userSearchItemDetail } from '../modules';
 
 /** Redux */
 import { connect } from 'react-redux';
@@ -24,31 +19,56 @@ const BackIcon = () => (
     <Icon width={ 25 } height={ 25 } name='arrow-back-outline' />
 );
 
-const SearchIcon = (style) => (
-    <Icon { ...style } name='search-outline' />
+const SettingIcon = () => (
+    <Icon width={ 25 } height={ 25 } name='options-2-outline' />
 );
 
-class UserItemsScreen extends Component {
+class UserSearchResult extends Component {
     constructor(props) {
         super(props);
         this.state = {
             items: [], // Data items
-            currentPage: 1, // Curent page of flatlist
-            nextPage: null, // Next page of flatlist
-            isLoadMore: false, // Loading flatlist
-            isEnd: false // Content reach end
+            currentPage: 1,
+            nextPage: null,
+            isLoadMore: false,
+            isEnd: false
         }
     }
 
     async componentDidMount() {
+        /** Should be refreshed after back to this page */
+        this._unsubscribe = this.props.navigation.addListener('focus', () => {
+            this.setState({
+                /** Reset data every enter this page */
+                items: [],
+                currentPage: 1,
+                nextPage: null,
+                isLoadMore: false,
+                isEnd: false
+            }, () => {
+                this.loadDataFirstTime();
+            })
+        });
+    }
+
+    componentWillUnmount() {
+        this._unsubscribe();
+    }
+
+    /** Load data first time */
+    loadDataFirstTime = () => {
         let data = {
-            userId: this.props.route.params.userId
+            userId: this.props.auth.id,
+            searchDetail: this.props.route.params.title,
+            orderBy: this.props.searchFilter.orderBy,
+            ASC: this.props.searchFilter.ASC
         }
 
-        UserGetItem(
-            data, 
+        userSearchItemDetail(
+            data,
             this.state.currentPage, 
-            this.props.auth.token)
+            this.props.auth.token
+        )
         .then(response => {
             this.setState({ 
                 items: response.data,
@@ -59,22 +79,6 @@ class UserItemsScreen extends Component {
         .catch((_) => {
             alert('Something wrong.')
         });
-
-    }
-
-    /** Show back button */
-    showBackButton = () => (
-        <TopNavigationAction icon={ BackIcon } onPress={ this.handleBack } />
-    );
-
-    /** Handle back */
-    handleBack = () => {
-        this.props.navigation.goBack();
-    }
-
-    /** To user search item screen */
-    toUserSearchItem = () => {
-        this.props.navigation.navigate('USER_SEARCH_ITEM');
     }
 
     /** Load more flatlist */
@@ -82,10 +86,13 @@ class UserItemsScreen extends Component {
         if (this.state.nextPage !== null) {
             this.setState({ isLoadMore: true }, () => {
                 let data = {
-                    userId: this.props.route.params.userId
+                    userId: this.props.auth.id,
+                    searchDetail: this.props.route.params.title,
+                    orderBy: this.props.searchFilter.orderBy,
+                    ASC: this.props.searchFilter.ASC
                 }
 
-                UserGetItem(
+                userSearchItemDetail(
                     data,
                     this.state.currentPage + 1, 
                     this.props.auth.token
@@ -112,6 +119,22 @@ class UserItemsScreen extends Component {
 
         return null;
     }
+
+    /** Show back button */
+    showBackButton = () => (
+        <TopNavigationAction icon={ BackIcon } onPress={ this.handleBack } />
+    );
+
+    /** Handle back */
+    handleBack = () => {
+        this.props.navigation.goBack();
+    }
+
+    /** To search filter */
+    toSearchFilter = () => {
+        this.props.navigation.navigate('SEARCH_ITEM_FILTER');
+    }
+
     
     render() {
         return (
@@ -126,12 +149,17 @@ class UserItemsScreen extends Component {
                                 <BackIcon />
                             </CustomTouchableOpacity>
                         </Layout>
-                        <Layout style={ styles.searchBoxContainer }>
+                        <Layout style={ styles.searchContainer }>
                             <Input 
-                                placeholder='Search your book'
-                                icon={ SearchIcon }
-                                onFocus={ this.toUserSearchItem }
+                                placeholder='Search your book here'
+                                value={ this.props.route.params.title }
+                                onFocus={ this.handleBack }
                             />
+                        </Layout>
+                        <Layout>
+                            <CustomTouchableOpacity onPress={ this.toSearchFilter }>
+                                <SettingIcon />
+                            </CustomTouchableOpacity>
                         </Layout>
                     </Layout>
                     {/* Top content - end */}
@@ -184,21 +212,23 @@ const styles = StyleSheet.create({
         ...generalSty.mlBottom
     },
 
-    searchBoxContainer: {
-        flexGrow: 1,
-    },
-
     backContainer: {
         ...generalSty.mlRight
     },
+
+    searchContainer: {
+        flexGrow: 1,
+        ...generalSty.mlRight
+    }
 });
 
 const mapStateToProps = state => {
     return {
-        auth: state.auth.userData
+        auth: state.auth.userData,
+        searchFilter: state.searchFilter.filterData
     }
 }
 
-const rdxUserItemsScreen = connect(mapStateToProps)(UserItemsScreen)
+const rdxUserSearchResult = connect(mapStateToProps)(UserSearchResult);
 
-export { rdxUserItemsScreen as UserItemsScreen };
+export { rdxUserSearchResult as UserSearchResult };

@@ -122,6 +122,11 @@ class ItemDetailScreen extends Component {
         )
     }
 
+    /** To user librabry screen */
+    toUserLibrary = (id) => {
+        this.props.navigation.navigate('USER_ITEMS', { userId: id });
+    }
+
     render() {
         return (
             <SafeAreaView style={ styles.rootContainer }>
@@ -141,6 +146,7 @@ class ItemDetailScreen extends Component {
                             data={ this.state.data } 
                             navigation={ this.props.navigation } 
                             handleSave={ this.handleSave }
+                            toUserLibrary={ this.toUserLibrary }
                         />
                         <ItemInfo 
                             data={ this.state.data } 

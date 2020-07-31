@@ -28,3 +28,5 @@ export * from './SearchItemFilter';
 export * from './ItemsScreen';
 export * from './TransactionScreen';
 export * from './UserItemsScreen';
+export * from './UserSearchItemScreen';
+export * from './UserSearchResult';

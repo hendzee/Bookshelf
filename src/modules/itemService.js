@@ -46,8 +46,6 @@ const UserGetItem = async (data, page, token) => {
         var message = '';
         var auth = 'Bearer ' + token;
 
-        alert(data.userId)
-
         axios.get(prefix + '/items?user_specific=true'
             + '&user_id=' + data.userId
             + '&page=' + page, {
@@ -213,6 +211,16 @@ const getSpecificItem = async (id, token) => {
     });
 }
 
+/** Extract search */
+const extractSearch = (data) => {
+    return data.map((item, index) => {
+        return {
+            id: index,
+            title: item.title
+        }
+    })
+}
+
 /** Search item */
 const searchItem = async (search, token) => {
     var response = {};
@@ -237,7 +245,7 @@ const searchItem = async (search, token) => {
             message = JSON.stringify(error);
 
             response = {
-                data: result.data,
+                data: error.data,
                 message: message,
                 status: status.OK
             };
@@ -247,14 +255,40 @@ const searchItem = async (search, token) => {
     });
 }
 
-/** Extract search */
-const extractSearch = (data) => {
-    return data.map((item, index) => {
-        return {
-            id: index,
-            title: item.title
-        }
-    })
+/** Search user item */
+const userSearhItem = async (data, token) => {
+    var response = {};
+    var message = '';
+    var auth = 'Bearer ' + token;
+    
+    return new Promise(function (resolve, reject){
+        axios.get(prefix 
+            + '/items?search_with_user=true'
+            + '&user_id=' + data.userId
+            + '&text=' + data.text , {
+            headers: { 'Authorization': auth }
+        })
+        .then(result => {
+            response = {
+                data: extractSearch(result.data),
+                message: message,
+                status: status.OK
+            };
+
+            resolve(response);
+        })
+        .catch(error => {
+            message = JSON.stringify(error);
+
+            response = {
+                data: error.data,
+                message: message,
+                status: status.OK
+            };
+
+            reject(response);
+        });
+    });
 }
 
 /** Search detail */
@@ -302,7 +336,49 @@ const searchItemDetail = async (data, page, token) => {
 }
 
 /** Search item with specific user */
+const userSearchItemDetail = async (data, page, token) => {
+    return new Promise(function (resolve, reject){
+        var response = {};
+        var message = '';
+        var auth = 'Bearer ' + token;
 
+        axios.get(prefix 
+            + '/items?search_detail_with_user=true' 
+            + '&search_detail_value=' + data.searchDetail
+            + '&user_id=' + data.userId
+            + '&order_by='
+            + data.orderBy
+            + '&asc='
+            + data.ASC 
+            + '&page=' + page, {
+            headers: { 'Authorization': auth }
+        })
+            .then(result => {
+                response = {
+                    data: result.data.data,
+                    message: message,
+                    currentPage: result.data.current_page,
+                    nextPage: result.data.next_page_url,
+                    status: status.OK
+                };
+
+                resolve(response);
+            })
+            .catch(error => {
+                message = JSON.stringify(error);
+
+                response = {
+                    data: error.data.data,
+                    message: message,
+                    currentPage: 0,
+                    nextPage: null,
+                    status: status.ERROR
+                };
+
+                reject(response);
+            });
+    });
+}
 
 /** Add new item */
 const addItem = async (data, token) => {
@@ -437,6 +513,8 @@ export {
     getSpecificItem,
     searchItem,
     searchItemDetail,
+    userSearhItem,
+    userSearchItemDetail,
     addItem,
     updateItem,
     deleteItem

@@ -4,6 +4,9 @@ import { Layout, Text, Avatar, Card, Icon } from '@ui-kitten/components';
 import { CustomStatusBar, CustomTouchableOpacity } from '../components/general';
 import { generalSty } from '../styles'
 
+/** Redux */
+import { connect } from 'react-redux';
+
 const ChevronRight = () => (
     <Icon width={ 32 } height={ 32 } name='chevron-right-outline' />
 );
@@ -26,7 +29,12 @@ class AccountScreen extends Component {
             'USER_ITEMS' // 7
         ];
 
-        this.props.navigation.navigate(pageList[selectedIndex]);
+        if (selectedIndex === 7) {
+            this.props.navigation.navigate(pageList[selectedIndex], { userId: this.props.auth.id });
+        }else {
+            this.props.navigation.navigate(pageList[selectedIndex]);
+        }
+
     }
 
     render() {
@@ -308,4 +316,12 @@ const styles = StyleSheet.create({
     }
 });
 
-export { AccountScreen };
+const mapStateToProps = state => {
+    return {
+        auth: state.auth.userData
+    }
+}
+
+const rdxAccountScreen = connect(mapStateToProps)(AccountScreen);
+
+export { rdxAccountScreen as AccountScreen };
