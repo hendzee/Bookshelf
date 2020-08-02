@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { SafeAreaView, StyleSheet, Image, Keyboard } from 'react-native';
+import { SafeAreaView, StyleSheet, Image, Keyboard, ScrollView } from 'react-native';
 import { 
     Layout, 
     Input, 
@@ -15,7 +15,7 @@ import {
     CustomTouchableOpacity, 
     SmallModal,
     SelectModal,
-    CustomDatePicker
+    CustomDatePicker,
 } from '../components/general';
 import { generalSty, WHITE } from '../styles'
 import ImagePicker from 'react-native-image-crop-picker';
@@ -180,73 +180,74 @@ class AddItemScreen extends Component {
                 />
 
                 <Layout style={ styles.mainContainer }>
-                    {/* Form - start */}
-                    <Layout>
-                        <Input
-                            label='Title'
-                            labelStyle={ styles.inputTextStyle }
-                            placeholder='e.g. The Design of Everyday Think'
-                            textStyle={ styles.inputTextStyle }
-                            style={ styles.input }
-                            autoCapitalize='words'
-                            value={ this.state.title }
-                            onChangeText={ (text) => this.setState({ title: text }) }
-                        />
+                    <ScrollView showsVerticalScrollIndicator={ false }>
 
-                        <Input
-                            label='Author'
-                            labelStyle={ styles.inputTextStyle }
-                            placeholder='e.g. John Doe'
-                            textStyle={ styles.inputTextStyle }
-                            style={ styles.input }
-                            value={ this.state.author }
-                            onChangeText={ (text) => this.setState({ author: text }) }
-                        />
-
-                        <CustomTouchableOpacity onPress={ this.handleDatePicker } >
+                        {/* Form - start */}
+                        <Layout>
                             <Input
-                                label='Publication Year'
+                                label='Title'
                                 labelStyle={ styles.inputTextStyle }
-                                placeholder='e.g. 2010'
+                                placeholder='e.g. The Design of Everyday Think'
                                 textStyle={ styles.inputTextStyle }
                                 style={ styles.input }
-                                value={ this.state.publishDate }
-                                onChangeText={ (text) => this.setState({ publishDate: text }) }
-                                disabled
+                                autoCapitalize='words'
+                                value={ this.state.title }
+                                onChangeText={ (text) => this.setState({ title: text }) }
                             />
+
+                            <Input
+                                label='Author'
+                                labelStyle={ styles.inputTextStyle }
+                                placeholder='e.g. John Doe'
+                                textStyle={ styles.inputTextStyle }
+                                style={ styles.input }
+                                value={ this.state.author }
+                                onChangeText={ (text) => this.setState({ author: text }) }
+                            />
+
+                            <CustomTouchableOpacity onPress={ this.handleDatePicker } >
+                                <Input
+                                    label='Publication Year'
+                                    labelStyle={ styles.inputTextStyle }
+                                    placeholder='e.g. 2010'
+                                    textStyle={ styles.inputTextStyle }
+                                    style={ styles.input }
+                                    value={ this.state.publishDate }
+                                    onChangeText={ (text) => this.setState({ publishDate: text }) }
+                                    disabled
+                                />
+                            </CustomTouchableOpacity>
+
+                            <Select
+                                label='Category'
+                                labelStyle={ styles.inputTextStyle }
+                                data={ this.state.categories }
+                                style={ styles.input }
+                                selectedOption={ this.state.category }
+                                onSelect={ (selected) => this.setState({ category: selected }) }
+                            />
+
+                        </Layout>
+                        {/* Form - end */}
+
+                        <Text style={ styles.inputTextStyle }>Book Cover</Text>
+                        <CustomTouchableOpacity
+                            onPress={ this.handlePickerMenu } 
+                            style={ styles.imageUploadContainer }
+                        >
+                            <Layout style={ styles.selectedImageContainer }>
+                                <Image  
+                                    style={ styles.image }
+                                    source={{ uri: this.state.selectedImagePath }}
+                                />
+                            </Layout>
+                            { PlusIcon() }
                         </CustomTouchableOpacity>
 
-                        <Select
-                            label='Category'
-                            labelStyle={ styles.inputTextStyle }
-                            data={ this.state.categories }
-                            style={ styles.input }
-                            selectedOption={ this.state.category }
-                            onSelect={ (selected) => this.setState({ category: selected }) }
-                        />
-
-                    </Layout>
-                    {/* Form - end */}
-
-                    <Text style={ styles.inputTextStyle }>Book Cover</Text>
-                    <CustomTouchableOpacity
-                        onPress={ this.handlePickerMenu } 
-                        style={ styles.imageUploadContainer }
-                    >
-                        <Layout style={ styles.selectedImageContainer }>
-                            <Image  
-                                style={ styles.image }
-                                source={{ uri: this.state.selectedImagePath }}
-                            />
-                        </Layout>
-                        { PlusIcon() }
-                    </CustomTouchableOpacity>
-
-                    <Layout style={ styles.bottomContent }>
                         <Button onPress={ this.handleSave } status='primary'>
                             SAVE
                         </Button>
-                    </Layout>
+                    </ScrollView>
                 </Layout>
                 
                 {/* Modal when saved */}
@@ -306,14 +307,6 @@ const styles = StyleSheet.create({
         ...generalSty.black
     },
 
-    bottomContent: {
-        position: 'absolute',
-        bottom: 0,
-        left: 0,
-        right: 0,
-        ...generalSty.plAll,
-    },
-
     selectedImageContainer: {
         position: 'absolute',
         width: '100%',
@@ -332,6 +325,7 @@ const styles = StyleSheet.create({
     imageUploadContainer: {
         ...generalSty.hf150,
         ...generalSty.w110,
+        ...generalSty.mlBottom,
         justifyContent: 'center',
         alignItems: 'center',
     },

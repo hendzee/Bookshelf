@@ -15,7 +15,7 @@ import {
     ChatScreen, 
     ChatDetailScreen, 
     ContactScreen, 
-    TransactionMenuScreen,
+    MenuScreen,
     InboxScreen,
     AccountScreen,
     AddItemScreen,
@@ -100,7 +100,7 @@ const BottomTabBar = ({ navigation, state }) => {
             <BottomNavigation appearance='noIndicator' selectedIndex={ state.index } onSelect={ onSelect }>
                 <BottomNavigationTab title='Home' icon={ state.index === 0 ? ActiveHomeIcon : HomeIcon } />
                 <BottomNavigationTab title='Chat' icon={ state.index === 1 ? ActiveChatIcon : ChatIcon } />
-                <BottomNavigationTab title='Transaction' icon={ MenuIcon } />
+                <BottomNavigationTab title='Menu' icon={ MenuIcon } />
                 <BottomNavigationTab title='Inbox' icon={ state.index === 3 ? ActiveInboxIcon : InboxIcon } />
                 <BottomNavigationTab title='Account' icon={ state.index === 4 ? ActiveAccountIcon : AccountIcon } />
             </BottomNavigation>
@@ -113,8 +113,8 @@ const TabBarNavigator = () => (
         <BottomTab.Screen name='HOME' component={ HomeScreen } />
         <BottomTab.Screen name='CHAT' component={ ChatScreen } />
         <BottomTab.Screen 
-            name='TRANSACTION_MENU' 
-            component={ TransactionMenuScreen }
+            name='MENU' 
+            component={ MenuScreen }
             options={{
                 tabBarVisible: false
             }}

@@ -15,7 +15,7 @@ const screens = {
     TRANSACTION: 'TRANSACTION'
 }
 
-class TransactionMenuScreen extends Component {
+class MenuScreen extends Component {
     /** Handle close */
     handleClose = () => {
         this.props.navigation.goBack();
@@ -162,4 +162,4 @@ const styles = StyleSheet.create({
 
 });
 
-export { TransactionMenuScreen };
+export { MenuScreen };
