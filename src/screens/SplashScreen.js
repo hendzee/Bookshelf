@@ -4,11 +4,17 @@ import { Layout } from '@ui-kitten/components';
 import { generalSty, PRIMARY, WHITE} from '../styles';
 import { getUserData } from '../modules';
 
+/** Redux */
+import { connect } from 'react-redux';
+import { rdxSetUserData } from '../store/actions';
+
 class SplashScreen extends Component {
     /** Handle next page */
     handleNextPage = () => {
         getUserData()
-            .then(_ => {
+            .then(response => {
+                this.props.onRdxSetUserData(JSON.parse(response));
+
                 this.props.navigation.reset({
                     index: 0,
                     routes: [{ name: 'MAIN' }]
@@ -55,8 +61,17 @@ const styles = StyleSheet.create({
 
     logo: {
         fontSize: 150,
-        color: WHITE
+        color: WHITE,
+        fontFamily: 'Bonbon-Regular'
     },
 });
 
-export { SplashScreen };
+const mapDispatchToProps = dispatch => {
+    return {
+        onRdxSetUserData: (data) => dispatch(rdxSetUserData(data))
+    }
+}
+
+const rdxSplashScreen = connect(null, mapDispatchToProps)(SplashScreen);
+
+export { rdxSplashScreen as SplashScreen };

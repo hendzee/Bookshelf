@@ -21,8 +21,8 @@ const getUserData = () => {
         AsyncStorage.getItem('userData')
             .then(result => {
                 if (result === null ) throw(0);
-                console.log(JSON.stringify(result))
-                resolve(1);
+                console.log('Load user data...')
+                resolve(result);
             })
             .catch(_ => {
                 reject(0);
