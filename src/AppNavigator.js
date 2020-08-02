@@ -9,6 +9,7 @@ import {
     Icon, 
 } from '@ui-kitten/components';
 import {
+    SplashScreen,
     RegisterScreen,
     LoginScreen,
     HomeScreen, 
@@ -126,6 +127,7 @@ const TabBarNavigator = () => (
 
 const AppStackNavigator = () => (
     <Stack.Navigator headerMode='none'>
+        <Stack.Screen name='SPLASH' component={ SplashScreen } />
         <Stack.Screen name='LOGIN' component={ LoginScreen } />
         <Stack.Screen name='REGISTER' component={ RegisterScreen } />
         <Stack.Screen name='MAIN' component={ TabBarNavigator } />

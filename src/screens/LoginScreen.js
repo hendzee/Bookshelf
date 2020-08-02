@@ -10,7 +10,7 @@ import {
 import { generalSty, GREY } from '../styles';
 import { CustomStatusBar, SmallModal } from '../components/general';
 
-/** Functions */
+/** Services and modules */
 import { setSecureInput, login, setUserData } from '../modules';
 
 /** Redux */

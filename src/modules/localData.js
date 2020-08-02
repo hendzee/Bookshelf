@@ -18,27 +18,31 @@ const setUserData = (data) => {
 
 const getUserData = () => {
     return new Promise(function(resolve, reject){
-        var response = {};
-        var message = '';
-
         AsyncStorage.getItem('userData')
             .then(result => {
-                response = {
-                    data: result.data
-                }
-
-                resolve(response);
+                if (result === null ) throw(0);
+                console.log(JSON.stringify(result))
+                resolve(1);
             })
-            .catch(error => {
-                message = JSON.stringify(error);
-
-                response = {
-                    message: message 
-                }
-
-                reject(response);
+            .catch(_ => {
+                reject(0);
             })
     });
 }
 
-export { setUserData, getUserData };
+const removeUserData = () => {
+    return new Promise(function(resolve, reject){
+        AsyncStorage.clear()
+        .then(_ => {
+            console.log('Success remove local data.');
+            resolve(1);
+        })
+        .catch(_ => {
+            console.log('Error to sign out.');
+            reject(0);
+        })
+            
+    });
+}
+
+export { setUserData, getUserData, removeUserData };

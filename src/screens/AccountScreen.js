@@ -8,7 +8,7 @@ import { generalSty } from '../styles'
 import { connect } from 'react-redux';
 
 /** Services and modulse */
-import { getProfileData } from '../modules';
+import { getProfileData, removeUserData } from '../modules';
 
 const ChevronRight = () => (
     <Icon width={ 32 } height={ 32 } name='chevron-right-outline' />
@@ -64,6 +64,20 @@ class AccountScreen extends Component {
         })
         .catch(error => {
             alert(error.message);
+        })
+    }
+
+    /** Handle Sign Out */
+    handleSignOut = () => {
+        removeUserData()
+        .then(_ => {
+            this.props.navigation.reset({
+                index: 0,
+                routes: [{ name: 'LOGIN' }]
+            })
+        })
+        .catch(_ => {
+            alert('Something wrong, try again later.')
         })
     }
 
@@ -229,7 +243,7 @@ class AccountScreen extends Component {
                                     </Layout>
                                 </CustomTouchableOpacity>
                                 
-                                <CustomTouchableOpacity>
+                                <CustomTouchableOpacity onPress={ this.handleSignOut }>
                                     <Layout style={ styles.itemMenuLast }>
                                         <Layout style={ styles.itemMenuName }>
                                             <Text style={ styles.bold }>Sign Out</Text>
