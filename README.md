@@ -35,4 +35,4 @@ use help us work with map.
 This file is use to keep information secretly and localy, so it will be more safe to write credential, token or etc. Just create **env.json** file and then copy **env_template.json** in the root of project, then fill the information.
 
 ### __Status Project__
-For now this project still on progress and not finish yet.
+I decide to stop this project and i dont have plan to develop it again, beacause i have another activity. But i have to keep develop if i have much time. However this project is reach 70-80%. Main business process like transaction and auth(register, login) are finished. But another things is need to develop such as chatting system, notification etc.
