@@ -11,6 +11,7 @@ import {
 import {
     SplashScreen,
     RegisterScreen,
+    RegisterInputDataScreen,
     LoginScreen,
     HomeScreen, 
     ChatScreen, 
@@ -130,6 +131,7 @@ const AppStackNavigator = () => (
         <Stack.Screen name='SPLASH' component={ SplashScreen } />
         <Stack.Screen name='LOGIN' component={ LoginScreen } />
         <Stack.Screen name='REGISTER' component={ RegisterScreen } />
+        <Stack.Screen name='REGISTER_INPUT_DATA' component={ RegisterInputDataScreen } />
         <Stack.Screen name='MAIN' component={ TabBarNavigator } />
         <Stack.Screen name='CHAT_DETAIL' component={ ChatDetailScreen } />
         <Stack.Screen name='CONTACT' component={ ContactScreen } />

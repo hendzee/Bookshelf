@@ -65,8 +65,10 @@ class LoginScreen extends Component {
             password: this.state.password
         }
 
-        login(data)
+        this.setState({ isSaved: true, isLoading: true }, () => {
+            login(data)
             .then(response => {
+                this.setState({ isSaved: false, isLoading: false });
                 let storeData = {
                     id: response.data.id,
                     token: response.data.token
@@ -84,8 +86,18 @@ class LoginScreen extends Component {
                     });
             })
             .catch(error => {
-                alert(error.message)
+                this.setState({
+                    isLoading: false,
+                    isResponseError: true,
+                    responseTitle: error.message
+                })
             })
+        })
+    }
+
+    /** Submit modal */
+    submitModal = () => {
+        this.setState({ isSaved: false })
     }
     
     render() {
@@ -142,7 +154,7 @@ class LoginScreen extends Component {
                 <SmallModal
                     title={ this.state.responseTitle }
                     isError={ this.state.isResponseError }
-                    onPress={ this.handleModalSave } 
+                    onPress={ this.submitModal } 
                     loading={ this.state.isLoading }
                     visible={ this.state.isSaved } 
                 />

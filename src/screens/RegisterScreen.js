@@ -11,11 +11,7 @@ import { generalSty, GREY } from '../styles';
 import { CustomStatusBar, SmallModal } from '../components/general';
 
 /** Functions */
-import { setSecureInput, login, setUserData, register } from '../modules';
-
-/** Redux */
-import { connect } from 'react-redux';
-import { rdxSetUserData } from '../store/actions';
+import { setSecureInput, checkUser } from '../modules';
 
 const EyeIcon = () => (
     <Icon fill={ GREY } name='eye-outline'/>
@@ -31,8 +27,6 @@ class RegisterScreen extends Component {
         this.state = {
             email: '',
             password: '',
-            firstName: '',
-            lastName: '',
             isSecureInput: [ true ], // Secure input for current password (index 0)
             responseTitle: '', // Response title / message
             isResponseError: false, // Response error
@@ -48,48 +42,40 @@ class RegisterScreen extends Component {
         });
     }
 
-    /** To Main */
-    toMain = () => {
-        this.props.navigation.reset({
-            routes: [{ name: 'MAIN' }]
-        });
-    }
-
     /** Back to login */
     backToLogin = () => {
         this.props.navigation.goBack();
     }
 
-    /** Hanlde register */
-    handleRegister = () => {
-        let data = {
+    /** To input data */
+    toInputData = () => {
+        this.props.navigation.navigate('REGISTER_INPUT_DATA', {
             email: this.state.email,
-            password: this.state.password,
-            firstName: this.state.firstName,
-            lastName: this.state.lastName
-        }
+            password: this.state.password
+        });
+    }
 
-        register(data)
-            .then(response => {
-                let storeData = {
-                    id: response.data.id,
-                    token: response.data.token
-                }
-
-                /** Save on redux userdata */
-                this.props.onRdxSetUserData(storeData);
-
-                setUserData(storeData)
-                    .then(_ => {
-                        this.toMain();
-                    })
-                    .catch(error => {
-                        alert(error.message);
-                    });
+    /** CheckUser */
+    handleCheckUser = () => {
+        this.setState({ isSaved: true, isLoading: true }, () => {
+            checkUser(this.state.email)
+            .then(_ => {
+                this.setState({ isSaved: false, isLoading: false })
+                this.toInputData();
             })
             .catch(error => {
-                alert(error.message)
+                this.setState({ 
+                    isLoading: false,
+                    isResponseError: true,
+                    responseTitle: error.message  
+                })
             })
+        }) 
+    }
+
+    /** Submit modal */
+    submitModal = () => {
+        this.setState({ isSaved: false })
     }
     
     render() {
@@ -122,30 +108,12 @@ class RegisterScreen extends Component {
                         value={ this.state.password }
                         onChangeText={ text => this.setState({ password: text }) }
                     />
-                    <Input 
-                        style={ styles.input }
-                        label='Fisrt Name'
-                        labelStyle={ styles.inputTextStyle } 
-                        placeholder='John'
-                        autoCapitalize='words'
-                        value={ this.state.firstName }
-                        onChangeText={ text => this.setState({ firstName: text }) }
-                    />
-                    <Input 
-                        style={ styles.input }
-                        label='Last Name'
-                        labelStyle={ styles.inputTextStyle } 
-                        placeholder='Doe'
-                        autoCapitalize='words'
-                        value={ this.state.lastName }
-                        onChangeText={ text => this.setState({ lastName: text }) }
-                    />
                     <Button
                         style={ styles.button } 
-                        onPress={ this.handleRegister } 
+                        onPress={ this.handleCheckUser } 
                         status='primary'
                     >
-                        SIGN UP
+                        NEXT
                     </Button>
                     <Layout>
                         <Text style={ styles.bottomText }>
@@ -164,7 +132,7 @@ class RegisterScreen extends Component {
                 <SmallModal
                     title={ this.state.responseTitle }
                     isError={ this.state.isResponseError }
-                    onPress={ this.handleModalSave } 
+                    onPress={ this.submitModal } 
                     loading={ this.state.isLoading }
                     visible={ this.state.isSaved } 
                 />
@@ -219,12 +187,4 @@ const styles = StyleSheet.create({
     },
 });
 
-const mapDispatchToProps = dispatch => {
-    return {
-        onRdxSetUserData: (data) => dispatch(rdxSetUserData(data))
-    }
-}
-
-const rdxRegisterScreen = connect(null, mapDispatchToProps)(RegisterScreen);
-
-export { rdxRegisterScreen as RegisterScreen };
+export { RegisterScreen };

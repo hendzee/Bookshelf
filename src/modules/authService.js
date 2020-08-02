@@ -35,6 +35,37 @@ const login = (data) => {
     })
 }
 
+const checkUser = email => {
+    return new Promise(function(resolve, reject) {
+        var response = {};
+        var message = 'Something wrong.';
+
+        axios.get(prefix + '/check_user?email=' + email)
+        .then(result => {
+            response = {
+                data: result.data,
+                message: message,
+                status: status.OK
+            };
+            
+            resolve(response);
+        })
+        .catch(error => {
+            if (error.response) {
+                message = error.response.data.message
+            }
+
+            response = {
+                data: [],
+                message: message,
+                status: status.ERROR
+            };
+
+            reject(response);
+        })
+    })
+}
+
 const register = (data) => {
     return new Promise(function(resolve, reject){
         var response = {};
@@ -131,8 +162,6 @@ const updateProfileData = (data, token) => {
             });
         }
 
-        alert(JSON.stringify(data.photo))
-
         axios.post(prefix + '/users/' + data.id, formData, {
             headers: {
                 'Authorization':  auth, 
@@ -162,6 +191,7 @@ const updateProfileData = (data, token) => {
 export { 
     login, 
     register, 
+    checkUser,
     getProfileData,
     updateProfileData
 }

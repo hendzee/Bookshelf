@@ -1,5 +1,6 @@
 export * from './SplashScreen';
 export * from './RegisterScreen';
+export * from './RegisterInputData';
 export * from './LoginScreen';
 export * from './HomeScreen';
 export * from './ChatScreen';
