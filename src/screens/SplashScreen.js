@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { SafeAreaView, StyleSheet, Text} from 'react-native';
 import { Layout } from '@ui-kitten/components';
 import { generalSty, PRIMARY, WHITE} from '../styles';
-import { getUserData, removeUserData } from '../modules';
+import { getUserData } from '../modules';
 
 class SplashScreen extends Component {
     /** Handle next page */
