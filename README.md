@@ -22,7 +22,7 @@ If you already done with _"Pre-Install"_ step, follow these step bellow to finis
 ```
 
 ### Database and API
-**(COMING SOON)**
+[This is about database and API that must be clone too](https://github.com/hendzee/bookshelf_service)
 
 ### Map
 This app using some procedure or some library to handle map. Generally, there are 3 library that
