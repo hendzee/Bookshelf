@@ -110,4 +110,58 @@ const getProfileData = (id, token) => {
     })
 }
 
-export { login, register, getProfileData }
+/** Update profile data */
+const updateProfileData = (data, token) => {
+    return new Promise(function(resolve, reject) {
+        var response = {};
+        var formData = new FormData();
+        var auth = 'Bearer ' + token;
+
+        formData.append('email', data.email);
+        formData.append('phone', data.phone);
+        formData.append('first_name', data.firstName);
+        formData.append('last_name', data.lastName);
+        formData.append('_method', 'PUT');
+
+        if (data.photo !== null) {
+            formData.append('photo', {
+                uri: data.photo.path,
+                type: 'image/jpg',
+                name: 'image.jpg'
+            });
+        }
+
+        alert(JSON.stringify(data.photo))
+
+        axios.post(prefix + '/users/' + data.id, formData, {
+            headers: {
+                'Authorization':  auth, 
+                'Content-Type': 'multipart/form-data' 
+            }})
+            .then(result => {
+                response = {
+                    data: result.data,
+                    message: 'Data was updated.',
+                    status: status.OK
+                }; 
+    
+                resolve(response);
+            })
+            .catch(error => {
+                response = {
+                    data: null,
+                    message: JSON.stringify(error),
+                    status: status.ERROR
+                };
+
+                reject(response);
+            })
+    });
+}
+
+export { 
+    login, 
+    register, 
+    getProfileData,
+    updateProfileData
+}

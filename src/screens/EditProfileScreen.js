@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { SafeAreaView, StyleSheet } from 'react-native';
+import { SafeAreaView, StyleSheet, ScrollView } from 'react-native';
 import { 
     Layout, 
     Input, 
@@ -14,7 +14,7 @@ import { generalSty } from '../styles'
 import ImagePicker from 'react-native-image-crop-picker';
 
 /** Services and modules */
-import { dummyFunctionData, addPeriod } from '../modules';
+import { updateProfileData } from '../modules';
 
 /** Redux */
 import { connect } from 'react-redux';
@@ -31,11 +31,13 @@ class EditProfileScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            id: this.props.auth.id,
             firstName: this.props.route.params.profileData.first_name,
             lastName: this.props.route.params.profileData.last_name,
             email: this.props.route.params.profileData.email,
             phone: this.props.route.params.profileData.phone,
-            photo: this.props.route.params.profileData.photo,
+            photo: null,
+            selectedImagePath: this.props.route.params.profileData.photo,
             isPickImage: false,
             responseTitle: '', // Response title / message
             isResponseError: false, // Response error
@@ -72,7 +74,7 @@ class EditProfileScreen extends Component {
             }).then(
                 image => {
                     this.setState({
-                        cover: image, 
+                        photo: image, 
                         selectedImagePath: image.path 
                     });
                 }
@@ -89,7 +91,7 @@ class EditProfileScreen extends Component {
             }).then(
                 image => {
                     this.setState({
-                        cover: image, 
+                        photo: image, 
                         selectedImagePath: image.path 
                     });
                 }
@@ -99,24 +101,31 @@ class EditProfileScreen extends Component {
 
     /** Handle save data */
     handleSave = () => {
+        let data = {
+            id: this.state.id,
+            email: this.state.email,
+            phone: this.state.phone,
+            firstName: this.state.firstName,
+            lastName: this.state.lastName,
+            photo: this.state.photo
+        }
+
         this.setState({ isLoading: true, isSaved: true }, () => {
-            addPeriod(
-                () => {
-                    dummyFunctionData().then(response => {
-                        this.setState({ 
-                            isLoading: false, 
-                            responseTitle: response.message,
-                            isResponseError: false
-                        });
-                    }).catch(err => {
-                        this.setState({ 
-                            isLoading: false,
-                            responseTitle: err.message,
-                            isResponseError: true
-                        });
-                    })
-                }
-            )
+            updateProfileData(data, this.props.auth.token)
+            .then(response => {
+                this.setState({ 
+                    isLoading: false, 
+                    responseTitle: response.message,
+                    isResponseError: false
+                });
+            })
+            .catch(error => {
+                this.setState({ 
+                    isLoading: false,
+                    responseTitle: error.message,
+                    isResponseError: true
+                });
+            })
         });
     };
 
@@ -137,67 +146,72 @@ class EditProfileScreen extends Component {
                     leftControl={ this.showBackButton() }
                 />
                 <Layout style={ styles.mainContainer }>
-                    {/* Photo profile content - start */}
-                    <Layout style={ styles.photoContainer }>
-                        <Layout>
-                            <Avatar 
-                                size='giant'
-                                style={ styles.userImage }
-                                source={{ uri: this.state.photo }} 
-                            />
-                            <Layout style={ styles.cameraButtonContainer }>
-                                <CustomTouchableOpacity onPress={ this.handlePickerMenu }>
-                                    <Layout style={ styles.cameraIcon }>
-                                        <CameraIcon />
-                                    </Layout>
-                                </CustomTouchableOpacity>
+                    <ScrollView showsVerticalScrollIndicator={ false }>
+                        {/* Photo profile content - start */}
+                        <Layout style={ styles.photoContainer }>
+                            <Layout>
+                                <Avatar 
+                                    size='giant'
+                                    style={ styles.userImage }
+                                    source={{ uri: this.state.selectedImagePath }} 
+                                />
+                                <Layout style={ styles.cameraButtonContainer }>
+                                    <CustomTouchableOpacity onPress={ this.handlePickerMenu }>
+                                        <Layout style={ styles.cameraIcon }>
+                                            <CameraIcon />
+                                        </Layout>
+                                    </CustomTouchableOpacity>
+                                </Layout>
                             </Layout>
                         </Layout>
-                    </Layout>
-                    {/* Photo profile content - end */}
+                        {/* Photo profile content - end */}
 
-                    {/* Form - start */}
-                    <Layout>
-                        <Input
-                            label='First Name'
-                            labelStyle={ styles.inputTextStyle }
-                            value={ this.state.firstName }
-                            placeholder='e.g. John Doe'
-                            textStyle={ styles.inputTextStyle }
-                            style={ styles.input }
-                        />
-                        <Input
-                            label='Last Name'
-                            labelStyle={ styles.inputTextStyle }
-                            value={ this.state.lastName }
-                            placeholder='e.g. John Doe'
-                            textStyle={ styles.inputTextStyle }
-                            style={ styles.input }
-                        />
-                        <Input
-                            label='Email'
-                            labelStyle={ styles.inputTextStyle }
-                            value={ this.state.email }
-                            placeholder='e.g. john_doe@gmail.com'
-                            textStyle={ styles.inputTextStyle }
-                            style={ styles.input }
-                        />
-                        <Input
-                            label='Phone'
-                            labelStyle={ styles.inputTextStyle }
-                            value={ this.state.phone }
-                            placeholder='e.g. 081xxx'
-                            textStyle={ styles.inputTextStyle }
-                            style={ styles.input }
-                        />
-                    </Layout>
-                    {/* Form - end */}
+                        {/* Form - start */}
+                        <Layout>
+                            <Input
+                                label='First Name'
+                                labelStyle={ styles.inputTextStyle }
+                                value={ this.state.firstName }
+                                placeholder='e.g. John Doe'
+                                onChangeText={ text => { this.setState({ firstName: text }) }}
+                                textStyle={ styles.inputTextStyle }
+                                style={ styles.input }
+                            />
+                            <Input
+                                label='Last Name'
+                                labelStyle={ styles.inputTextStyle }
+                                value={ this.state.lastName }
+                                placeholder='e.g. John Doe'
+                                onChangeText={ text => { this.setState({ lastName: text }) }}
+                                textStyle={ styles.inputTextStyle }
+                                style={ styles.input }
+                            />
+                            <Input
+                                label='Email'
+                                labelStyle={ styles.inputTextStyle }
+                                value={ this.state.email }
+                                placeholder='e.g. john_doe@gmail.com'
+                                onChangeText={ text => { this.setState({ email: text }) }}
+                                textStyle={ styles.inputTextStyle }
+                                style={ styles.input }
+                            />
+                            <Input
+                                label='Phone'
+                                labelStyle={ styles.inputTextStyle }
+                                value={ this.state.phone }
+                                placeholder='e.g. 081xxx'
+                                onChangeText={ text => { this.setState({ phone: text }) }}
+                                textStyle={ styles.inputTextStyle }
+                                style={ styles.input }
+                                keyboardType='phone-pad'
+                            />
 
-                    <Layout style={ styles.bottomContent }>
-                        <Button onPress={ this.handleSave } status='primary'>
-                            SAVE
-                        </Button>
-                    </Layout>
+                            <Button onPress={ this.handleSave } status='primary'>
+                                SAVE
+                            </Button>
+                        </Layout>
+                        {/* Form - end */}
+                    </ScrollView>
                 </Layout>
                 
                 {/* Modal when save complete */}
@@ -276,14 +290,6 @@ const styles = StyleSheet.create({
     inputTextStyle: {
         ...generalSty.smallText,
         ...generalSty.black
-    },
-
-    bottomContent: {
-        position: 'absolute',
-        bottom: 0,
-        left: 0,
-        right: 0,
-        ...generalSty.plAll,
     },
 });
 
